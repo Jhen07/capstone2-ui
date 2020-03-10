@@ -1,0 +1,42 @@
+<div class="top">
+  <h2 class="">
+    <small>User Logs</small>
+  </h2>
+</div>
+<div class="card-header pt-3">
+  <input
+    type="search"
+    name=""
+    id=""
+    class="ml-3 rounded px-2 py-1"
+    placeholder="Search"
+  />
+  <!-- <span class="float-right">Total no of Users: 3</span> -->
+</div>
+<table class="table table-striped">
+  <thead class="bg-primary-color text-light">
+    <tr>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Action</th>
+      <th>Time</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let logs of userLogs">
+      <td>{{ logs.name }}</td>
+      <td>
+        {{
+          logs.role == 0 ? 'Admin' : logs.role == 1 ? 'Medical Staff' : 'Staff'
+        }}
+      </td>
+      <td>{{ logs.action }}</td>
+      <td>{{ toDate(logs.created_at) | date: 'hh:mm a' }}</td>
+      <td>{{ toDate(logs.created_at) | date: 'MMM dd yyyy' }}</td>
+    </tr>
+    <tr *ngIf="userLogs.length == 0">
+      <td class="text-center" colspan="13">No Record</td>
+    </tr>
+  </tbody>
+</table>

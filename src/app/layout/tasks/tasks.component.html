@@ -1,0 +1,66 @@
+<div class="h-100" style="margin-bottom: 200px;">
+  <div class="top d-flex justify-content-between align-items-center">
+    <h2 class="">
+      <small>Daily Tasks</small>
+    </h2>
+    <div class="text-center">
+      <h2 class="color-dark-primary ">
+        <small>{{ time | date: 'hh:mm:ss a' }}</small>
+      </h2>
+      <p>
+        <small>{{ time | date: 'MMM dd yyyy' }}</small>
+      </p>
+    </div>
+  </div>
+  <div class="card-header pt-3">
+    <input
+      type="search"
+      name=""
+      id=""
+      class="ml-3 rounded px-2 py-1"
+      placeholder="Search"
+    />
+  </div>
+  <!-- Tasking for the whole month na, no need na maginput si admin everyday for tasking ng staff lagyan ng type ang task (Parang Alarm Clock) -->
+  <table class="table table-striped">
+    <thead class="bg-primary-color text-light">
+      <tr>
+        <th></th>
+        <th>Elder Name</th>
+        <th>Medicine</th>
+        <th>Qty</th>
+        <th>Time</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="taskList.length == 0">
+        <td colspan="13" class="text-center">No Record</td>
+      </tr>
+      <tr *ngFor="let task of taskList">
+        <th></th>
+        <th class="text-center" scope="row">{{ task.elder_name }}</th>
+        <td class="text-center">{{ task.medicine_description }}</td>
+        <td class="text-center">{{ task.qty }}</td>
+        <td class="text-center">{{ task.time }}</td>
+        <td class="text-center"
+          [ngClass]="{
+            'text-primary': getStatus(task.id) == 'Done',
+            'text-warning': getStatus(task.id) == 'Pending',
+            'text-danger': getStatus(task.id) == 'Refused'
+          }"
+        >
+          {{ getStatus(task.id) }}
+        </td>
+        <td class="text-center">
+          <app-task-dropdown
+            [task]="task"
+            *ngIf="getStatus(task.id) == 'Pending'"
+            (getReports)="getReports()"
+          ></app-task-dropdown>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

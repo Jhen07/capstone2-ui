@@ -1,0 +1,67 @@
+$topnav-background-color: #2D7DAC;
+
+:host {
+    .navbar {
+        background-color: $topnav-background-color;
+
+        .navbar-brand {
+            color: #fff;
+        }
+
+        .nav-item>a {
+            color: #ffffff;
+
+            &:hover {
+                color: #222;
+            }
+        }
+    }
+
+    .messages {
+        width: 300px;
+
+        .media {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 10px;
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        .media-body {
+            h5 {
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            .small {
+                margin: 0;
+            }
+
+            .last {
+                font-size: 12px;
+                margin: 0;
+            }
+        }
+    }
+}
+
+.w-400 {
+    width: 400px;
+    overflow-wrap: break-word;
+}
+
+.border-b {
+    border-bottom: 1px solid rgb(177, 175, 175);
+}
+
+.notif-item:hover {
+    background-color: rgb(223, 223, 223);
+    cursor: pointer;
+}
+
+.notif-ul {
+    max-height: 175px;
+    overflow: scroll;
+}

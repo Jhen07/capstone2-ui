@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="mr-4 rounded-circle">
+    <img
+      src="../../assets/images/logoADDCHE.png"
+      alt=""
+      style="height: 50px;"
+    />
+  </div>
+  <a class="navbar-brand" href="#">ADD-CHE </a>
+  <!-- Navigation, di mahide yung sidebar (toogle) -->
+  <button class="navbar-toggler" type="button" (click)="toggleSidebar()">
+    <span class="navbar-toggler-icon"></span>
+    <i class="fa fa-bars text-light" aria-hidden="true"></i>
+  </button>
+  <div class="collapse navbar-collapse">
+    <button
+      class="btn bg-transparent ml-3"
+      type="button"
+      (click)="toggleCollapsed()"
+    >
+      <i class="fa fa-bars text-light" aria-hidden="true"></i>
+    </button>
+    <ul class="navbar-nav ml-auto">
+      &nbsp;
+      <li class="nav-item dropdown " ngbDropdown>
+        <a
+          href="javascript:void(0)"
+          class="nav-link"
+          ngbDropdownToggle
+          (click)="readNotif()"
+        >
+          <i class="fa fa-bell"></i>
+          <span class="badge badge-info" *ngIf="newCount != 0">{{
+            newCount
+          }}</span>
+        </a>
+        <div
+          class="dropdown-menu-right w-400 p-0 notif-ul"
+          ngbDropdownMenu
+          *ngIf="notifications"
+        >
+          <div
+            class="p-3 border-b notif-item"
+            *ngFor="let notif of notifications"
+          >
+            <div class="w-100">{{ notif.description }}</div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

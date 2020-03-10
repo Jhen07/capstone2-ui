@@ -1,0 +1,337 @@
+<div>
+  <div class="top">
+    <h2 class="">
+      <small>Medicine Inventory</small>
+    </h2>
+  </div>
+  <div class="card-header pt-3">
+    <input
+      type="search"
+      name=""
+      id=""
+      class="ml-3 rounded px-2 py-1"
+      placeholder="Search"
+    />
+    <button class="btn btn-info float-right mr-1">
+      Export as PDF
+    </button>
+    <button class="btn btn-light float-right" (click)="open(content)">
+      <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
+    </button>
+    <button class="btn btn-light float-right">
+      <i class="fa fa-sort" aria-hidden="true"></i> Sort
+    </button>
+    <button class="btn btn-light float-right">
+      <i class="fa fa-filter" aria-hidden="true"></i> Filter
+    </button>
+  </div>
+  <table class="table table-striped">
+    <thead class="bg-primary-color text-light">
+      <tr>
+        <th><input type="checkbox" /></th>
+        <th>#</th>
+        <th>Medicine Name</th>
+        <th>Medicine Type</th>
+        <th>Buffer</th>
+        <!-- yung mga stock for emergency only... di ginagalaw -->
+        <th>Stock</th>
+        <th>Dispense</th>
+        <!-- bilang ng mga nadispense na -->
+        <th>Date Modified</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="border">
+      <tr *ngIf="!medicineList.length">
+        <td colspan="13" class="text-center">No Record</td>
+      </tr>
+      <tr *ngFor="let med of medicineList; let i = index">
+        <th><input type="checkbox" /></th>
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ med.medicine_name }}</td>
+        <td>{{ med.type_of_medicine_description }}</td>
+        <td>{{ med.buffer }}</td>
+        <!-- yung mga stock for emergency only... di ginagalaw -->
+        <td>{{ med.qty }}</td>
+        <td>{{ med.dispense }}</td>
+        <!-- bilang ng mga nadispense na -->
+        <td>{{ med.updated_at }}</td>
+        <td class="text-center">
+          <button
+            class="btn btn-primary mr-2"
+            (click)="openRestock(content2, med, '+')"
+          >
+            Restock
+          </button>
+          <!-- <button
+            class="btn btn-danger mr-2"
+            (click)="openRestock(content2, med, '-')"
+          >
+            Dispense
+          </button> 
+            *Mababawasn lang po sya pag nagdone/napainum na ng staff yung gamot-->
+          <!-- <button class="btn" (click)="setUpdateMed(content3, med)">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Add Medicine modal -->
+
+  <div>
+    <ng-template #content let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Medicine</h5>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="c('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <fieldset class="form-group">
+          <label>Medicine Type</label>
+          <select class="form-control" [(ngModel)]="selectedType">
+            <option *ngFor="let type of medicines; let i = index" [value]="i">{{
+              type.category
+            }}</option>
+          </select>
+        </fieldset>
+        <fieldset class="form-group" *ngIf="selectedType == 7">
+          <label>Medicine Name</label>
+          <input class="form-control" placeholder="" [(ngModel)]="medName" />
+        </fieldset>
+        <fieldset class="form-group" *ngIf="selectedType != 7">
+          <label>Medicine Name</label>
+          <select class="form-control" [(ngModel)]="medName">
+            <option
+              *ngFor="let med of medicines[selectedType].list; let i = index"
+              [value]="med.name"
+              >{{ med.name }}</option
+            >
+          </select>
+        </fieldset>
+        <fieldset class="form-group">
+          <label>Quantity</label>
+          <input
+            class="form-control"
+            placeholder=""
+            type="number"
+            [(ngModel)]="quantity"
+          />
+        </fieldset>
+        <fieldset class="form-group">
+          <label>Buffer</label>
+          <input
+            class="form-control"
+            placeholder=""
+            type="number"
+            [(ngModel)]="buffer"
+          />
+        </fieldset>
+        <!-- <fieldset class="form-group">
+          <label>Expiration Date</label>
+          <div class="form-group">
+            <div class="input-group datepicker-input">
+              <input
+                class="form-control"
+                placeholder="Select Date"
+                name="dp"
+                [(ngModel)]="dateExpire"
+                ngbDatepicker
+                #d="ngbDatepicker"
+                readonly
+              />
+              <button
+                class="input-group-addon"
+                (click)="d.toggle()"
+                type="button"
+              >
+                
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+        </fieldset> -->
+        <p *ngFor="let alert of alerts">
+          <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
+            alert.message
+          }}</ngb-alert>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="addMedicine()">
+          Add
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Restock modal -->
+  <div>
+    <ng-template #content2 let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h5 class="modal-title">Restock Medicine</h5>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="c('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <fieldset class="form-group">
+          <label>Restock type</label>
+          <select [(ngModel)]="restockType" class="form-control">
+            <option value="qty">Stock</option>
+            <option value="buffer">Buffer</option>
+          </select>
+        </fieldset>
+        <fieldset class="form-group">
+          <label>Quantity ({{ operation }})</label>
+          <input
+            class="form-control"
+            placeholder=""
+            type="number"
+            [(ngModel)]="restock"
+          />
+        </fieldset>
+        <p *ngFor="let alert of alerts">
+          <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
+            alert.message
+          }}</ngb-alert>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="restockMedicine()"
+        >
+          {{ operation == '+' ? 'Done' : 'Dispense' }}
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Update Medicine modal -->
+
+  <div>
+    <ng-template #content3 let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Medicine</h5>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="c('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <fieldset class="form-group">
+          <label>Medicine Type</label>
+          <select class="form-control" [(ngModel)]="selectedType">
+            <option *ngFor="let type of medicines; let i = index" [value]="i">{{
+              type.category
+            }}</option>
+          </select>
+        </fieldset>
+        <fieldset class="form-group" *ngIf="selectedType == 7">
+          <label>Medicine Name</label>
+          <input
+            class="form-control"
+            placeholder=""
+            [(ngModel)]="medToUpdate.medicine_name"
+          />
+        </fieldset>
+        <fieldset class="form-group" *ngIf="selectedType != 7">
+          <label>Medicine Name</label>
+          <select class="form-control" [(ngModel)]="medToUpdate.medicine_name">
+            <option
+              *ngFor="let med of medicines[selectedType].list; let i = index"
+              [value]="med.name"
+              >{{ med.name }}</option
+            >
+          </select>
+        </fieldset>
+        <fieldset class="form-group">
+          <label>Quantity</label>
+          <input
+            class="form-control"
+            placeholder=""
+            type="number"
+            [(ngModel)]="medToUpdate.qty"
+          />
+        </fieldset>
+        <!-- <fieldset class="form-group">
+          <label>Expiration Date</label>
+          <div class="form-group">
+            <div class="input-group datepicker-input">
+              <input
+                class="form-control"
+                placeholder="Select Date"
+                name="dp"
+                [(ngModel)]="dateExpire"
+                ngbDatepicker
+                #d="ngbDatepicker"
+                readonly
+              />
+              <button
+                class="input-group-addon"
+                (click)="d.toggle()"
+                type="button"
+              >
+                
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+        </fieldset> -->
+        <p *ngFor="let alert of alerts">
+          <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
+            alert.message
+          }}</ngb-alert>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="updateMedicine(medToUpdate)"
+        >
+          Update
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

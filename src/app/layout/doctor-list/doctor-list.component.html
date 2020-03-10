@@ -1,0 +1,200 @@
+<div class="top">
+  <hr />
+  <h2 class="text-center">
+    DOCTOR LIST
+    <button
+      class="btn btn-light float-right"
+      (click)="open(content)"
+      *ngIf="userRole == 0"
+    >
+      <i class="fa fa-plus mr-2" aria-hidden="true" *ngIf="userRole == 0"></i>
+      Add
+    </button>
+  </h2>
+  <hr />
+</div>
+<div class="card mb-3">
+  <table class="table table-striped">
+    <thead class="bg-primary-color text-light">
+      <tr>
+        <th></th>
+        <th class="text-center">Name</th>
+        <th class="text-center">Contact Number</th>
+        <th class="text-center">Schedules</th>
+        <th class="text-center">Specialization</th>
+        <th class="text-center">Date Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">
+          <i class="fa fa-filter" aria-hidden="true"></i>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="text"
+                class="border-0 px-2 py-1 w-100"
+                [(ngModel)]="doc_name"
+                (keyup)="filter($event.target.value)"
+              />
+            </div>
+            <button class="btn btn-light" (click)="sort('doc_name')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td class="text-center">
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="text"
+                class="border-0 px-2 py-1 w-100"
+                [(ngModel)]="age"
+                (keyup)="filter($event.target.value)"
+              />
+            </div>
+            <button class="btn btn-light" (click)="sort('age')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="text"
+                class="border-0 px-2 py-1 w-100"
+                [(ngModel)]="schedules"
+                (keyup)="filter($event.target.value)"
+              />
+            </div>
+            <button class="btn btn-light" (click)="sort('schedules')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="text"
+                class="border-0 px-2 py-1 w-100"
+                [(ngModel)]="specialization"
+                (keyup)="filter($event.target.value)"
+              />
+            </div>
+            <button class="btn btn-light" (click)="sort('specialization')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="text"
+                class="border-0 px-2 py-1 w-100"
+                [(ngModel)]="date_aff"
+                (keyup)="filter($event.target.value)"
+              />
+            </div>
+            <button
+              class="btn btn-light"
+              (click)="sort('date_stay_in_orphanage')"
+            >
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="doctorList.length == 0">
+        <td class="text-center p-3" colspan="13">No Record</td>
+      </tr>
+      <tr *ngFor="let doctor of doctorList">
+        <th></th>
+        <th scope="row">{{ doctor.doc_name }}</th>
+        <td class="text-center">{{ doctor.contact_no }}</td>
+        <td class="text-center">{{ doctor.schedules }}</td>
+        <td class="text-center">{{ doctor.specialization }}</td>
+        <td class="text-center">{{ doctor.updated_at }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- add modal -->
+<div>
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Add Doctor</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <fieldset class="form-group">
+        <label>Doctor Name</label>
+        <input
+          class="form-control"
+          placeholder=""
+          type="text"
+          [(ngModel)]="doctor.doc_name"
+        />
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Number</label>
+        <input
+          class="form-control"
+          placeholder=""
+          type="text"
+          [(ngModel)]="doctor.contact_no"
+        />
+      </fieldset>
+
+      <fieldset class="form-group">
+        <label>Schedule</label>
+        <input
+          class="form-control"
+          placeholder=""
+          type="text"
+          [(ngModel)]="doctor.schedules"
+        />
+      </fieldset>
+
+      <fieldset class="form-group">
+        <label>Specialization</label>
+        <input
+          class="form-control"
+          placeholder=""
+          type="text"
+          [(ngModel)]="doctor.specialization"
+        />
+      </fieldset>
+
+      <p *ngFor="let alert of alerts">
+        <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
+          alert.message
+        }}</ngb-alert>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="c('Close click')"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" (click)="addDoctor()">
+        Add
+      </button>
+    </div>
+  </ng-template>
+</div>

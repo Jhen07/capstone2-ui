@@ -1,0 +1,248 @@
+<div class="top">
+  <hr />
+  <h2 class="text-center">
+    ELDERS
+    <button
+      class="btn btn-light float-right"
+      (click)="router.navigate(['/elders/add'])"
+    >
+      <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
+    </button>
+  </h2>
+  <hr />
+</div>
+<div class="card mb-3">
+  <table class="table table-striped">
+    <thead class="bg-primary-color text-light">
+      <tr>
+        <th></th>
+        <th class="text-center">Full Name</th>
+        <th class="text-center">Age</th>
+        <th class="text-center">Bed No.</th>
+        <th class="text-center">Date Affiliated</th>
+        <th class="text-center">
+          <button class="btn bg-transparent" (click)="open(setting)">
+            <i class="fa fa-cog ml-3" aria-hidden="true"></i>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">
+          <i class="fa fa-filter" aria-hidden="true"></i>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="text"
+                class="border-0 px-2 py-1 w-100"
+                [(ngModel)]="name"
+                (keyup)="filter($event.target.value)"
+              />
+            </div>
+            <button class="btn btn-light" (click)="sort('first_name')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="text"
+                class="border-0 px-2 py-1 w-100"
+                [(ngModel)]="age"
+                (keyup)="filter($event.target.value)"
+              />
+            </div>
+            <button class="btn btn-light" (click)="sort('age')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="text"
+                class="border-0 px-2 py-1 w-100"
+                [(ngModel)]="bed_no"
+                (keyup)="filter($event.target.value)"
+              />
+            </div>
+            <button class="btn btn-light" (click)="sort('bed_no')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="text"
+                class="border-0 px-2 py-1 w-100"
+                [(ngModel)]="date_aff"
+                (keyup)="filter($event.target.value)"
+              />
+            </div>
+            <button
+              class="btn btn-light"
+              (click)="sort('date_stay_in_orphanage')"
+            >
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td class="text-center">
+          <button class="btn btn-info mr-1" (click)="exportPdf()">
+            Export as PDF
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="elderList.length == 0">
+        <td colspan="13" class="text-center">No Record</td>
+      </tr>
+      <tr *ngFor="let elder of elderList">
+        <td></td>
+        <td>
+          {{ elder.first_name }} {{ elder.last_name }}
+        </td>
+        <td class="text-center">{{ elder.age }}</td>
+        <td class="text-center">{{ elder.bed_no }}</td>
+        <td class="text-center">
+          {{ elder.date_stay_in_orphanage }}
+        </td>
+        <td class="text-center">
+          <button
+            class="btn bg-transparent"
+            (click)="router.navigate(['/elders/details', { id: elder.id }])"
+          >
+            <i class="fa fa-user " aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Settings -->
+<div>
+  <ng-template #setting let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Settings</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <fieldset class="form-group">
+        <div class="d-flex justify-content-between ">
+          <div class="px-1 border-right">
+            <ul style="list-style: none;">
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Name</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Nickname</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Age</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Birthday</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Birth Place</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Sabbath</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Provincial Address</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Civil Status</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Gender</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Date Affiliated</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Bed No.</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Nationality</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Provincial Address</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Contact Person</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Contact Number</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Relationship</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Provincial Address</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Phil Health ID</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>SSS ID</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Senior Citizen ID</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Pagibig ID</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Status</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary">
+        Done
+      </button>
+    </div>
+  </ng-template>
+</div>

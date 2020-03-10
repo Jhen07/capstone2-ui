@@ -1,0 +1,37 @@
+<div class="help-main" [@routerTransition]>
+  <div class="d-flex justify-content-end h-100">
+    <div class="help-form bg-transparent">
+      <div class="bg-white p-3 rounded">
+        <h1 class="text-center mb-4">ADD-CHE</h1>
+        <p class="text-center mb-5">Recover your account</p>
+
+        <div class="form-content">
+          <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            Please enter your email:
+          </p>
+          <div class="form-group mx-5">
+            <input
+              type="email"
+              class="form-control input-underline input-lg"
+              [(ngModel)]="email"
+            />
+          </div>
+        </div>
+        <div class="form-buttons text-center">
+          <a [routerLink]="['/login']">
+            <button class="btn btn-secondary text-light px-5">
+              Cancel
+            </button></a
+          >
+          &nbsp;
+          <a (click)="sendHelp()">
+            <button class="btn bg-primary-color text-light px-5">
+              Sent
+            </button></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

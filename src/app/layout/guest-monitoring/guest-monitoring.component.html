@@ -1,0 +1,457 @@
+<div class="top">
+  <hr />
+  <h2 class="text-center">
+    GUEST MONITORING
+    <button class="btn btn-info float-right">
+      Export as PDF
+    </button>
+    <button class="btn btn-light float-right mx-2" (click)="open(content)">
+      <i class="fa fa-plus mx-2" aria-hidden="true"></i> Add
+    </button>
+  </h2>
+  <hr />
+</div>
+<table class="table table-striped">
+  <thead class="bg-primary-color text-light">
+    <tr>
+      <th class="text-center"><input type="checkbox" /></th>
+      <th class="text-center">#</th>
+      <th class="text-center">Guest Name</th>
+      <th class="text-center">Contact #</th>
+      <th class="text-center">Address</th>
+      <th class="text-center">Elders Visited</th>
+      <th class="text-center">Relationship</th>
+      <th class="text-center">Time-in</th>
+      <th class="text-center">Time-out</th>
+      <th class="text-center">Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <i class="fa fa-filter" aria-hidden="true"></i>
+      </td>
+      <td></td>
+      <td>
+        <div class="d-flex border border-secondary rounded">
+          <div class="flex-1">
+            <input
+              type="search"
+              class="border-0 w-100 rounded px-2 py-1"
+              [(ngModel)]="name"
+              (keyup)="filter()"
+            />
+          </div>
+          <button class="btn btn-light" (click)="sort('guest_name')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex border border-secondary rounded">
+          <div class="flex-1">
+            <input
+              type="search"
+              class="border-0 w-100 rounded px-2 py-1"
+              [(ngModel)]="contact"
+              (keyup)="filter()"
+            />
+          </div>
+          <button class="btn btn-light" (click)="sort('contact_no')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex border border-secondary rounded">
+          <div class="flex-1">
+            <input
+              type="search"
+              class="border-0 w-100 rounded px-2 py-1"
+              [(ngModel)]="address"
+              (keyup)="filter()"
+            />
+          </div>
+          <button class="btn btn-light" (click)="sort('address')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex border border-secondary rounded">
+          <div class="flex-1">
+            <input
+              type="search"
+              class="border-0 w-100 rounded px-2 py-1"
+              (keyup)="filter()"
+              [(ngModel)]="visited"
+            />
+          </div>
+          <button class="btn btn-light" (click)="sort('elder_name')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex border border-secondary rounded">
+          <div class="flex-1">
+            <input
+              type="search"
+              class="border-0 w-100 rounded px-2 py-1"
+              (keyup)="filter()"
+              [(ngModel)]="relationship"
+            />
+          </div>
+          <button class="btn btn-light" (click)="sort('relationship')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex border border-secondary rounded">
+          <div class="flex-1">
+            <input
+              type="search"
+              class="border-0 w-100 rounded px-2 py-1"
+              (keyup)="filter()"
+              [(ngModel)]="in"
+              disabled
+            />
+          </div>
+          <button class="btn btn-light" (click)="sort('time_in')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex border border-secondary rounded">
+          <div class="flex-1">
+            <input
+              type="search"
+              class="border-0 w-100 rounded px-2 py-1"
+              (keyup)="filter()"
+              [(ngModel)]="out"
+              disabled
+            />
+          </div>
+          <button class="btn btn-light" (click)="sort('time_out')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex border border-secondary rounded">
+          <div class="flex-1">
+            <input
+              type="search"
+              class="border-0 w-100 rounded px-2 py-1"
+              (keyup)="filter()"
+              [(ngModel)]="date"
+            />
+          </div>
+          <button class="btn btn-light" (click)="sort('created_at')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+      <td></td>
+    </tr>
+    <tr *ngFor="let guest of guestList; let i = index">
+      <th><input type="checkbox" /></th>
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ guest.guest_name }}</td>
+      <td>{{ guest.contact_no }}</td>
+      <td>{{ guest.address }}</td>
+      <td>{{ guest.elder_name }}</td>
+      <td>{{ guest.relationship_description }}</td>
+      <td>{{ formatTime(guest.time_in) | date: 'hh:mm a' }}</td>
+      <!-- auto time-in na sya one na nagfillup ng form -->
+      <td *ngIf="guest.time_out">
+        {{ formatTime(guest.time_out) | date: 'hh:mm a' }}
+      </td>
+      <td *ngIf="!guest.time_out" (click)="timeOut(i)">
+        <button class="btn btn-primary">Time out</button>
+      </td>
+      <!-- button na lng yung time-out, di sya required sa form na m -->
+      <td>{{ formatTime(guest.created_at) | date: 'yyyy-MM-dd' }}</td>
+      <td>
+        <button
+          class="btn bg-transparent"
+          (click)="setSelectedGuest(guest, content2)"
+        >
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
+      </td>
+    </tr>
+
+    <tr *ngIf="guestList.length == 0">
+      <td class="text-center p-3" colspan="13">No Record</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- add modal -->
+<div>
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Add Guest</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- <fieldset class="form-group">
+        <div class= rounded"d-flex border border-secondary justify-content-center ">
+          <div class="text-center px-3 border-right">
+         border-0    Time In
+        keyup="filter()"    <n(gb-ti)mepicker
+              [(ngModel)]="time_in"
+              [meridian]="true"
+            ></ngb-timepicker>
+          </div>
+          <div class="text-center px-3">
+            Time out
+            <ngb-timepicker
+              [(ngModel)]="time_out"
+              [meridian]="true"
+            ></ngb-timepicker>
+          </div>
+        </div>
+      </fieldset>
+      <hr /> -->
+      <fieldset class="form-group">
+        <label>Name</label>
+        <input
+          class="form-control"
+          placeholder=""
+          [(ngModel)]="guest.guest_name"
+        />
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Contact Number</label>
+        <input
+          class="form-control"
+          placeholder=""
+          type="text"
+          [(ngModel)]="guest.contact_no"
+        />
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Address</label>
+        <input
+          class="form-control"
+          placeholder=""
+          [(ngModel)]="guest.address"
+        />
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Elder Visited</label>
+        <div class="form-group">
+          <label for=""></label>
+          <select
+            class="custom-select"
+            name=""
+            id=""
+            [(ngModel)]="selectedElder"
+          >
+            <option *ngFor="let elder of elderList" [value]="elder.id"
+              >{{ elder.first_name }} {{ elder.last_name }}</option
+            >
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <label>Relationship</label>
+        <div class="form-group">
+          <label for=""></label>
+          <select
+            class="custom-select"
+            name=""
+            id=""
+            [(ngModel)]="guest.relationship_description"
+          >
+            <option value="Daughter">Daughter</option>
+            <option value="Son">Son</option>
+            <option value="Siblings">Siblings</option>
+            <option value="Relatives">Relatives</option>
+            <option value="Friends">Friends</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <p *ngFor="let alert of alerts">
+        <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
+          alert.message
+        }}</ngb-alert>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="c('Close click')"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" (click)="addGuest()">
+        Add
+      </button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- update modal -->
+<div>
+  <ng-template #content2 let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Add Guest</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- <fieldset class="form-group">
+        <div class= rounded"d-flex border border-secondary justify-content-between ">
+          <div class="text-center px-3 border-right">
+         border-0    Time In
+        keyup="filter()"    <n(gb-ti)mepicker
+              [(ngModel)]="time_in2"
+              [meridian]="true"
+            ></ngb-timepicker>
+          </div>
+          <div class="text-center px-3">
+            Time out
+            <ngb-timepicker
+              [(ngModel)]="time_out2"
+              [meridian]="true"
+            ></ngb-timepicker>
+          </div>
+        </div>
+      </fieldset>
+      <hr /> -->
+      <fieldset class="form-group">
+        <label>Name</label>
+        <input
+          class="form-control"
+          placeholder=""
+          [(ngModel)]="selectedGuest.guest_name"
+        />
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Contact Number</label>
+        <input
+          class="form-control"
+          placeholder=""
+          type="text"
+          [(ngModel)]="selectedGuest.contact_no"
+        />
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Address</label>
+        <input
+          class="form-control"
+          placeholder=""
+          [(ngModel)]="selectedGuest.address"
+        />
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Elder Visited</label>
+        <div class="form-group">
+          <label for=""></label>
+          <select
+            class="custom-select"
+            name=""
+            id=""
+            [(ngModel)]="selectedElder"
+          >
+            <option *ngFor="let elder of elderList" [value]="elder.id"
+              >{{ elder.first_name }} {{ elder.last_name }}</option
+            >
+          </select>
+        </div>
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Relationship</label>
+        <div class="form-group">
+          <label for=""></label>
+          <select
+            class="custom-select"
+            name=""
+            id=""
+            [(ngModel)]="selectedGuest.relationship_description"
+          >
+            <option value="Daughter">Daughter</option>
+            <option value="Son">Son</option>
+            <option value="Siblings">Siblings</option>
+            <option value="Relatives">Relatives</option>
+            <option value="Friends">Friends</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <p *ngFor="let alert of alerts">
+        <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
+          alert.message
+        }}</ngb-alert>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="c('Close click')"
+      >
+        Cancel
+      </button>
+      <button type="button" class="btn btn-primary" (click)="updateGuest()">
+        Update
+      </button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Delete modal -->
+<div>
+  <ng-template #content3 let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Delete Record</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete this record?</p>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="c('Close click')"
+      >
+        Cancel
+      </button>
+      <button type="button" class="btn btn-primary" (click)="deleteGuest()">
+        Delete
+      </button>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,402 @@
+<div class="top">
+  <h2 class="">
+    <small>Add Staff</small>
+  </h2>
+  <div class="float-right">
+    <button
+      class="btn btn-secondary large border px-5 mr-2"
+      (click)="router.navigate(['/staff'])"
+    >
+      Cancel
+    </button>
+    <button class="btn btn-primary large border px-5" (click)="addStaff()">
+      Save
+    </button>
+  </div>
+</div>
+<div class="mt-3">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active">Personal Data</a>
+    </li>
+  </ul>
+</div>
+<div class="border border-top-0 p-2">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card p-4 mb-3">
+        <div>
+          <button class="btn btn-transparent float-right large border">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+          <div class="position-relative">
+            <img [src]="previewUrl" alt="" class="elder-img" />
+            <div *ngIf="fileUploadProgress">
+              Upload progress: {{ fileUploadProgress }}
+            </div>
+          </div>
+          <div class="elder-name">
+            <div class="form-group row">
+              <div class="col-sm-3"></div>
+
+              <input
+                type="file"
+                class="form-control col-sm-6"
+                name="image"
+                [(ngModel)]="file"
+                (change)="fileProgress($event)"
+              />
+              <div class="col-sm-3"></div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label"></label>
+              <div class="col-sm-6">
+                <select class="form-control " [(ngModel)]="staff.role">
+                  <option class="text-center" value="2" name="Staff">Staff</option>
+                  <option class="text-center" value="1" name="Medical Staff">Medical Staff</option>
+                  <option class="text-center" value="0" name="Admin">Admin</option>
+                </select>
+              </div>
+              <div class="col-sm-3"></div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Nickname</label>
+          <div class="col-sm-7">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.nick_name"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Gender</label>
+          <div class="col-sm-7">
+            <select class="form-control" [(ngModel)]="staff.gender">
+              <option value="1">Male</option>
+              <option value="2">Female</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Address</label>
+          <div class="col-sm-7">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.address"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Date Hired</label>
+          <div class="col-sm-7">
+            <div class="input-group datepicker-input">
+              <input
+                class="form-control"
+                placeholder="select"
+                name="dp"
+                [(ngModel)]="dateHired"
+                ngbDatepicker
+                #d1="ngbDatepicker"
+                readonly
+              />
+              <button
+                class="input-group-addon"
+                (click)="d1.toggle()"
+                type="button"
+              >
+                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card p-4 mb-3">
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Email</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" [(ngModel)]="staff.email" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Password</label>
+          <div class="col-sm-7">
+            <input
+              type="password"
+              class="form-control"
+              [(ngModel)]="staff.password"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Confirm Password</label>
+          <div class="col-sm-7">
+            <input type="password" class="form-control" [(ngModel)]="confirm" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8 right-div">
+      <div class="card p-4 mb-3">
+        <h5 class="pb-2 color-dark-primary">
+          Personal Information
+          <button class="btn btn-transparent float-right large border">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+        </h5>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">First Name</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.first_name"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Middle Name</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.middle_name"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Surmame</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.last_name"
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Age</label>
+          <div class="col-sm-9">
+            <input type="number" class="form-control" [(ngModel)]="staff.age" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Birthdate</label>
+          <div class="col-sm-9">
+            <div class="input-group datepicker-input">
+              <input
+                class="form-control"
+                placeholder="select"
+                name="dp"
+                [(ngModel)]="bDate"
+                ngbDatepicker
+                #d2="ngbDatepicker"
+                readonly
+              />
+              <button
+                class="input-group-addon"
+                (click)="d2.toggle()"
+                type="button"
+              >
+                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Birthplace</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.birth_place"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Sabbath</label>
+          <div class="col-sm-9">
+            <div class="input-group datepicker-input">
+              <input
+                class="form-control"
+                placeholder="select"
+                name="dp"
+                [(ngModel)]="sabbathDate"
+                ngbDatepicker
+                #d3="ngbDatepicker"
+                readonly
+              />
+              <button
+                class="input-group-addon"
+                (click)="d3.toggle()"
+                type="button"
+              >
+                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label"
+            >Provincial Address</label
+          >
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.provincial_address"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Civil Status</label>
+          <div class="col-sm-9">
+            <select class="form-control" [(ngModel)]="staff.civil_status">
+              <option value="married">Married</option>
+              <option value="widowed">Widowed</option>
+              <option value="separated">Separated</option>
+              <option value="divorced">Divorced</option>
+              <option value="single">Single</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Nationality</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.nationality"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card p-4 mb-3">
+        <h5 class="pb-2 color-dark-primary">
+          Employment History
+          <button class="btn btn-transparent float-right large border">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+        </h5>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Company</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="ehistory.company"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Position</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="ehistory.position"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Duties</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="ehistory.duties"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Duration</label>
+          <div class="col-sm-9 row">
+            <div class="col-sm-6">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="ehistory.date_from"
+                placeholder="Date Started: mm-dd-yyyy"
+              />
+            </div>
+            <div class="col-sm-6">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="ehistory.date_to"
+                placeholder="Date Finished: mm-dd-yyyy"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">References</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="ehistory.reference"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card p-4 mb-3">
+        <h5 class="pb-2 color-dark-primary">
+          Other Information
+          <button class="btn btn-transparent float-right large border">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+        </h5>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Phil Health</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.oi_phil_health"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">UMID</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.oi_umid"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">SSS</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.oi_sss"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Pagibig</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.oi_pagibig"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

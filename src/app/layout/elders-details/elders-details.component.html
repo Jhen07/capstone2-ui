@@ -1,0 +1,946 @@
+<div class="top">
+  <h2 class="">
+    <small>Elders</small>
+  </h2>
+</div>
+<div>
+  <ul class="nav nav-tabs">
+    <li class="nav-item" (click)="tab = 1">
+      <a class="nav-link" [ngClass]="{ active: tab == 1 }">General</a>
+    </li>
+    <!-- <li class="nav-item" (click)="tab = 2">
+      <a class="nav-link" [ngClass]="{ active: tab == 2 }">
+        Taken Medicine
+      </a>
+    </li> -->
+    <li class="nav-item" (click)="tab = 3">
+      <a class="nav-link" [ngClass]="{ active: tab == 3 }">
+        Medical History
+      </a>
+    </li>
+  </ul>
+</div>
+<div class="border border-top-0 p-2">
+  <div class="row" [ngSwitch]="tab">
+    <div class="col-md-4">
+      <div class="card p-4 mb-3" *ngIf="updating1">
+        <div>
+          <button
+            class="btn btn-primary float-right large border"
+            (click)="save()"
+          >
+            Save
+          </button>
+          <div class="position-relative">
+            <img
+              [src]="sanitizer.bypassSecurityTrustResourceUrl(elder.image)"
+              alt=""
+              class="elder-img"
+              *ngIf="!fileData"
+            />
+            <img [src]="previewUrl" alt="" class="elder-img" *ngIf="fileData" />
+          </div>
+          <div class="elder-name">
+            <div class="form-group row">
+              <div class="col-sm-3"></div>
+
+              <input
+                type="file"
+                class="form-control col-sm-6"
+                name="image"
+                [(ngModel)]="file"
+                (change)="fileProgress($event)"
+              />
+              <div class="col-sm-3"></div>
+            </div>
+            <p class="text-center small m-0">
+              Bed No.
+            </p>
+            <input
+              class="form-control"
+              type="number"
+              [(ngModel)]="elder.bed_no"
+            />
+          </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Nickname</label>
+          <div class="col-sm-7">
+            <!-- <label for="" class="col-sm-3 col-form-label">First Name</label> -->
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="elder.nickname"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Gender</label>
+          <div class="col-sm-7">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="elder.gender"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Age</label>
+          <div class="col-sm-7">
+            <input type="number" class="form-control" [(ngModel)]="elder.age" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Date Affiliated</label>
+          <div class="col-sm-7">
+            <div class="input-group datepicker-input">
+              <input
+                class="form-control"
+                placeholder="select"
+                name="dp32"
+                [(ngModel)]="dateIn"
+                ngbDatepicker
+                #d1="ngbDatepicker"
+                readonly
+              />
+              <button
+                class="input-group-addon"
+                (click)="d1.toggle()"
+                type="button"
+              >
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card p-4 mb-3" *ngIf="!updating1">
+        <div>
+          <button
+            class="btn btn-transparent float-right large border"
+            (click)="updating1 = !updating1"
+          >
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+          <div class="position-relative">
+            <img
+              [src]="sanitizer.bypassSecurityTrustResourceUrl(elder.image)"
+              alt=""
+              class="elder-img"
+              *ngIf="!fileData"
+            />
+          </div>
+          <div class="elder-name">
+            <p class="text-center color-dark-primary m-0">
+              {{ elder.first_name }} {{ elder.last_name }}
+            </p>
+            <p class="text-center small m-0">Bed no.{{ elder.bed_no }}</p>
+          </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Nickname</label>
+          <div class="col-sm-7">
+            <label for="" class="">{{ elder.nickname }}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Gender</label>
+          <div class="col-sm-7">
+            <label for="" class="">{{ elder.gender }}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Age</label>
+          <div class="col-sm-7">
+            <label for="" class="">{{ elder.age }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Date Affiliated</label>
+          <div class="col-sm-7">
+            <label for="" class="">{{ elder.date_stay_in_orphanage }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8 right-div" *ngSwitchCase="1">
+      <div *ngIf="updating2">
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Personal Information
+            <button
+              class="btn btn-primary float-right large border"
+              (click)="save()"
+            >
+              Save
+            </button>
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">First Name</label>
+            <div class="col-sm-9">
+              <!-- <label for="" class="col-sm-3 col-form-label">First Name</label> -->
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.first_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Middle Name</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.middle_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.last_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Birthdate</label>
+            <div class="col-sm-9">
+              <div class="input-group datepicker-input">
+                <input
+                  class="form-control"
+                  placeholder="select"
+                  name="dp32"
+                  [(ngModel)]="bDate"
+                  ngbDatepicker
+                  #d2="ngbDatepicker"
+                  readonly
+                />
+                <button
+                  class="input-group-addon"
+                  (click)="d2.toggle()"
+                  type="button"
+                >
+                  <span class="fa fa-calendar"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Birthplace</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.birth_place"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Sabbath</label>
+            <div class="col-sm-9">
+              <div class="input-group datepicker-input">
+                <input
+                  class="form-control"
+                  placeholder="select"
+                  name="dp32"
+                  [(ngModel)]="sabbathDate"
+                  ngbDatepicker
+                  #d3="ngbDatepicker"
+                  readonly
+                />
+                <button
+                  class="input-group-addon"
+                  (click)="d3.toggle()"
+                  type="button"
+                >
+                  <span class="fa fa-calendar"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Provincial Address</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.provincial_address"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Civil Status</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.civil_status"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Nationality</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.nationality"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Contact Person (Relatives)
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">First Name</label>
+            <div class="col-sm-9">
+              <!-- <label for="" class="col-sm-3 col-form-label">First Name</label> -->
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_first_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Middle Name</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_middle_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_surname"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Relationship</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_relationship"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Contact Number</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_contact_no"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Provincial Address</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_provincial_add"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Work</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_work"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Other Information
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Phil Health</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.oi_phil_health"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Senior Citizen ID No.</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.oi_senior_citizen_id"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">SSS ID</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.oi_sss_id"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Pagibig</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.oi_pagibig"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!updating2">
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Personal Information
+            <button
+              class="btn btn-transparent float-right large border"
+              (click)="updating2 = !updating2"
+            >
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </button>
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">First Name</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.first_name
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Middle Name</label>
+            <div class="col-sm-9">
+              <label for="" class=" col-form-label">{{
+                elder.middle_name
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <div class="col-sm-9">
+              <label for="" class=" col-form-label">{{
+                elder.last_name
+              }}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Birthdate</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.birth_date
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Birthplace</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.birth_place
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Sabbath</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{ elder.sabbath }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Provincial Address</label
+            >
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.provincial_address
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Civil Status</label>
+            <div class="col-sm-9">
+              <label for="" class=" col-form-label">{{
+                elder.civil_status
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Nationality</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.nationality
+              }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Contact Person (Relatives)
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">First Name</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.cp_first_name
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Middle Name</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.cp_middle_name
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.cp_surname
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Relationship</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.cp_relationship
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Contact Number</label>
+            <div class="col-sm-9">
+              {{ elder.cp_contact_no }}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Provincial Address</label
+            >
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.cp_provincial_add
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Work</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{ elder.cp_work }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Other Information
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Phil Health</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.oi_phil_health
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Senior Citizen ID No.</label
+            >
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.oi_senior_citizen_id
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">SSS ID</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{ elder.oi_sss_id }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Pagibig</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                elder.oi_pagibig
+              }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8 right-div" *ngSwitchCase="2">
+      <div class="card-header bg-transparent border pt-3 color-dark-primary">
+        Taken Medicines
+        <button class="btn btn-light float-right">
+          <i class="fa fa-sort" aria-hidden="true"></i> Sort
+        </button>
+        <button class="btn btn-light float-right">
+          <i class="fa fa-filter" aria-hidden="true"></i> Filter
+        </button>
+      </div>
+      <div class="card w-100 mb-3">
+        <table class="table table-striped">
+          <thead class="bg-primary-color text-light">
+            <tr>
+              <th><input type="checkbox" /></th>
+              <th>Name</th>
+              <th>Medicine</th>
+              <th>Quantity</th>
+              <th>Time</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Assigned Staff</th>
+              <th><i class="fa fa-cog ml-3" aria-hidden="true"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let med of takenMeds"
+              [routerLink]="['/elders/details']"
+              routerLinkActive="router-link-active"
+            >
+              <th><input type="checkbox" /></th>
+              <th scope="row">Lorem</th>
+              <td>Ipsum</td>
+              <td>1</td>
+              <td>10:30</td>
+              <td>01-27-2020</td>
+              <td>Done</td>
+              <td>Gina Buenaventura</td>
+              <td>
+                <button class="btn bg-transparent">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="takenMeds.length == 0 && !loading">
+              <td colspan="13" class="text-center">No Record</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Additional, Add button to add Present Illness and Past Illness -->
+    <div class="col-md-8 right-div" *ngSwitchCase="3">
+      <div class="card p-4 mb-3">
+        <h5 class="pb-2 color-dark-primary">
+          Medical History
+          <button
+            class="btn btn-primary float-right large border"
+            (click)="open(content)"
+          >
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
+        </h5>
+
+        <div>
+          <ul class="nav nav-tabs mb-2">
+            <li class="nav-item" (click)="illnessTab = 1">
+              <a class="nav-link" [ngClass]="{ active: illnessTab == 1 }"
+                >Present</a
+              >
+            </li>
+            <li class="nav-item" (click)="illnessTab = 2">
+              <a class="nav-link" [ngClass]="{ active: illnessTab == 2 }">
+                Past
+              </a>
+            </li>
+          </ul>
+          <div [ngSwitch]="illnessTab">
+            <!-- present illness -->
+            <div *ngSwitchCase="1" class="mb-2">
+              <h3 *ngIf="presentIllness.length == 0" class="text-center mt-2">
+                No Record
+              </h3>
+              <div *ngFor="let present of presentIllness">
+                <div class="form-group row">
+                  <label for="" class="col-sm-3 col-form-label"
+                    >Present Illness</label
+                  >
+                  <div class="col-sm-9">
+                    <label for="" class="col-form-label">
+                      <b>{{ present.illness }}</b>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="" class="col-sm-3 col-form-label">Duration</label>
+                  <div class="col-sm-9 row">
+                    <div class="col-sm-6">
+                      <label for="" class="col-form-label">
+                        <b>{{
+                          convertDate(present.duration_from)
+                            | date: 'MM-dd-yyyy'
+                        }}</b>
+                      </label>
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="" class="col-form-label">
+                        <b>{{
+                          convertDate(present.duration_to) | date: 'MM-dd-yyyy'
+                        }}</b>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="" class="col-sm-3 col-form-label"
+                    >Assigned Doctor</label
+                  >
+                  <div class="col-sm-9">
+                    <label for="" class="col-form-label">
+                      <a [routerLink]="['/doctor-list']">{{
+                        present.assigned_doctor_name
+                      }}</a>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="" class="col-sm-3 col-form-label"
+                    >Information</label
+                  >
+                  <div class="col-sm-9">
+                    <label for="" class="col-form-label">
+                      <b>{{ present.description }}</b>
+                    </label>
+                  </div>
+                </div>
+                <hr />
+              </div>
+            </div>
+
+            <!-- past illness -->
+            <div *ngSwitchCase="2">
+              <h3 *ngIf="pastIllness.length == 0" class="text-center mt-2">
+                No Record
+              </h3>
+              <div *ngFor="let past of pastIllness">
+                <div class="form-group row">
+                  <label for="" class="col-sm-3 col-form-label"
+                    >Past Illness</label
+                  >
+                  <div class="col-sm-9">
+                    <label for="" class="col-form-label">
+                      <b>{{ past.illness }}</b>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="" class="col-sm-3 col-form-label">Duration</label>
+                  <div class="col-sm-9 row">
+                    <div class="col-sm-6">
+                      <label for="" class="col-form-label">
+                        <b>{{
+                          convertDate(past.duration_from) | date: 'MM-dd-yyyy'
+                        }}</b>
+                      </label>
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="" class="col-form-label">
+                        <b>{{
+                          convertDate(past.duration_to) | date: 'MM-dd-yyyy'
+                        }}</b>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="" class="col-sm-3 col-form-label"
+                    >Assigned Doctor</label
+                  >
+                  <div class="col-sm-9">
+                    <label for="" class="col-form-label">
+                      <b>{{ past.assigned_doctor_name }}</b>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="" class="col-sm-3 col-form-label"
+                    >Information</label
+                  >
+                  <div class="col-sm-9">
+                    <label for="" class="col-form-label">
+                      <b>{{ past.description }}</b>
+                    </label>
+                  </div>
+                </div>
+                <hr />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD MODAL -->
+  <div>
+    <ng-template #content let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">Add Medical History</h5>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="c('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Type</label>
+          <div class="col-sm-9">
+            <select class="form-control" [(ngModel)]="medHistory.type">
+              <option value="present">
+                Present
+              </option>
+              <option value="past">
+                Past
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Illness</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="medHistory.illness"
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Information</label>
+          <div class="col-sm-9">
+            <textarea
+              type="text"
+              class="form-control"
+              [(ngModel)]="medHistory.description"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Duration</label>
+          <div class="col-sm-9">
+            <div class="row p-0">
+              <div class="col-sm-6">
+                <div class="input-group datepicker-input">
+                  <input
+                    class="form-control"
+                    placeholder="From"
+                    name="dp"
+                    ngbDatepicker
+                    [(ngModel)]="medHistory.duration_from"
+                    #d1="ngbDatepicker"
+                    readonly
+                  />
+                  <button
+                    class="input-group-addon"
+                    (click)="d1.toggle()"
+                    type="button"
+                  >
+                    <span class="fa fa-calendar"></span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-sm-6 form-group">
+                <div class="input-group datepicker-input">
+                  <input
+                    class="form-control"
+                    placeholder="To"
+                    name="dp"
+                    [(ngModel)]="medHistory.duration_to"
+                    ngbDatepicker
+                    #d2="ngbDatepicker"
+                    readonly
+                  />
+                  <button
+                    class="input-group-addon"
+                    (click)="d2.toggle()"
+                    type="button"
+                  >
+                    <span class="fa fa-calendar"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-3 col-form-label">Assigned Doctor</label>
+          <div class="col-sm-9">
+            <select class="form-control" [(ngModel)]="selectedDoctor">
+              <option *ngFor="let doctor of doctorList" [value]="doctor">
+                {{ doctor.doc_name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="addMedHistory()">
+          Add
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

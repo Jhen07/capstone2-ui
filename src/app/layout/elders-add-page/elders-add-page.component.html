@@ -1,0 +1,374 @@
+<div class=" p-2">
+  <div class="mb-2 d-flex justify-content-between">
+    <h2 class="">
+      <small>Add Elders</small>
+    </h2>
+    <div>
+      <button
+        class="btn btn-secondary large border px-5 mr-2"
+        (click)="router.navigate(['/elders'])"
+      >
+        Cancel
+      </button>
+      <button class="btn btn-primary large border px-5" (click)="addElder()">
+        Save
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="card p-4 mb-3">
+        <div>
+          <div class="position-relative">
+            <img [src]="previewUrl" alt="" class="elder-img" />
+            <div *ngIf="fileUploadProgress">
+              Upload progress: {{ fileUploadProgress }}
+            </div>
+          </div>
+          <div class="elder-name">
+            <div class="form-group row">
+              <div class="col-sm-3"></div>
+
+              <input
+                type="file"
+                class="form-control col-sm-6"
+                name="image"
+                [(ngModel)]="file"
+                (change)="fileProgress($event)"
+              />
+              <div class="col-sm-3"></div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-5">
+                <label> Bed No.</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  type="number"
+                  class="form-control text-center"
+                  [(ngModel)]="elder.bed_no"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Nickname</label>
+          <div class="col-sm-7">
+            <!-- <label for="" class="col-sm-3 col-form-label">First Name</label> -->
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="elder.nickname"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Gender</label>
+          <div class="col-sm-7">
+            <select class="form-control" [(ngModel)]="elder.gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Age</label>
+          <div class="col-sm-7">
+            <input type="number" class="form-control" [(ngModel)]="elder.age" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Date Affiliated</label>
+          <div class="col-sm-7">
+            <div class="input-group datepicker-input">
+              <input
+                class="form-control"
+                placeholder="select"
+                name="dp"
+                [(ngModel)]="dateIn"
+                ngbDatepicker
+                #d2="ngbDatepicker"
+                readonly
+              />
+              <button
+                class="input-group-addon"
+                (click)="d2.toggle()"
+                type="button"
+              >
+                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7 right-div">
+      <div>
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Personal Information
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">First Name</label>
+            <div class="col-sm-9">
+              <!-- <label for="" class="col-sm-3 col-form-label">First Name</label> -->
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.first_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Middle Name</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.middle_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Surname</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.last_name"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Birthdate</label>
+            <div class="col-sm-9">
+              <div class="input-group datepicker-input">
+                <input
+                  class="form-control"
+                  placeholder="select"
+                  name="dp"
+                  [(ngModel)]="bDate"
+                  ngbDatepicker
+                  #d1="ngbDatepicker"
+                  readonly
+                  [minDate]="{ year: 1920, month: 1, day: 1 }"
+                  [maxDate]="{ year: 2020, month: 12, day: 31 }"
+                />
+                <button
+                  class="input-group-addon"
+                  (click)="d1.toggle()"
+                  type="button"
+                >
+                  <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                  <span class="fa fa-calendar"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Birthplace</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.birth_place"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Sabbath</label>
+
+            <div class="col-sm-9">
+              <div class="input-group datepicker-input">
+                <input
+                  class="form-control"
+                  placeholder="select"
+                  name="dp"
+                  [(ngModel)]="sabbath"
+                  ngbDatepicker
+                  #d3="ngbDatepicker"
+                  readonly
+                  [minDate]="{ year: 1920, month: 1, day: 1 }"
+                  [maxDate]="{ year: 2020, month: 12, day: 31 }"
+                />
+                <button
+                  class="input-group-addon"
+                  (click)="d3.toggle()"
+                  type="button"
+                >
+                  <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                  <span class="fa fa-calendar"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Provincial Address</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.provincial_address"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Civil Status</label>
+            <div class="col-sm-9">
+              <select class="form-control" [(ngModel)]="elder.civil_status">
+                <option value="married">Married</option>
+                <option value="widowed">Widowed</option>
+                <option value="separated">Separated</option>
+                <option value="divorced">Divorced</option>
+                <option value="single">Single</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Nationality</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.nationality"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Contact Person (Relatives)
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">First Name</label>
+            <div class="col-sm-9">
+              <!-- <label for="" class="col-sm-3 col-form-label">First Name</label> -->
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_first_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Middle Name</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_middle_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_surname"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Relationship</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_relationship"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Contact Number</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_contact_no"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Provincial Address</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_provincial_add"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Work</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.cp_work"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Other Information
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Phil Health</label>
+            <div class="col-sm-9">
+              <!-- <label for="" class="col-sm-3 col-form-label">First Name</label> -->
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.oi_phil_health"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Senior Citizen ID No.</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.oi_senior_citizen_id"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">SSS ID</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.oi_sss_id"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Pagibig</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="elder.oi_pagibig"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

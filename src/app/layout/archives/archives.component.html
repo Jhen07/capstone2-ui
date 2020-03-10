@@ -1,0 +1,422 @@
+<div class="top">
+  <h2 class="">
+    <small>Archived</small>
+  </h2>
+</div>
+<ul class="nav nav-tabs" *ngIf="userRole == 0">
+  <li class="nav-item" (click)="tab = 8">
+    <a class="nav-link" [ngClass]="{ active: tab == 8 }">
+      Accomplishments
+    </a>
+  </li>
+  <li class="nav-item" (click)="tab = 0">
+    <a class="nav-link" [ngClass]="{ active: tab == 0 }">Elders</a>
+  </li>
+  <li class="nav-item" (click)="tab = 1">
+    <a class="nav-link" [ngClass]="{ active: tab == 1 }">
+      Staff
+    </a>
+  </li>
+  <li class="nav-item" (click)="tab = 2">
+    <a class="nav-link" [ngClass]="{ active: tab == 2 }">
+      Guest
+    </a>
+  </li>
+  <li class="nav-item" (click)="tab = 4">
+    <a class="nav-link" [ngClass]="{ active: tab == 4 }">
+      Medicine Inventory
+    </a>
+  </li>
+  <li class="nav-item" (click)="tab = 5">
+    <a class="nav-link" [ngClass]="{ active: tab == 5 }">
+      Task Monitoring
+    </a>
+  </li>
+  <li class="nav-item" (click)="tab = 6">
+    <a class="nav-link" [ngClass]="{ active: tab == 6 }">
+      Hospital
+    </a>
+  </li>
+  <li class="nav-item" (click)="tab = 7">
+    <a class="nav-link" [ngClass]="{ active: tab == 7 }">
+      Doctors
+    </a>
+  </li>
+</ul>
+<ul class="nav nav-tabs" *ngIf="userRole != 0">
+  <li class="nav-item" (click)="tab = 8">
+    <a class="nav-link" [ngClass]="{ active: tab == 8 }">
+      Accomplishments
+    </a>
+  </li>
+</ul>
+<div [ngSwitch]="tab">
+  <!-- Elders -->
+  <div *ngSwitchCase="0" class="p-2">
+    <div class="card-header pt-3">
+      <input
+        type="search"
+        class="ml-3 rounded px-2 py-1"
+        placeholder="Search"
+      />
+
+      <button class="btn btn-light float-right">
+        <i class="fa fa-archive mr-2" aria-hidden="true"></i>
+        Unarchive
+      </button>
+    </div>
+    <div class="card mb-3">
+      <table class="table table-striped">
+        <thead class="bg-primary-color text-light">
+          <tr>
+            <th><input type="checkbox" /></th>
+            <th>Full Name</th>
+            <th>Age</th>
+            <th>Bed No.</th>
+            <th>Date Affiliated</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="elderList.length == 0">
+            <td colspan="13" class="text-center">No Record</td>
+          </tr>
+          <tr *ngFor="let elder of elderList">
+            <th><input type="checkbox" /></th>
+            <th scope="row">{{ elder.first_name }} {{ elder.last_name }}</th>
+            <td>{{ elder.age }}</td>
+            <td>{{ elder.bed_no }}</td>
+            <td>{{ elder.date_stay_in_orphanage }}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Staffs -->
+  <div *ngSwitchCase="1" class="p-2">
+    <div class="card-header pt-3">
+      <input
+        type="search"
+        class="ml-3 rounded px-2 py-1"
+        placeholder="Search"
+      />
+
+      <button class="btn btn-light float-right">
+        <i class="fa fa-archive mr-2" aria-hidden="true"></i>
+        Unarchive
+      </button>
+    </div>
+    <table class="table table-striped">
+      <thead class="bg-primary-color text-light">
+        <tr>
+          <th><input type="checkbox" /></th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Date Hired</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let staff of staffList">
+          <th><input type="checkbox" /></th>
+          <th scope="row">{{ staff.first_name }} {{ staff.last_name }}</th>
+          <td>{{ staff.email }}</td>
+          <td>{{ staff.date_hired }}</td>
+          <td
+            [ngClass]="{
+              'text-danger': staff.status == 0,
+              'text-success': staff.status == 1
+            }"
+          >
+            {{ staff.status == 0 ? 'Inactive' : 'Active' }}
+          </td>
+        </tr>
+        <tr *ngIf="staffList.length == 0">
+          <td colspan="13" class="text-center">No Record</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Guests -->
+  <div *ngSwitchCase="2" class="p-2">
+    <div class="card-header pt-3">
+      <input
+        type="search"
+        class="ml-3 rounded px-2 py-1"
+        placeholder="Search"
+      />
+      <button class="btn btn-light float-right">
+        <i class="fa fa-archive mr-2" aria-hidden="true"></i>
+        Unarchive
+      </button>
+    </div>
+    <table class="table table-striped">
+      <thead class="bg-primary-color text-light">
+        <tr>
+          <th><input type="checkbox" /></th>
+          <th>#</th>
+          <th>Guest Name</th>
+          <th>Contact #</th>
+          <th>Address</th>
+          <th>Elders Visited</th>
+          <th>Relationship</th>
+          <th>Time-in</th>
+          <th>Time-out</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let guest of guestList; let i = index">
+          <th><input type="checkbox" /></th>
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ guest.guest_name }}</td>
+          <td>{{ guest.contact_no }}</td>
+          <td>{{ guest.address }}</td>
+          <td>{{ guest.elder_name }}</td>
+          <td>{{ guest.relationship_description }}</td>
+          <td>{{ formatTime(guest.time_in) | date: 'hh:mm a' }}</td>
+          <td>{{ formatTime(guest.time_out) | date: 'hh:mm a' }}</td>
+          <td>{{ guest.created_at }}</td>
+        </tr>
+
+        <tr *ngIf="guestList.length == 0">
+          <td class="text-center" colspan="13">No Record</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Medicine Inventory -->
+  <div *ngSwitchCase="4" class="p-2">
+    <div class="card-header pt-3">
+      <input
+        type="search"
+        class="ml-3 rounded px-2 py-1"
+        placeholder="Search"
+      />
+      <button class="btn btn-light float-right">
+        <i class="fa fa-archive mr-2" aria-hidden="true"></i>
+        Unarchive
+      </button>
+    </div>
+    <table class="table table-striped">
+      <thead class="bg-primary-color text-light">
+        <tr>
+          <th><input type="checkbox" /></th>
+          <th>#</th>
+          <th>Medicine Name</th>
+          <th>Medicine Type</th>
+          <th>Stock</th>
+          <th>Date Modified</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!medicineList.length">
+          <td colspan="13" class="text-center">No Record</td>
+        </tr>
+        <tr *ngFor="let med of medicineList; let i = index">
+          <th><input type="checkbox" /></th>
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ med.medicine_name }}</td>
+          <td>{{ med.type_of_medicine_description }}</td>
+          <td>{{ med.qty }}</td>
+          <td>{{ med.updated_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Task Monitoring -->
+  <div *ngSwitchCase="5" class="p-2">
+    <div class="card-header pt-3">
+      <input
+        type="search"
+        class="ml-3 rounded px-2 py-1"
+        placeholder="Search"
+      />
+      <button class="btn btn-light float-right">
+        <i class="fa fa-archive mr-2" aria-hidden="true"></i>
+        Unarchive
+      </button>
+    </div>
+    <table class="table table-striped">
+      <thead class="bg-primary-color text-light">
+        <tr>
+          <th><input type="checkbox" /></th>
+          <th>Name</th>
+          <th>Medicine</th>
+          <th>Quantity</th>
+          <th>Time</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Assigned Staff</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let med of takenMeds"
+          [routerLink]="['/elders/details']"
+          routerLinkActive="router-link-active"
+        >
+          <th><input type="checkbox" /></th>
+          <th scope="row">Lorem</th>
+          <td>Ipsum</td>
+          <td>1</td>
+          <td>10:30</td>
+          <td>01-27-2020</td>
+          <td>Done</td>
+          <td>Gina Buenaventura</td>
+        </tr>
+        <tr *ngIf="takenMeds.length == 0 && !loading">
+          <td colspan="13" class="text-center">No Record</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Hospital -->
+  <div *ngSwitchCase="6" class="p-2">
+    <div class="card-header pt-3">
+      <input
+        type="search"
+        class="ml-3 rounded px-2 py-1"
+        placeholder="Search"
+      />
+      <button class="btn btn-light float-right">
+        <i class="fa fa-archive mr-2" aria-hidden="true"></i>
+        Unarchive
+      </button>
+    </div>
+    <table class="table table-striped">
+      <thead class="bg-primary-color text-light">
+        <tr>
+          <th *ngIf="userRole == 0"><input type="checkbox" /></th>
+          <th>Name</th>
+          <th>Addess</th>
+          <th>Contact Number</th>
+          <th>
+            <i
+              class="fa fa-cog ml-3"
+              aria-hidden="true"
+              *ngIf="userRole == 0"
+            ></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hospital of hospitalList">
+          <th *ngIf="userRole == 0"><input type="checkbox" /></th>
+          <th scope="row">{{ hospital.hospital_name }}</th>
+          <td>
+            {{ hospital.address }}
+          </td>
+          <td>{{ hospital.hospital_contact_no }}</td>
+          <td>
+            <button
+              class="btn bg-transparent"
+              (click)="
+                router.navigate(['/hospitals/details', { id: hospital.id }])
+              "
+            >
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="hospitalList.length == 0">
+          <td class="text-center p-3" colspan="13">No Record</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Doctors -->
+  <div *ngSwitchCase="7" class="p-2">
+    <div class="card-header pt-3">
+      <input
+        type="search"
+        class="ml-3 rounded px-2 py-1"
+        placeholder="Search"
+      />
+      <button class="btn btn-light float-right">
+        <i class="fa fa-archive mr-2" aria-hidden="true"></i>
+        Unarchive
+      </button>
+    </div>
+    <table class="table table-striped">
+      <thead class="bg-primary-color text-light">
+        <tr>
+          <th><input type="checkbox" /></th>
+          <th>Name</th>
+          <th>Contact Number</th>
+          <th>Schedules</th>
+          <th>Specialization</th>
+          <th>Date Updated</th>
+          <th *ngIf="userRole == 0">
+            <i class="fa fa-cog ml-3" aria-hidden="true"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="doctorList.length == 0">
+          <td class="text-center p-3" colspan="13">No Record</td>
+        </tr>
+        <tr *ngFor="let doctor of doctorList">
+          <th><input type="checkbox" /></th>
+          <th scope="row">{{ doctor.doc_name }}</th>
+          <td>{{ doctor.contact_no }}</td>
+          <td>{{ doctor.schedules }}</td>
+          <td>{{ doctor.specialization }}</td>
+          <td>{{ doctor.updated_at }}</td>
+
+          <td *ngIf="userRole == 0">
+            <button class="btn bg-transparent">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Accomplishments -->
+  <div *ngSwitchCase="8" class="p-2">
+    <div class="card-header pt-3">
+      <input
+        type="search"
+        class="ml-3 rounded px-2 py-1"
+        placeholder="Search"
+      />
+      <button class="btn btn-light float-right">
+        <i class="fa fa-archive mr-2" aria-hidden="true"></i>
+        Unarchive
+      </button>
+    </div>
+    <table class="table table-striped">
+      <thead class="bg-primary-color text-light">
+        <tr>
+          <th><input type="checkbox" /></th>
+          <th>#</th>
+          <th>Task</th>
+          <th>Problems Encountered</th>
+          <th>Remarks</th>
+          <th>Time-in</th>
+          <th>Time-out</th>
+          <th>Date</th>
+          <th>Submitted By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let acc of accList; let i = index">
+          <th><input type="checkbox" /></th>
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ acc.task_description }}</td>
+          <td>{{ acc.problems_encountered }}</td>
+          <td>{{ acc.remarks }}</td>
+          <td>{{ formatTime(acc.time_in) | date: 'hh:mm a' }}</td>
+          <td>{{ formatTime(acc.time_out) | date: 'hh:mm a' }}</td>
+          <td>{{ acc.updated_at }}</td>
+          <td>{{ acc.submitted_by[1] }}</td>
+        </tr>
+        <tr *ngIf="accList.length == 0">
+          <td class="text-center p-3" colspan="13">No Record</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

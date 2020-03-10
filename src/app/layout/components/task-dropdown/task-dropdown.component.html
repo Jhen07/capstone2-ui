@@ -1,0 +1,11 @@
+<div ngbDropdown class="d-inline-block dropdown">
+  <button class="btn btn-outline-primary" ngbDropdownToggle></button>
+  <div ngbDropdownMenu>
+    <button class="dropdown-item text-primary" (click)="updateTask('Done')">
+      Done
+    </button>
+    <button class="dropdown-item text-danger" (click)="updateTask('Refused')">
+      Refused
+    </button>
+  </div>
+</div>

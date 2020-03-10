@@ -1,0 +1,318 @@
+<div [@routerTransition] class="bg-light">
+  <div class="top">
+    <h2 class="text-warning ">
+      <small>Welcome Admin</small>
+    </h2>
+  </div>
+  <div class="row pt-3 mb-5">
+    <div class="col-xl-4 col-lg-12 mb-2">
+      <div class="card text-dark bg-white h200">
+        <div class="row px-3">
+          <div class="col col-xs-3 col-md-4 d-flex align-items-center pl-3">
+            <div>
+              <h4 class="color-dark-primary">{{ elderCount }}</h4>
+              <h3>Elders</h3>
+            </div>
+          </div>
+
+          <div class="col col-xs-9 col-md-8 text-right">
+            <img
+              src="assets/images/imagesolded.png"
+              alt=""
+              class="image-icons"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-12 mb-2">
+      <div class="card text-dark bg-white h200">
+        <div class="row px-3">
+          <div class="col col-xs-3 col-md-4 d-flex align-items-center pl-3">
+            <div>
+              <h4 class="color-dark-primary">{{ staffCount }}</h4>
+              <h3>Staff</h3>
+            </div>
+          </div>
+          <div class="col col-xs-9 col-md-8 text-right">
+            <img src="assets/images/staffi.png" alt="" class="image-icons" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-12 mb-2">
+      <div class="card text-dark bg-white h200">
+        <div class="row px-3">
+          <div class="col col-xs-3 col-md-4 d-flex align-items-center pl-3">
+            <div>
+              <h4 class="color-dark-primary">{{ guestCount }}</h4>
+              <h3>Visitors</h3>
+            </div>
+          </div>
+          <div class="col col-xs-9 col-md-8 text-right">
+            <img
+              src="assets/images/guestvcrop.png"
+              alt=""
+              class="image-icons"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col col-xl-6 col-lg-12">
+      <div class="card mb-3">
+        <div class="card-header bg-primary-color text-light pt-3">
+          ANNOUNCEMENT
+          <button
+            class="btn btn-danger float-right"
+            (click)="deleteAnnouncement()"
+          >
+            <i class="fa fa-trash M-4" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-light float-right" (click)="open(content)">
+            <i class="fa fa-plus M-4 " aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="max-height">
+          <table class="table table-striped">
+            <thead class="bg-primary-color text-light">
+              <tr>
+                <th><input type="checkbox" (click)="CheckAllOptions()" /></th>
+                <th>Event</th>
+                <th>Date of Event</th>
+              </tr>
+            </thead>
+            <tbody class="border">
+              <tr *ngIf="!announcementList.length">
+                <td colspan="13" class="text-center">No Record</td>
+              </tr>
+              <tr *ngFor="let item of announcementList; let i = index">
+                <th>
+                  <input type="checkbox" [(ngModel)]="item.isChecked" />
+                </th>
+                <td>
+                  <span>{{ item.title }}</span>
+                </td>
+                <td>{{ convertDate(item.start) | date: 'MM dd yyyy' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col col-xl-6 col-lg-12">
+      <div class="card mb-3">
+        <div class="card-header bg-primary-color text-light pt-3">
+          <input
+            type="checkbox"
+            name=""
+            id=""
+            class="mr-2"
+            [(ngModel)]="noteChecbox"
+            (change)="selectAllNotes($event.target.value)"
+          />
+          NOTES
+          <button class="btn btn-danger float-right" (click)="deleteNotes()">
+            <i class="fa fa-trash M-4" aria-hidden="true"></i>
+          </button>
+          <button
+            class="btn btn-light float-right"
+            (click)="open(contentnotes)"
+          >
+            <i class="fa fa-plus M-4 " aria-hidden="true"></i>
+          </button>
+        </div>
+        <ul class="list-group notes-ul max-height">
+          <li class="list-group-item" *ngFor="let notes of notesList">
+            <input type="checkbox" [(ngModel)]="notes.isChecked" class="mr-2" />
+            <span>{{ notes.text }}</span>
+          </li>
+          <li class="list-group-item text-center" *ngIf="notesList.length == 0">
+            No Notes
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="bg-primary-color text-light p-3">
+    Upcoming Events
+  </div>
+  <div class="app-calendar" *ngIf="calendarVisible">
+    <full-calendar
+      #calendar
+      defaultView="dayGridMonth"
+      [header]="{
+        left: 'prev, today',
+        center: 'title',
+        right: 'next'
+      }"
+      [plugins]="calendarPlugins"
+      [weekends]="calendarWeekends"
+      [events]="calendarEvents"
+      (dateClick)="open(eventModal); dateSelected = $event"
+    ></full-calendar>
+  </div>
+</div>
+
+<!-- Add Announcement modal -->
+
+<div>
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Announcement</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <fieldset class="form-group">
+        <label>Event</label>
+        <input class="form-control" placeholder="" [(ngModel)]="event" />
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Date</label>
+        <div class="form-group">
+          <div class="input-group datepicker-input">
+            <input
+              class="form-control"
+              placeholder="Select Date"
+              name="dp"
+              [(ngModel)]="dateEvent"
+              ngbDatepicker
+              #d="ngbDatepicker"
+              readonly
+            />
+            <button
+              class="input-group-addon"
+              (click)="d.toggle()"
+              type="button"
+            >
+              <span class="fa fa-calendar"></span>
+            </button>
+          </div>
+        </div>
+      </fieldset>
+      <p *ngFor="let alert of alerts">
+        <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
+          alert.message
+        }}</ngb-alert>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="c('Close click')"
+      >
+        Close
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="addAnouncementEvent()"
+      >
+        Add
+      </button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Add Notes modal -->
+
+<div>
+  <ng-template #contentnotes let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Notes</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="container pt-3">
+      <textarea
+        class="form-control"
+        cols="30"
+        rows="5"
+        [(ngModel)]="notes"
+      ></textarea>
+    </div>
+    <div class="modal-body">
+      <p *ngFor="let alert of alerts">
+        <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
+          alert.message
+        }}</ngb-alert>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="c('Close click')"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" (click)="addNotes()">
+        Add
+      </button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Add Calendar Event modal -->
+
+<div>
+  <ng-template #eventModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title">Date: {{ dateSelected?.dateStr }}</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="">Event: </label>
+
+        <textarea
+          class="form-control"
+          cols="30"
+          rows="5"
+          [(ngModel)]="dateSelected.title"
+        ></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="c('Close click')"
+      >
+        Close
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="addCalendarEvent()"
+      >
+        Add
+      </button>
+    </div>
+  </ng-template>
+</div>

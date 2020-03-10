@@ -1,0 +1,54 @@
+$topnav-background-color: #2D7DAC;
+
+.top {
+    margin-bottom: 10px;
+    box-shadow: 1px 2px 5px gray;
+}
+
+.triangle-left {
+    width: 0;
+    height: 0;
+    border-top: 80px solid transparent;
+    border-left: 100px solid #ffffff;
+    border-bottom: 80px solid transparent;
+    position: absolute;
+    right: -90px;
+    z-index: 9;
+}
+
+.triangle-left-border {
+    width: 0;
+    height: 0;
+    border-top: 80px solid transparent;
+    border-left: 100px solid #2D7DAC;
+    border-bottom: 80px solid transparent;
+    position: absolute;
+    right: -100px;
+    z-index: 8;
+}
+
+.color-dark-primary {
+    color: #2D7DAC;
+}
+
+.image-icons {
+    height: 160px;
+    margin: 5px;
+}
+
+.bg-primary-color {
+    background: $topnav-background-color;
+    ;
+}
+
+.app-top {
+    margin: 0 0 3em;
+}
+
+.text-custom-pink {
+    color: #E872B1;
+}
+
+.bg-custom-pink {
+    background-color: #E872B1;
+}

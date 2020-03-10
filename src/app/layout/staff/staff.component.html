@@ -1,0 +1,253 @@
+<div class="top">
+  <hr />
+  <h2 class="text-center">
+    STAFF
+    <button
+      class="btn btn-light float-right"
+      (click)="router.navigate(['/staff/add'])"
+    >
+      <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
+    </button>
+  </h2>
+  <hr />
+</div>
+<div class="card mb-3">
+  <table class="table table-striped">
+    <thead class="bg-primary-color text-light">
+      <tr>
+        <th></th>
+        <th class="text-center">Name</th>
+        <th class="text-center">User Role</th>
+        <th class="text-center">Email</th>
+        <th class="text-center">Date Hired</th>
+        <th class="text-center">Status</th>
+        <th class="text-center" class="text-center">
+          <button class="btn bg-transparent" (click)="open(setting)">
+            <i class="fa fa-cog ml-3" aria-hidden="true"></i>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">
+          <i class="fa fa-filter" aria-hidden="true"></i>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="search"
+                class="border-0 w-100 rounded px-2 py-1"
+                (keyup)="filter()"
+                [(ngModel)]="name"
+              />
+            </div>
+            <button class="btn btn-light " (click)="sort('first_name')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <select
+                class="w-100 border-0 h-100"
+                [(ngModel)]="role"
+                (change)="filter()"
+              >
+                <option value=""></option>
+                <option value="0">Admin</option>
+                <option value="1">Medical Staff</option>
+                <option value="2">Staff</option>
+              </select>
+            </div>
+            <button class="btn btn-light " (click)="sort('role')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td>
+          <div class="btn d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="search"
+                class="border-0 w-100 rounded px-2 py-1"
+                (keyup)="filter()"
+                [(ngModel)]="email"
+              />
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <input
+                type="search"
+                class="border-0 w-100 rounded px-2 py-1"
+                (keyup)="filter()"
+                [(ngModel)]="date_hired"
+              />
+            </div>
+            <button class="btn btn-light " (click)="sort('date_hired')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex border border-secondary rounded bg-white">
+            <div class="flex-1">
+              <select
+                class="btn w-100 border-0 h-100"
+                [(ngModel)]="status"
+                (change)="filter()"
+              >
+                <option value=""></option>
+                <option value="0">Inactive</option>
+                <option value="1">Active</option>
+              </select>
+            </div>
+          </div>
+        </td>
+        <td class="text-center">
+          <button class="btn btn-info  mr-1 text-center" (click)="exportPdf()">
+            Export as PDF
+          </button>
+        </td>
+      </tr>
+      <tr *ngFor="let staff of staffList" ng-repeat="post in posts | Filter">
+        <td></td>
+        <td>{{ staff.first_name }} {{ staff.last_name }}</td>
+        <td class="text-center">{{ getRole(staff.role) }}</td>
+        <td class="text-center">{{ staff.email }}</td>
+        <td class="text-center">{{ staff.date_hired }}</td>
+        <td
+          class="text-center"
+          [ngClass]="{
+            'text-danger': staff.status == 0,
+            'text-success': staff.status == 1
+          }"
+        > {{ staff.status == 0 ? 'Inactive' : 'Active' }}</td>
+        <td class="text-center">
+          <button
+            class="btn bg-transparent"
+            (click)="router.navigate(['/staff/details', { id: staff.id }])"
+          >
+            <i class="fa fa-user ml-3" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="staffList.length == 0">
+        <td colspan="13" class="text-center">No Record</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Settings -->
+<div>
+  <ng-template #setting let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Settings</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <fieldset class="form-group">
+        <div class="d-flex justify-content-between ">
+          <div class="px-1 border-right">
+            <ul style="list-style: none;">
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Name</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>E-mail</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Nickname</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Gender</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Age</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Birth Date</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Birth Place</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Sabbath</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Provincial Address</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Civil Status</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Nationality</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Address</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Date Hired</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Role</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Phil Health ID</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>SSS ID</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Pagibig ID</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>UMID</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Status</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary">
+        Done
+      </button>
+    </div>
+  </ng-template>
+</div>

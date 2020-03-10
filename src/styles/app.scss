@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+@import "bootstrap/bootstrap";
+@import "spinner";
+@import "utils";
+@import "rtl";
+@import "responsive";
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+@import '~ngx-toastr/toastr-bs4-alert';
+
+@media print {
+    .breadcrumb {
+        display: none !important;
+    }
+}
+
+.fc-toolbar.fc-header-toolbar {
+    margin: 0 !important;
+    padding: 1.5em;
+    background: #E872B1 !important;
+}
+
+.modal-header {
+    background-color: #2D7DAC;
+    color: white;
+}
+
+input:focus,
+button:focus {
+    outline: none;
+}

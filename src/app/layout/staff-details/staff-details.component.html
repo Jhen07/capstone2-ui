@@ -1,0 +1,987 @@
+<div class="top" *ngIf="userRole == 0">
+  <h2 class="">
+    <small>Staff</small>
+  </h2>
+</div>
+<div>
+  <ul class="nav nav-tabs">
+    <li class="nav-item" (click)="tab = 1">
+      <a class="nav-link" [ngClass]="{ active: tab == 1 }">Personal Data</a>
+    </li>
+    <li class="nav-item" (click)="tab = 2" *ngIf="userRole == 0">
+      <a class="nav-link" [ngClass]="{ active: tab == 2 }">
+        Task
+      </a>
+    </li>
+  </ul>
+</div>
+<div class="border border-top-0 p-2">
+  <div class="row" [ngSwitch]="tab">
+    <div class="col-md-4" *ngSwitchCase="1">
+      <!-- Display mode 1 -->
+      <div class="card p-4 mb-3" *ngIf="!editing1">
+        <div>
+          <button
+            class="btn btn-transparent float-right large border"
+            (click)="editing1 = !editing1"
+          >
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+          <div class="position-relative">
+            <img
+              [src]="sanitizer.bypassSecurityTrustResourceUrl(staff.image)"
+              alt=""
+              class="elder-img"
+            />
+          </div>
+          <div class="elder-name">
+            <p class="text-center color-dark-primary m-0 text-capitalize">
+              {{ staff.first_name }} {{ staff?.middle_name?.substring(0, 1) }}.
+              {{ staff.last_name }}
+            </p>
+            <p class="text-center small m-0">
+              {{
+                staff.role == 0
+                  ? 'Admin'
+                  : staff.role == 1
+                  ? 'Medical Staff'
+                  : 'Staff'
+              }}
+            </p>
+          </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Status</label>
+          <div class="col-sm-7">
+            <label
+              for=""
+              class="col-form-label"
+              [ngClass]="{
+                'text-danger': staff.status == 0,
+                'text-success': staff.status == 1
+              }"
+              >{{ staff.status == 0 ? 'Inactive' : 'Active' }}</label
+            >
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Nickname</label>
+          <div class="col-sm-7">
+            <label for="" class="col-form-label">{{ staff.nick_name }}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Gender</label>
+          <div class="col-sm-7">
+            <label for="" class="col-form-label">{{
+              staff.gender == 1 ? 'Male' : 'Female'
+            }}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Age</label>
+          <div class="col-sm-7">
+            <label for="" class="col-form-label">{{ staff.age }}</label>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Address</label>
+          <div class="col-sm-7">
+            <label for="" class="col-form-label">{{ staff.address }}</label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Date Hired</label>
+          <div class="col-sm-7">
+            <label for="" class="col-form-label">{{ staff.date_hired }}</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- End Display mode 1 -->
+
+      <!-- Editing mode 1 -->
+      <div class="card p-4 mb-3" *ngIf="editing1">
+        <div>
+          <button
+            class="btn btn-primary float-right large border"
+            (click)="save()"
+          >
+            Save
+          </button>
+          <div class="position-relative">
+            <img
+              [src]="sanitizer.bypassSecurityTrustResourceUrl(staff.image)"
+              alt=""
+              class="elder-img"
+              *ngIf="!fileData"
+            />
+            <img [src]="previewUrl" alt="" class="elder-img" *ngIf="fileData" />
+          </div>
+
+          <div class="elder-name">
+            <div class="form-group row">
+              <div class="col-sm-3"></div>
+
+              <input
+                type="file"
+                class="form-control col-sm-6"
+                name="image"
+                [(ngModel)]="file"
+                (change)="fileProgress($event)"
+              />
+              <div class="col-sm-3"></div>
+            </div>
+            <div class="form-group row" *ngIf="userRole == 0">
+              <label for="" class="col-sm-3 col-form-label"></label>
+              <div class="col-sm-6">
+                <select class="form-control " [(ngModel)]="staff.role">
+                  <option class="text-center" value="0">Admin</option>
+                  <option class="text-center" value="1">Medical Staff</option>
+                  <option class="text-center" value="2">Staff</option>
+                </select>
+              </div>
+              <div class="col-sm-3"></div>
+            </div>
+            <div *ngIf="userRole != 0">
+              <p class="text-center color-dark-primary m-0 text-capitalize">
+                {{ staff.first_name }}
+                {{ staff?.middle_name?.substring(0, 1) }}.
+                {{ staff.last_name }}
+              </p>
+              <p class="text-center small m-0">
+                {{
+                  staff.role == 0
+                    ? 'Admin'
+                    : staff.role == 1
+                    ? 'Medical Staff'
+                    : 'Staff'
+                }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Status</label>
+          <div class="col-sm-7">
+            <select class="form-control " [(ngModel)]="staff.status">
+              <option class="text-center" value="0">Inactive</option>
+              <option class="text-center" value="1">Active</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Nickname</label>
+          <div class="col-sm-7">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.nick_name"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Gender</label>
+          <div class="col-sm-7">
+            <select class="form-control" [(ngModel)]="staff.gender">
+              <option value="1">Male</option>
+              <option value="2">Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Age</label>
+          <div class="col-sm-7">
+            <input type="number" class="form-control" [(ngModel)]="staff.age" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Address</label>
+          <div class="col-sm-7">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.address"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Date Hired</label>
+          <div class="col-sm-7">
+            <div class="input-group datepicker-input">
+              <input
+                class="form-control"
+                placeholder="select"
+                name="dp21"
+                [(ngModel)]="dateHired"
+                ngbDatepicker
+                #d1="ngbDatepicker"
+                readonly
+              />
+              <button
+                class="input-group-addon"
+                (click)="d1.toggle()"
+                type="button"
+              >
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Editing mode 1 -->
+
+      <div class="card p-4 mb-3">
+        <h5 class="pb-2 color-dark-primary">
+          Account
+          <button
+            class="btn btn-transparent float-right large border"
+            (click)="editing3 = !editing3"
+            *ngIf="!editing3"
+          >
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+          <button
+            class="btn btn-primary float-right large border"
+            (click)="updatePassword()"
+            *ngIf="editing3"
+          >
+            Save
+          </button>
+        </h5>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Email</label>
+          <div class="col-sm-7">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="staff.email"
+              [disabled]="!editing3"
+            />
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="!editing3">
+          <label for="" class="col-sm-5 col-form-label"> Password</label>
+          <div class="col-sm-7">
+            <input
+              type="password"
+              class="form-control"
+              [(ngModel)]="staff.password"
+              [disabled]="!editing3"
+            />
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="editing3">
+          <label for="" class="col-sm-5 col-form-label">New Password</label>
+          <div class="col-sm-7">
+            <input
+              type="password"
+              class="form-control"
+              [(ngModel)]="newPassword"
+            />
+          </div>
+        </div>
+
+        <div class="form-group row" *ngIf="editing3">
+          <label for="" class="col-sm-5 col-form-label">Confirm Password</label>
+          <div class="col-sm-7">
+            <input
+              type="password"
+              class="form-control"
+              [(ngModel)]="confirmPassword"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Personal Info tab -->
+    <div class="col-md-8 right-div" *ngSwitchCase="1">
+      <!-- Display mode 2 -->
+      <div *ngIf="!editing2">
+        <!-- Personal information -->
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Personal Information
+            <button
+              class="btn btn-transparent float-right large border"
+              (click)="editing2 = !editing2"
+            >
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </button>
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">First Name</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                staff.first_name
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Middle Name</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                staff.middle_name
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{ staff.last_name }}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Birth Date</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                staff.birth_date
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Birth Place</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                staff.birth_place
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Sabath</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{ staff.sabbath }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Provincial Address</label
+            >
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                staff.provincial_address
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Civil Status</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                staff.civil_status
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Nationality</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                staff.nationality
+              }}</label>
+            </div>
+          </div>
+        </div>
+        <!-- End Personal information -->
+
+        <!-- Employment History -->
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Employment History
+          </h5>
+          <hr />
+          <div *ngFor="let e of ehistory">
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label">Company</label>
+              <div class="col-sm-9">
+                <label for="" class="col-form-label">{{ e.company }}</label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label">Position</label>
+              <div class="col-sm-9">
+                <label for="" class="col-form-label">{{ e.position }}</label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label">Duties</label>
+              <div class="col-sm-9">
+                <label for="" class="col-form-label">{{ e.duties }}</label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label">Duration</label>
+              <div class="col-sm-9 row">
+                <div class="col-sm-6">
+                  <label for="">{{ e.date_from }}</label>
+                </div>
+                <div class="col-sm-6">
+                  <label for="">{{ e.date_to }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label">References</label>
+              <div class="col-sm-9">
+                <label for="" class="col-form-label">{{ e.reference }}</label>
+              </div>
+            </div>
+            <hr />
+          </div>
+        </div>
+        <!-- Employment History End -->
+
+        <!-- Other Information -->
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Other Information
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Phil Health</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                staff.oi_phil_health
+              }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">UMID</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{ staff.oi_umid }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">SSS</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{ staff.oi_sss }}</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Pagibig</label>
+            <div class="col-sm-9">
+              <label for="" class="col-form-label">{{
+                staff.oi_pagibig
+              }}</label>
+            </div>
+          </div>
+        </div>
+        <!-- End Other Information -->
+      </div>
+      <!-- End Display mode 2 -->
+      <!-- Edit mode 2 -->
+      <div *ngIf="editing2">
+        <!-- Personal information -->
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Personal Information
+            <button
+              class="btn btn-primary float-right large border"
+              (click)="save()"
+            >
+              Save
+            </button>
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">First Name</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.first_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Middle Name</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.middle_name"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.last_name"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Birth Date</label>
+            <div class="col-sm-9">
+              <div class="input-group datepicker-input">
+                <input
+                  class="form-control"
+                  placeholder="select"
+                  name="dp32"
+                  [(ngModel)]="bDate"
+                  ngbDatepicker
+                  #d2="ngbDatepicker"
+                  readonly
+                />
+                <button
+                  class="input-group-addon"
+                  (click)="d2.toggle()"
+                  type="button"
+                >
+                  <span class="fa fa-calendar"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Birth Place</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.birth_place"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Sabbath</label>
+            <div class="col-sm-9">
+              <div class="input-group datepicker-input">
+                <input
+                  class="form-control"
+                  placeholder="select"
+                  name="dp3"
+                  [(ngModel)]="sabbathDate"
+                  ngbDatepicker
+                  #d3="ngbDatepicker"
+                  readonly
+                  value="staff.sabbath"
+                />
+                <button
+                  class="input-group-addon"
+                  (click)="d3.toggle()"
+                  type="button"
+                >
+                  <span class="fa fa-calendar"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label"
+              >Provincial Address</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.provincial_address"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Civil Status</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.civil_status"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Nationality</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.nationality"
+              />
+            </div>
+          </div>
+        </div>
+        <!-- End Personal information -->
+
+        <!-- Employment History -->
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Employment History
+            <button
+              class="btn btn-primary float-right"
+              (click)="open(content2)"
+            >
+              Add
+            </button>
+          </h5>
+          <div
+            *ngFor="let e of ehistory; let i = index"
+            class="mb-3 p-2 rounded border border-secondary"
+          >
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label">Company</label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="e.company"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label">Position</label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="e.position"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label">Duties</label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="e.duties"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label">Duration</label>
+              <div class="col-sm-9 row">
+                <div class="col-sm-6">
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="e.date_from"
+                    placeholder="Date Started: mm-dd-yyyy"
+                  />
+                </div>
+                <div class="col-sm-6">
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="e.date_to"
+                    placeholder="Date Finished: mm-dd-yyyy"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label">References</label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="e.reference"
+                />
+              </div>
+            </div>
+            <div class="mb-2">
+              <button
+                class="btn btn-danger float-right"
+                (click)="removeEGistory(i)"
+              >
+                Remove <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Employment History End -->
+
+        <!-- Other Information -->
+        <div class="card p-4 mb-3">
+          <h5 class="pb-2 color-dark-primary">
+            Other Information
+          </h5>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Phil Health</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.oi_phil_health"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">UMID</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.oi_umid"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">SSS</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.oi_sss"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-3 col-form-label">Pagibig</label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="staff.oi_pagibig"
+              />
+            </div>
+          </div>
+        </div>
+        <!-- End Other Information -->
+      </div>
+      <!-- End Edit mode 2 -->
+    </div>
+    <!-- End Personal Info Tab-->
+
+    <!-- Task Table -->
+    <div class="col-md-12 right-div" *ngSwitchCase="2">
+      <div class="card w-100 mb-3">
+        <table class="table table-striped">
+          <thead class="bg-primary-color text-light">
+            <tr>
+              <th class="text-center">Elder Name</th>
+              <th class="text-center">Medicine</th>
+              <th class="text-center">Qty</th>
+              <th class="text-center">Time</th>
+              <th class="text-center">Date Repeat</th>
+              <th class="text-center">Status</th>
+              <th class="text-center">
+                <button class="btn bg-transparent" (click)="open(content)">
+                  <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="taskList.length == 0">
+              <td colspan="13" class="text-center">No Record</td>
+            </tr>
+            <tr *ngFor="let task of taskList">
+              <th scope="row">{{ task.elder_name }}</th>
+              <td class="text-center">{{ task.medicine_description }}</td>
+              <td class="text-center">{{ task.qty }}</td>
+              <td class="text-center">{{ task.time }}</td>
+              <td class="text-center">
+                <div class="d-flex">
+                  <div
+                    *ngFor="let date of task.date_repeats"
+                    class="bg-secondary mr-1 px-1 rounded text-white flex-1 text-center"
+                  >
+                    {{ date }}
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">{{ getStatus(task.id) }}</td>
+              <td class="text-center">
+                <button class="btn bg-transparent">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- add modal -->
+
+<div>
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Add Task</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <fieldset class="form-group ">
+        <div
+          class="d-flex justify-content-center flex-column align-items-center"
+        >
+          <label>Time</label>
+          <div>
+            <ngb-timepicker
+              [(ngModel)]="time"
+              [meridian]="true"
+            ></ngb-timepicker>
+          </div>
+        </div>
+      </fieldset>
+      <hr />
+      <fieldset class="form-group">
+        <label>Date Repeat</label>
+        <div class="d-flex form-control text-sm p-2">
+          <div class="flex-1" *ngFor="let repeat of dateRepeats">
+            <input type="checkbox" [(ngModel)]="repeat.isSelected" />
+            {{ repeat.day }}
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Elder Name</label>
+        <select class="form-control" [(ngModel)]="elderIndex">
+          <option *ngFor="let elder of elderList; let i = index" [value]="i">
+            {{ elder.first_name }} {{ elder.last_name }}</option
+          >
+        </select>
+      </fieldset>
+      <fieldset class="form-group">
+        <label>Medicine Name</label>
+        <select class="form-control" [(ngModel)]="medIndex">
+          <option *ngFor="let med of medList; let i = index" [value]="i">
+            {{ med.medicine_name }}</option
+          >
+        </select>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <label>Quantity</label>
+        <input
+          class="form-control"
+          placeholder=""
+          type="number"
+          [(ngModel)]="quantity"
+        />
+      </fieldset>
+
+      <p *ngFor="let alert of alerts">
+        <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
+          alert.message
+        }}</ngb-alert>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="c('Close click')"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" (click)="addTask()">
+        Add
+      </button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- add Employment History -->
+
+<div>
+  <ng-template #content2 let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">
+        Add Employment <i class="fa fa-history" aria-hidden="true"></i>
+      </h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row">
+        <label for="" class="col-sm-3 col-form-label">Company</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="addEHistory.company"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="" class="col-sm-3 col-form-label">Position</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="addEHistory.position"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="" class="col-sm-3 col-form-label">Duties</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="addEHistory.duties"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="" class="col-sm-3 col-form-label">Duration</label>
+        <div class="col-sm-9 row">
+          <div class="col-sm-6">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="addEHistory.date_from"
+              placeholder="Started: mm-dd-yyyy"
+            />
+          </div>
+          <div class="col-sm-6">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="addEHistory.date_to"
+              placeholder="Finished: mm-dd-yyyy"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="" class="col-sm-3 col-form-label">References</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="addEHistory.reference"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="c('Close click')"
+      >
+        Close
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="addEmploymentHistory()"
+      >
+        Add
+      </button>
+    </div>
+  </ng-template>
+</div>
