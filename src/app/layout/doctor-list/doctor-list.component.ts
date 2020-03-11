@@ -21,8 +21,10 @@ export class DoctorListComponent implements OnInit {
   closeResult: string;
 
   doc_name = '';
+  contact_no ='';
   schedules = '';
   specialization = '';
+  updated_at = '';
   order = 'asc';
 
   constructor(
@@ -85,9 +87,20 @@ export class DoctorListComponent implements OnInit {
 
     if (this.doc_name != '') {
       console.log('doc_name');
-
       doctors = doctors.filter(doctor => {
-        if (this.doc_name == doctor.doc_name) {
+        const doc_name = `${doctor.doc_name}`;
+        if (doc_name.includes(this.doc_name)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.contact_no != '') {
+      console.log('contact_no');
+      doctors = doctors.filter(doctor => {
+        const contact_no = `${doctor.contact_no}`;
+        if (contact_no.includes(this.contact_no)) {
           return true;
         }
         return false;
@@ -96,9 +109,9 @@ export class DoctorListComponent implements OnInit {
 
     if (this.schedules != '') {
       console.log('schedules');
-
       doctors = doctors.filter(doctor => {
-        if (this.schedules == doctor.schedules) {
+        const schedules = `${doctor.schedules}`;
+        if (schedules.includes(this.schedules)) {
           return true;
         }
         return false;
@@ -107,9 +120,20 @@ export class DoctorListComponent implements OnInit {
 
     if (this.specialization != '') {
       console.log('specialization');
-
       doctors = doctors.filter(doctor => {
-        if (this.specialization == doctor.specialization) {
+        const specialization = `${doctor.specialization}`;
+        if (specialization.includes(this.specialization)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.updated_at != '') {
+      console.log('updated_at');
+      doctors = doctors.filter(doctor => {
+        const updated_at = `${doctor.updated_at}`;
+        if (updated_at.includes(this.updated_at)) {
           return true;
         }
         return false;
@@ -151,7 +175,6 @@ export class DoctorListComponent implements OnInit {
     }
 
   }
-
 
   async exportPdf(){
     this.printList = [];

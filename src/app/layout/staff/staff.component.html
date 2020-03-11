@@ -15,7 +15,6 @@
   <table class="table table-striped">
     <thead class="bg-primary-color text-light">
       <tr>
-        <th></th>
         <th class="text-center">Name</th>
         <th class="text-center">User Role</th>
         <th class="text-center">Email</th>
@@ -30,9 +29,6 @@
     </thead>
     <tbody>
       <tr>
-        <td class="text-center">
-          <i class="fa fa-filter" aria-hidden="true"></i>
-        </td>
         <td>
           <div class="d-flex border border-secondary rounded bg-white">
             <div class="flex-1">
@@ -41,6 +37,7 @@
                 class="border-0 w-100 rounded px-2 py-1"
                 (keyup)="filter()"
                 [(ngModel)]="name"
+                placeholder="Search for Staff Name"
               />
             </div>
             <button class="btn btn-light " (click)="sort('first_name')">
@@ -56,7 +53,7 @@
                 [(ngModel)]="role"
                 (change)="filter()"
               >
-                <option value=""></option>
+                <option value="">Select User Role</option>
                 <option value="0">Admin</option>
                 <option value="1">Medical Staff</option>
                 <option value="2">Staff</option>
@@ -75,6 +72,7 @@
                 class="border-0 w-100 rounded px-2 py-1"
                 (keyup)="filter()"
                 [(ngModel)]="email"
+                placeholder="Search for Staff Email"
               />
             </div>
           </div>
@@ -87,6 +85,7 @@
                 class="border-0 w-100 rounded px-2 py-1"
                 (keyup)="filter()"
                 [(ngModel)]="date_hired"
+                placeholder="Search for Staff Hired Date"
               />
             </div>
             <button class="btn btn-light " (click)="sort('date_hired')">
@@ -102,7 +101,7 @@
                 [(ngModel)]="status"
                 (change)="filter()"
               >
-                <option value=""></option>
+                <option value="">Select Status</option>
                 <option value="0">Inactive</option>
                 <option value="1">Active</option>
               </select>
@@ -116,9 +115,8 @@
         </td>
       </tr>
       <tr *ngFor="let staff of staffList" ng-repeat="post in posts | Filter">
-        <td></td>
         <td>{{ staff.first_name }} {{ staff.last_name }}</td>
-        <td class="text-center">{{ getRole(staff.role) }}</td>
+        <td>{{ getRole(staff.role) }}</td>
         <td class="text-center">{{ staff.email }}</td>
         <td class="text-center">{{ staff.date_hired }}</td>
         <td

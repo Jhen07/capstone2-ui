@@ -103,11 +103,12 @@ export class StaffComponent implements OnInit {
     }
 
     if (this.date_hired != '') {
+      console.log('date');
       staff = staff.filter(stff => {
         const dateAff = new Date(this.date_hired).getTime();
         const stffAff = new Date(stff.date_hired).getTime();
-
-        if (dateAff == stffAff) {
+        const date = `${stff.date_hired}`;
+        if (date.includes(this.date_hired)) {
           return true;
         }
         return false;

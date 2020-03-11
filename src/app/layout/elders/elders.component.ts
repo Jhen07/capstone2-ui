@@ -103,8 +103,8 @@ export class EldersComponent implements OnInit {
       elders = elders.filter(elder => {
         const dateAff = new Date(this.date_aff).getTime();
         const elderAff = new Date(elder.date_stay_in_orphanage).getTime();
-
-        if (dateAff == elderAff) {
+        const date = `${elder.date_stay_in_orphanage}`;
+        if (date.includes(this.date_aff)) {
           return true;
         }
         return false;

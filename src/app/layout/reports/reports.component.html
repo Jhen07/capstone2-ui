@@ -6,13 +6,8 @@
 <ul class="nav nav-tabs">
   <li class="nav-item" (click)="selectedType = 'daily'">
     <a class="nav-link" [ngClass]="{ active: selectedType == 'daily' }"
-      >Daily</a
+      >Reports</a
     >
-  </li>
-  <li class="nav-item" (click)="selectedType = 'report'">
-    <a class="nav-link" [ngClass]="{ active: selectedType == 'report' }">
-      Reports
-    </a>
   </li>
   <li class="nav-item" (click)="selectedType = 'task'">
     <a class="nav-link" [ngClass]="{ active: selectedType == 'task' }">
@@ -23,16 +18,14 @@
 
 <div [ngSwitch]="selectedType">
   <!-- Daily Accomplishments -->
-  <div class=" mb-3 py-3" *ngSwitchCase="'daily'">
+  <div class="card mb-3" *ngSwitchCase="'daily'">
     <table class="table table-striped">
       <thead class="bg-primary-color text-light">
         <tr>
-          <th></th>
-          <!-- <th>Task</th> -->
           <th class="text-center">Date</th>
           <th class="text-center" *ngIf="userRole == 0">Created By</th>
           <th class="text-center">Problems Encountered</th>
-          <!-- <th>Remarks</th> -->
+          <th class="text-center">Remarks</th>
           <th class="text-center">Time-in</th>
           <th class="text-center">Time-out</th>
           <th class="text-center">
@@ -49,63 +42,106 @@
       <tbody>
         <tr>
           <td>
-            <i class="fa fa-filter" aria-hidden="true"></i>
-          </td>
-          <td>
-            <div class="d-flex border border-secondary rounded">
-              <input type="search" class="w-100 border-0 rounded px-2 py-1" />
-              <button class="btn btn-light">
+            <div class="d-flex border border-secondary rounded bg-white">
+              <div class="flex-1">
+                <input
+                  type="search"
+                  class="border-0 w-100 rounded px-2 py-1"
+                  (keyup)="filter()"
+                  [(ngModel)]="updated_at"
+                  placeholder="Search for Date"
+                />
+              </div>
+              <button class="btn btn-light " (click)="sort('updated_at')">
                 <i class="fa fa-sort" aria-hidden="true"></i>
               </button>
             </div>
           </td>
           <td *ngIf="userRole == 0">
-            <div class="d-flex border border-secondary rounded">
-              <input type="search" class="w-100 border-0 rounded px-2 py-1" />
-              <button class="btn btn-light">
+            <div class="d-flex border border-secondary rounded bg-white">
+              <div class="flex-1">
+                <input
+                  type="search"
+                  class="border-0 w-100 rounded px-2 py-1"
+                  (keyup)="filter()"
+                  [(ngModel)]="submitted_by"
+                  placeholder="Search for Staff"
+                />
+              </div>
+              <button class="btn btn-light " (click)="sort('submitted_by')">
                 <i class="fa fa-sort" aria-hidden="true"></i>
               </button>
             </div>
           </td>
           <td>
-            <div class="d-flex border border-secondary rounded">
-              <input type="search" class="w-100 border-0 rounded px-2 py-1" />
-              <button class="btn btn-light">
+            <div class="btn d-flex border border-secondary rounded bg-white">
+              <div class="flex-1">
+                <input
+                  type="search"
+                  class="border-0 w-100 rounded px-2 py-1"
+                  (keyup)="filter()"
+                  [(ngModel)]="problems_encountered"
+                  placeholder="Search"
+                />
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="btn d-flex border border-secondary rounded bg-white">
+              <div class="flex-1">
+                <input
+                  type="search"
+                  class="border-0 w-100 rounded px-2 py-1"
+                  (keyup)="filter()"
+                  [(ngModel)]="remarks"
+                  placeholder="Search"
+                />
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex border border-secondary rounded bg-white">
+              <div class="flex-1">
+                <input
+                  type="search"
+                  class="border-0 w-100 rounded px-2 py-1"
+                  (keyup)="filter()"
+                  [(ngModel)]="time_in"
+                />
+              </div>
+              <button class="btn btn-light " (click)="sort('time_in')">
                 <i class="fa fa-sort" aria-hidden="true"></i>
               </button>
             </div>
           </td>
           <td>
-            <div class="d-flex border border-secondary rounded">
-              <input type="search" class="w-100 border-0 rounded px-2 py-1" />
-              <button class="btn btn-light">
+            <div class="d-flex border border-secondary rounded bg-white">
+              <div class="flex-1">
+                <input
+                  type="search"
+                  class="border-0 w-100 rounded px-2 py-1"
+                  (keyup)="filter()"
+                  [(ngModel)]="time_out"
+                />
+              </div>
+              <button class="btn btn-light " (click)="sort('time_out')">
                 <i class="fa fa-sort" aria-hidden="true"></i>
               </button>
             </div>
           </td>
           <td>
-            <div class="d-flex border border-secondary rounded">
-              <input type="search" class="w-100 border-0 rounded px-2 py-1" />
-              <button class="btn btn-light">
-                <i class="fa fa-sort" aria-hidden="true"></i>
-              </button>
-            </div>
-          </td>
-          <td>
-            <button class="btn btn-info float-right mr-1">
+            <button class="btn btn-info float-right mr-1" (click)="exportPdf()">
               Export as PDF
             </button>
           </td>
         </tr>
         <tr *ngFor="let acc of accList; let i = index">
-          <th></th>
-          <!-- <td>{{ acc.task_description }}</td> -->
-          <td>{{ acc.updated_at }}</td>
+          <td class="text-center">{{ acc.updated_at }}</td>
           <td *ngIf="userRole == 0">{{ acc.submitted_by[1] }}</td>
           <td>{{ acc.problems_encountered }}</td>
-          <!-- <td>{{ acc.remarks }}</td>-->
-          <td>{{ convertDate(acc.time_in) | date: 'hh:mm a' }}</td>
-          <td>{{ convertDate(acc.time_out) | date: 'hh:mm a' }}</td>
+          <td>{{ acc.remarks }}</td>
+          <td class="text-center">{{ convertDate(acc.time_in) | date: 'hh:mm a' }}</td>
+          <td class="text-center">{{ convertDate(acc.time_out) | date: 'hh:mm a' }}</td>
           <!-- button for view of the full report -->
           <td class="text-center">
             <button class="btn bg-transparent" (click)="open(view)">

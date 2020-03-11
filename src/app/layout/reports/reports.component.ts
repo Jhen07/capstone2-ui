@@ -12,6 +12,9 @@ import { MedReport } from 'src/app/models/med-report.model';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UsersService } from 'src/app/services/users/users.service';
 import { Userlogs } from 'src/app/models/use-logs.model';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-reports',
@@ -22,17 +25,26 @@ export class ReportsComponent implements OnInit {
   userRole = localStorage.getItem('user_role');
   userData: User = JSON.parse(localStorage.getItem('user_data'));
   selectedType = 'daily';
+  rawAccList: Accomplishments[] = [];
   accList: Accomplishments[] = [];
   medReports: MedReport[] = [];
   taskReports: TaskReport[] = [];
+  printList = [];
   time_in: any;
   time_out: any;
   closeResult: string;
   accomp: Accomplishments = JSON.parse(JSON.stringify(initAccomp));
   userLogs: Userlogs[] = [];
 
-
   guestList: Guest[] = [];
+
+  order = 'asc';
+
+  updated_at = '';
+  submitted_by = '';
+  problems_encountered = '';
+  remarks = '';
+  
 
   constructor(
     private accompService: AccomplishmentsService,
@@ -70,6 +82,7 @@ export class ReportsComponent implements OnInit {
         res.submitted_by = JSON.parse(res.submitted_by);
         return res;
       });
+      this.rawAccList = acc;
     });
   }
 
@@ -149,6 +162,149 @@ export class ReportsComponent implements OnInit {
 
   convertDate(date) {
     return new Date(date);
+  }
+
+  filter(value) {
+    let accomp = this.rawAccList;
+
+    if (this.updated_at != '') {
+      console.log('updated_at');
+      accomp = accomp.filter(acc => {
+        const updated_at = `${acc.updated_at}`;
+        if (updated_at.includes(this.updated_at)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.submitted_by != '') {
+      console.log('submitted_by');
+      accomp = accomp.filter(acc => {
+        const submitted_by = `${acc.submitted_by}`;
+        if (submitted_by.includes(this.submitted_by)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.problems_encountered != '') {
+      console.log('problems_encountered');
+      accomp = accomp.filter(acc => {
+        const problems_encountered = `${acc.problems_encountered}`;
+        if (problems_encountered.includes(this.problems_encountered)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.remarks != '') {
+      console.log(' remarks');
+      accomp = accomp.filter(acc => {
+        const remarks = `${acc.remarks}`;
+        if (remarks.includes(this.remarks)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    // if (this.time_in != '') {
+    //   console.log('time_in');
+    //   accomp = accomp.filter(acc => {
+    //     const time_in = `${acc.time_in}`;
+    //     if (time_in.includes(this.time_in)) {
+    //       return true;
+    //     }
+    //     return false;
+    //   });
+    // }
+
+    // if (this.time_out != '') {
+    //   console.log('time_out');
+    //   accomp = accomp.filter(acc => {
+    //     const time_out = `${acc.time_out}`;
+    //     if (time_out.includes(this.time_out)) {
+    //       return true;
+    //     }
+    //     return false;
+    //   });
+    // }
+
+    console.log(accomp);
+
+    this.accList = accomp;
+
+  }
+
+  sort(column) {
+    console.log(column);
+
+    if (this.order == 'desc') {
+
+      this.order = 'asc';
+      this.accList = this.accList.sort((a, b) => {
+        if (a[column] > b[column]) {
+          return -1;
+        }
+        if (b[column] > a[column]) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      this.order = 'desc';
+      this.accList = this.accList.sort((a, b) => {
+        if (a[column] < b[column]) {
+          return -1;
+        }
+        if (b[column] > a[column]) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+
+  }
+
+  async exportPdf(){
+    this.printList = [];
+    this.printList.push(['Date','Created by', 'Problem Encountered', 'Remarks',  'Time_in', 'Time_out']);
+    this.accList.forEach(acc => {
+      const accPrintList = [];
+      accPrintList.push(acc['updated_at']);
+      accPrintList.push(acc['submitted_by']);
+      accPrintList.push(acc['problems_encountered']);
+      accPrintList.push(acc['remarks']);
+      accPrintList.push(acc['time_in']);
+      accPrintList.push(acc['time_out']);
+      
+      this.printList.push(accPrintList);
+    });
+
+    console.log(this.printList);
+
+    // playground requires you to assign document definition to a variable called dd
+      var docDefinition = {
+        content: [
+          {
+            table: {
+              widths: ['*', '*', '*','*', '*', '*'],
+              body: [ ... this.printList]
+            }
+          }
+        ],
+        styles: {
+          font_8:{
+              fontSize: 8,
+              color: '#1B4E75'
+          }
+    }
+      }
+
+      pdfMake.createPdf(docDefinition).open();
   }
 
 }

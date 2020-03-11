@@ -10,7 +10,6 @@
   <table class="table table-striped">
     <thead class="bg-primary-color text-light">
       <tr>
-        <th></th>
         <th class="text-center">Name</th>
         <th class="text-center">Addess</th>
         <th class="text-center">Contact Number</th>
@@ -28,9 +27,6 @@
     </thead>
     <tbody>
       <tr>
-        <td class="text-center">
-          <i class="fa fa-filter" aria-hidden="true"></i>
-        </td>
         <td>
           <div class="d-flex border border-secondary rounded bg-white">
             <div class="flex-1">
@@ -39,6 +35,7 @@
                 class="border-0 px-2 py-1 w-100"
                 [(ngModel)]="hospital_name"
                 (keyup)="filter($event.target.value)"
+                placeholder="Search for Hospital Name"
               />
             </div>
             <button class="btn btn-light" (click)="sort('hospital_name')">
@@ -54,6 +51,7 @@
                 class="border-0 px-2 py-1 w-100"
                 [(ngModel)]="address"
                 (keyup)="filter($event.target.value)"
+                placeholder="Search for Hospital Address"
               />
             </div>
           </div>
@@ -66,6 +64,7 @@
                 class="border-0 px-2 py-1 w-100"
                 [(ngModel)]="hospital_contact_no"
                 (keyup)="filter($event.target.value)"
+                placeholder="Search for Hospital Contact No."
               />
             </div>
           </div>
@@ -73,7 +72,6 @@
         <td></td>
       </tr>
       <tr *ngFor="let hospital of hospitalList">
-        <th></th>
         <th scope="row">{{ hospital.hospital_name }}</th>
         <td>
           {{ hospital.address }}
