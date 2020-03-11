@@ -18,6 +18,8 @@
       name=""
       id=""
       class="ml-3 rounded px-2 py-1"
+      [(ngModel)]="elder_name"
+      (keyup)="filter()"
       placeholder="Search"
     />
   </div>
@@ -25,12 +27,11 @@
   <table class="table table-striped">
     <thead class="bg-primary-color text-light">
       <tr>
-        <th></th>
-        <th>Elder Name</th>
-        <th>Medicine</th>
-        <th>Qty</th>
-        <th>Time</th>
-        <th>Status</th>
+        <th class="text-center">Elder Name</th>
+        <th class="text-center">Medicine</th>
+        <th class="text-center">Qty</th>
+        <th class="text-center">Time</th>
+        <th class="text-center">Status</th>
         <th></th>
       </tr>
     </thead>
@@ -39,8 +40,7 @@
         <td colspan="13" class="text-center">No Record</td>
       </tr>
       <tr *ngFor="let task of taskList">
-        <th></th>
-        <th class="text-center" scope="row">{{ task.elder_name }}</th>
+        <th scope="row">{{ task.elder_name }}</th>
         <td class="text-center">{{ task.medicine_description }}</td>
         <td class="text-center">{{ task.qty }}</td>
         <td class="text-center">{{ task.time }}</td>

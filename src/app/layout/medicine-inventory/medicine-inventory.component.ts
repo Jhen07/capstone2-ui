@@ -7,6 +7,9 @@ import { ToastrService } from 'ngx-toastr';
 import { MedReport } from 'src/app/models/med-report.model';
 import { User } from 'src/app/models/user.model';
 import { log } from 'util';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-medicine-inventory',
@@ -17,6 +20,7 @@ export class MedicineInventoryComponent implements OnInit {
   userId = +localStorage.getItem('user_id');
   userData: User = JSON.parse(localStorage.getItem('user_data'));
   medicineList: Medicine[] = [];
+  rawMedicineList: Medicine[] = [];
   medName = '';
   quantity = 1;
   buffer = 1;
@@ -30,6 +34,15 @@ export class MedicineInventoryComponent implements OnInit {
   medToUpdate: any;
   operation = '+';
   restockType = 'qty';
+  order = 'asc';
+  printList = [];
+
+ medicine_name = '';
+ type_of_medicine_description = '';
+ qty = '';
+ dispense = '';
+ updated_at = '';
+ buff = '';
 
   constructor(
     private modalService: NgbModal,
@@ -75,6 +88,9 @@ export class MedicineInventoryComponent implements OnInit {
       console.log('====================================');
       console.log(list);
       console.log('====================================');
+    });
+    this.medicineService.getAllMedicine(0).subscribe((med: Medicine[]) => {
+      this.rawMedicineList = med;
     });
   }
 
@@ -198,6 +214,116 @@ export class MedicineInventoryComponent implements OnInit {
       this.restock = 1;
       this.toastr.success('Item restocked!');
     }, (err) => this.toastr.error(err.message));
+  }
+
+  filter(value) {
+    let medicine = this.rawMedicineList;
+
+    if (this.medicine_name != '') {
+      console.log('medicine_name');
+      medicine = medicine.filter(med => {
+        const name = `${med.medicine_name}`;
+        if (name.includes(this.medicine_name)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.type_of_medicine_description != '') {
+      console.log('type_of_medicine_description');
+      medicine = medicine.filter(med => {
+        const type_of_medicine_description = `${med.type_of_medicine_description}`;
+        if (type_of_medicine_description.includes(this.type_of_medicine_description)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.buff != '') {
+      console.log('buffer');
+      medicine = medicine.filter(med => {
+        const buffer = `${med.buffer}`;
+        if (buffer.includes(this.buff)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    console.log(medicine);
+
+    this.medicineList = medicine;
+
+  }
+
+  sort(column) {
+    console.log(column);
+
+    if (this.order == 'desc') {
+
+      this.order = 'asc';
+      this.medicineList = this.medicineList.sort((a, b) => {
+        if (a[column] > b[column]) {
+          return -1;
+        }
+        if (b[column] > a[column]) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      this.order = 'desc';
+      this.medicineList = this.medicineList.sort((a, b) => {
+        if (a[column] < b[column]) {
+          return -1;
+        }
+        if (b[column] > a[column]) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+
+  }
+
+  async exportPdf(){
+    this.printList = [];
+    this.printList.push(['Medicine Name', 'Medicine Type', 'Buffer', 'Stock', 'Dispense', 'Date Modified']);
+    this.medicineList.forEach(med => {
+      const medicinePrintList = [];
+      medicinePrintList.push(med['medicine_name']);
+      medicinePrintList.push(med['buffer']);
+      medicinePrintList.push(med['bed_no']);
+      medicinePrintList.push(med['qty']);
+      medicinePrintList.push(med['dispense']);
+      medicinePrintList.push(med['updated_at']);
+      
+      this.printList.push(medicinePrintList);
+    });
+    console.log(this.printList);
+
+    // playground requires you to assign document definition to a variable called dd
+      var docDefinition = {
+        content: [
+          {
+            table: {
+              widths: ['*', '*', '*', '*', '*', '*'],
+              body: [ ... this.printList
+              ]
+            }
+          }
+        ],
+        styles: {
+          font_8:{
+              fontSize: 8,
+              color: '#1B4E75'
+          }
+    }
+      }
+
+      pdfMake.createPdf(docDefinition).open();
   }
 
 }

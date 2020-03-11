@@ -2,20 +2,14 @@
   <hr />
   <h2 class="text-center">
     GUEST MONITORING
-    <button class="btn btn-info float-right">
-      Export as PDF
-    </button>
-    <button class="btn btn-light float-right mx-2" (click)="open(content)">
-      <i class="fa fa-plus mx-2" aria-hidden="true"></i> Add
-    </button>
   </h2>
   <hr />
 </div>
+
+<div class="card mb-3">
 <table class="table table-striped">
   <thead class="bg-primary-color text-light">
     <tr>
-      <th class="text-center"><input type="checkbox" /></th>
-      <th class="text-center">#</th>
       <th class="text-center">Guest Name</th>
       <th class="text-center">Contact #</th>
       <th class="text-center">Address</th>
@@ -24,17 +18,17 @@
       <th class="text-center">Time-in</th>
       <th class="text-center">Time-out</th>
       <th class="text-center">Date</th>
-      <th></th>
+      <th class="text-center">
+        <button class="btn bg-transparent mx-2" (click)="open(content)">
+          <i class="fa fa-plus mx-2" aria-hidden="true"></i> Add
+        </button>
+      </th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <i class="fa fa-filter" aria-hidden="true"></i>
-      </td>
-      <td></td>
-      <td>
-        <div class="d-flex border border-secondary rounded">
+        <div class="d-flex border border-secondary rounded bg-white">
           <div class="flex-1">
             <input
               type="search"
@@ -49,7 +43,7 @@
         </div>
       </td>
       <td>
-        <div class="d-flex border border-secondary rounded">
+        <div class="btn d-flex border border-secondary rounded bg-white">
           <div class="flex-1">
             <input
               type="search"
@@ -58,13 +52,10 @@
               (keyup)="filter()"
             />
           </div>
-          <button class="btn btn-light" (click)="sort('contact_no')">
-            <i class="fa fa-sort" aria-hidden="true"></i>
-          </button>
         </div>
       </td>
       <td>
-        <div class="d-flex border border-secondary rounded">
+        <div class="btn d-flex border border-secondary rounded bg-white">
           <div class="flex-1">
             <input
               type="search"
@@ -73,13 +64,10 @@
               (keyup)="filter()"
             />
           </div>
-          <button class="btn btn-light" (click)="sort('address')">
-            <i class="fa fa-sort" aria-hidden="true"></i>
-          </button>
         </div>
       </td>
       <td>
-        <div class="d-flex border border-secondary rounded">
+        <div class="d-flex border border-secondary rounded bg-white">
           <div class="flex-1">
             <input
               type="search"
@@ -94,7 +82,7 @@
         </div>
       </td>
       <td>
-        <div class="d-flex border border-secondary rounded">
+        <div class="btn d-flex border border-secondary rounded bg-white">
           <div class="flex-1">
             <input
               type="search"
@@ -103,13 +91,10 @@
               [(ngModel)]="relationship"
             />
           </div>
-          <button class="btn btn-light" (click)="sort('relationship')">
-            <i class="fa fa-sort" aria-hidden="true"></i>
-          </button>
         </div>
       </td>
       <td>
-        <div class="d-flex border border-secondary rounded">
+        <div class="d-flex border border-secondary rounded bg-white">
           <div class="flex-1">
             <input
               type="search"
@@ -125,7 +110,7 @@
         </div>
       </td>
       <td>
-        <div class="d-flex border border-secondary rounded">
+        <div class="d-flex border border-secondary rounded bg-white">
           <div class="flex-1">
             <input
               type="search"
@@ -141,7 +126,7 @@
         </div>
       </td>
       <td>
-        <div class="d-flex border border-secondary rounded">
+        <div class="d-flex border border-secondary rounded bg-white">
           <div class="flex-1">
             <input
               type="search"
@@ -155,27 +140,29 @@
           </button>
         </div>
       </td>
-      <td></td>
+      <td>
+        <button class="btn btn-info float-right" (click)="exportPdf()">
+          Export as PDF
+        </button>
+      </td>
     </tr>
     <tr *ngFor="let guest of guestList; let i = index">
-      <th><input type="checkbox" /></th>
-      <th scope="row">{{ i + 1 }}</th>
       <td>{{ guest.guest_name }}</td>
       <td>{{ guest.contact_no }}</td>
       <td>{{ guest.address }}</td>
       <td>{{ guest.elder_name }}</td>
       <td>{{ guest.relationship_description }}</td>
-      <td>{{ formatTime(guest.time_in) | date: 'hh:mm a' }}</td>
+      <td class="text-center">{{ formatTime(guest.time_in) | date: 'hh:mm a' }}</td>
       <!-- auto time-in na sya one na nagfillup ng form -->
-      <td *ngIf="guest.time_out">
+      <td class="text-center" *ngIf="guest.time_out">
         {{ formatTime(guest.time_out) | date: 'hh:mm a' }}
       </td>
-      <td *ngIf="!guest.time_out" (click)="timeOut(i)">
+      <td class="text-center" *ngIf="!guest.time_out" (click)="timeOut(i)">
         <button class="btn btn-primary">Time out</button>
       </td>
       <!-- button na lng yung time-out, di sya required sa form na m -->
-      <td>{{ formatTime(guest.created_at) | date: 'yyyy-MM-dd' }}</td>
-      <td>
+      <td class="text-center">{{ formatTime(guest.created_at) | date: 'yyyy-MM-dd' }}</td>
+      <td class="text-center">
         <button
           class="btn bg-transparent"
           (click)="setSelectedGuest(guest, content2)"
@@ -190,6 +177,8 @@
     </tr>
   </tbody>
 </table>
+</div>
+
 
 <!-- add modal -->
 <div>

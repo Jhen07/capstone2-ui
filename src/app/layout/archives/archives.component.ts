@@ -25,7 +25,7 @@ import { AccomplishmentsService } from 'src/app/services/accomplishments/accompl
 })
 export class ArchivesComponent implements OnInit {
   userRole = localStorage.getItem('user_role');
-  tab = 8;
+  tab = 0;
   elderList: Elders[] = [];
   staffList: User[] = [];
   guestList: Guest[] = [];

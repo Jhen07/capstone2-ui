@@ -10,34 +10,30 @@
       name=""
       id=""
       class="ml-3 rounded px-2 py-1"
-      placeholder="Search"
+      [(ngModel)]="medicine_name"
+      (keyup)="filter($event.target.value)"
+      placeholder="Search Medicine Name"
     />
-    <button class="btn btn-info float-right mr-1">
+    <button class="btn btn-info float-right mr-1" (click)="exportPdf()">
       Export as PDF
     </button>
     <button class="btn btn-light float-right" (click)="open(content)">
       <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
     </button>
-    <button class="btn btn-light float-right">
+    <button class="btn btn-light float-right" (click)="sort('medicine_name')">
       <i class="fa fa-sort" aria-hidden="true"></i> Sort
-    </button>
-    <button class="btn btn-light float-right">
-      <i class="fa fa-filter" aria-hidden="true"></i> Filter
     </button>
   </div>
   <table class="table table-striped">
     <thead class="bg-primary-color text-light">
       <tr>
-        <th><input type="checkbox" /></th>
-        <th>#</th>
-        <th>Medicine Name</th>
-        <th>Medicine Type</th>
-        <th>Buffer</th>
-        <!-- yung mga stock for emergency only... di ginagalaw -->
-        <th>Stock</th>
-        <th>Dispense</th>
-        <!-- bilang ng mga nadispense na -->
-        <th>Date Modified</th>
+        <th class="text-center">#</th>
+        <th class="text-center">Medicine Name</th>
+        <th class="text-center">Medicine Type</th>
+        <th class="text-center">Buffer</th>
+        <th class="text-center">Stock</th>
+        <th class="text-center">Dispense</th>
+        <th class="text-center">Date Modified</th>
         <th></th>
       </tr>
     </thead>
@@ -46,16 +42,13 @@
         <td colspan="13" class="text-center">No Record</td>
       </tr>
       <tr *ngFor="let med of medicineList; let i = index">
-        <th><input type="checkbox" /></th>
-        <th scope="row">{{ i + 1 }}</th>
+        <th class="text-center" scope="row">{{ i + 1 }}</th>
         <td>{{ med.medicine_name }}</td>
         <td>{{ med.type_of_medicine_description }}</td>
-        <td>{{ med.buffer }}</td>
-        <!-- yung mga stock for emergency only... di ginagalaw -->
-        <td>{{ med.qty }}</td>
-        <td>{{ med.dispense }}</td>
-        <!-- bilang ng mga nadispense na -->
-        <td>{{ med.updated_at }}</td>
+        <td class="text-center">{{ med.buffer }}</td>
+        <td class="text-center">{{ med.qty }}</td>
+        <td class="text-center">{{ med.dispense }}</td>
+        <td class="text-center">{{ med.updated_at }}</td>
         <td class="text-center">
           <button
             class="btn btn-primary mr-2"
@@ -79,7 +72,6 @@
   </table>
 
   <!-- Add Medicine modal -->
-
   <div>
     <ng-template #content let-c="close" let-d="dismiss">
       <div class="modal-header">

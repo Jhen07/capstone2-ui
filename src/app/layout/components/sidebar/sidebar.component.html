@@ -101,6 +101,14 @@
     </a>
     <label class="text-light m-2 small">OTHERS</label>
     <a
+      [routerLink]="['/archives']"
+      [routerLinkActive]="['router-link-active']"
+      class="list-group-item"
+    >
+      <i class="fa fa-users" aria-hidden="true"></i>&nbsp;
+      <span>{{ 'Archives' | translate }}</span>
+    </a>
+    <a
       [routerLink]="['/system-users']"
       [routerLinkActive]="['router-link-active']"
       class="list-group-item"
@@ -113,6 +121,7 @@
       <span>{{ 'Logout' | translate }}</span>
     </a>
   </div>
+
   <div class="list-group pt-3 px-1" *ngIf="user.role > 0">
     <a routerLink="/staff-dashboard" class="list-group-item d-flex">
       <img

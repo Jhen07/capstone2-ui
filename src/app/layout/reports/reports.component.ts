@@ -29,7 +29,10 @@ export class ReportsComponent implements OnInit {
   accList: Accomplishments[] = [];
   medReports: MedReport[] = [];
   taskReports: TaskReport[] = [];
+  rawTaskReportsList: TaskReport[] = [];
+  taskReportsList: TaskReport[] = [];
   printList = [];
+  printTaskList = [];
   time_in: any;
   time_out: any;
   closeResult: string;
@@ -44,6 +47,14 @@ export class ReportsComponent implements OnInit {
   submitted_by = '';
   problems_encountered = '';
   remarks = '';
+
+  date = '';
+  staff_name = '';
+  elder_name = '';
+  medicine_description = '';
+  qty = '';
+  created_at = '';
+  status = '';
   
 
   constructor(
@@ -64,7 +75,6 @@ export class ReportsComponent implements OnInit {
         return report;
       });
     });
-
     this.userService.getUserLogsById(this.userData.id).subscribe(logs => {
       this.userLogs = logs;
     });
@@ -90,7 +100,7 @@ export class ReportsComponent implements OnInit {
     if (this.userData.role != 0) {
       this.taskService.getTaskReportById(this.userData.id).subscribe(reports => {
         this.taskReports = reports;
-      });
+      })
     } else {
       this.taskService.getTaskReports().subscribe(reports => {
         this.taskReports = reports;
@@ -100,6 +110,9 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.taskService.getAllTasks(0).subscribe((report: TaskReport[]) => {
+      this.rawTaskReportsList = report;
+    });
   }
 
   addAccomplishment() {
@@ -166,6 +179,7 @@ export class ReportsComponent implements OnInit {
 
   filter(value) {
     let accomp = this.rawAccList;
+    let reports = this.rawTaskReportsList;
 
     if (this.updated_at != '') {
       console.log('updated_at');
@@ -210,7 +224,7 @@ export class ReportsComponent implements OnInit {
         return false;
       });
     }
-
+    
     // if (this.time_in != '') {
     //   console.log('time_in');
     //   accomp = accomp.filter(acc => {
@@ -232,11 +246,89 @@ export class ReportsComponent implements OnInit {
     //     return false;
     //   });
     // }
+    
+    if (this.date != '') {
+      console.log('date');
+      reports = reports.filter(report => {
+        const date = `${report.date}`;
+        if (date.includes(this.date)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.staff_name != '') {
+      console.log('staff_name');
+      reports = reports.filter(report => {
+        const staff_name = `${report.staff_name}`;
+        if (staff_name.includes(this.staff_name)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.elder_name != '') {
+      console.log('elder_name');
+      reports = reports.filter(report => {
+        const elder_name = `${report.elder_name}`;
+        if (elder_name.includes(this.elder_name)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.medicine_description != '') {
+      console.log('medicine_description');
+      reports = reports.filter(report => {
+        const medicine_description = `${report.medicine_description}`;
+        if (medicine_description.includes(this.medicine_description)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.qty != '') {
+      console.log('qty');
+      reports = reports.filter(report => {
+        const qty = `${report.qty}`;
+        if (qty.includes(this.qty)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.created_at != '') {
+      console.log('created_at');
+      reports = reports.filter(report => {
+        const created_at = `${report.created_at}`;
+        if (created_at.includes(this.created_at)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (this.status != '') {
+      console.log('status');
+      reports = reports.filter(report => {
+        const status = `${report.status}`;
+        if (status.includes(this.status)) {
+          return true;
+        }
+        return false;
+      });
+    }
 
     console.log(accomp);
+    console.log(reports);
 
     this.accList = accomp;
-
+    this.taskReportsList = reports;
   }
 
   sort(column) {
@@ -254,9 +346,27 @@ export class ReportsComponent implements OnInit {
         }
         return 0;
       });
+      this.taskReportsList = this.taskReportsList.sort((a, b) => {
+        if (a[column] > b[column]) {
+          return -1;
+        }
+        if (b[column] > a[column]) {
+          return 1;
+        }
+        return 0;
+      });
     } else {
       this.order = 'desc';
       this.accList = this.accList.sort((a, b) => {
+        if (a[column] < b[column]) {
+          return -1;
+        }
+        if (b[column] > a[column]) {
+          return 1;
+        }
+        return 0;
+      });
+      this.taskReportsList = this.taskReportsList.sort((a, b) => {
         if (a[column] < b[column]) {
           return -1;
         }
@@ -305,6 +415,45 @@ export class ReportsComponent implements OnInit {
       }
 
       pdfMake.createPdf(docDefinition).open();
+  }
+
+  async exportTaskPdf(){
+    this.printTaskList = [];
+    this.printTaskList.push(['Date','Assigned Staff', 'Elders Name', 'Medicine Description',  'Quantity', 'Time', 'Status']);
+    this.taskReportsList.forEach(report => {
+      const taskReportsPrintList = [];
+      taskReportsPrintList.push(report['date']);
+      taskReportsPrintList.push(report['staff_name']);
+      taskReportsPrintList.push(report['elder_name']);
+      taskReportsPrintList.push(report['medicine_description']);
+      taskReportsPrintList.push(report['qty']);
+      taskReportsPrintList.push(report['created_at']);
+      taskReportsPrintList.push(report['status']);
+      
+      this.printList.push(taskReportsPrintList);
+    });
+
+    console.log(this.printTaskList);
+
+    // playground requires you to assign document definition to a variable called dd
+      var docTaskDefinition = {
+        content: [
+          {
+            table: {
+              widths: ['*', '*', '*','*', '*', '*', '* '],
+              body: [ ... this.printTaskList]
+            }
+          }
+        ],
+        styles: {
+          font_8:{
+              fontSize: 8,
+              color: '#1B4E75'
+          }
+    }
+      }
+
+      pdfMake.createPdf(docTaskDefinition).open();
   }
 
 }

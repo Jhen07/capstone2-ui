@@ -5,6 +5,9 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { EldersService } from 'src/app/services/elders/elders.service';
 import { Elders } from 'src/app/models/elders.model';
 import { ToastrService } from 'ngx-toastr';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-guess-monitoring',
@@ -16,7 +19,7 @@ export class GuestMonitoringComponent implements OnInit {
   guestList: Guest[] = [];
   selectedElder = 1;
   selectedGuest: Guest = JSON.parse(JSON.stringify(initialGuests));
-
+  printList = [];
   rawguestList: Guest[] = [];
   closeResult: string;
   alerts: Array<any> = [];
@@ -323,6 +326,46 @@ export class GuestMonitoringComponent implements OnInit {
         return 0;
       });
     }
-
   }
+
+  async exportPdf(){
+    this.printList = [];
+    this.printList.push(['Guest Name', 'Contact No.', 'Address', 'Elders Visited', 'Relationship', 'Time-in', 'Time-out', 'Date']);
+    this.guestList.forEach(gs => {
+      const guestPrintList = [];
+      guestPrintList.push(gs['guest_name']);
+      guestPrintList.push(gs['contact_no']);
+      guestPrintList.push(gs['address']);
+      guestPrintList.push(gs['elder_name']);
+      guestPrintList.push(gs['relationship_description']);
+      guestPrintList.push(gs['time_in']);
+      guestPrintList.push(gs['time_out']);
+      guestPrintList.push(gs['created_at']);
+      
+      this.printList.push(guestPrintList);
+    });
+    console.log(this.printList);
+
+    // playground requires you to assign document definition to a variable called dd
+      var docDefinition = {
+        content: [
+          {
+            table: {
+              widths: ['*', '*', '*', '*','*', '*', '*', '*'],
+              body: [ ... this.printList
+              ]
+            }
+          }
+        ],
+        styles: {
+          font_8:{
+              fontSize: 8,
+              color: '#1B4E75'
+          }
+    }
+      }
+
+      pdfMake.createPdf(docDefinition).open();
+  }
+
 }

@@ -14,9 +14,12 @@ import { Task, TaskReport } from 'src/app/models/task.model';
 export class TasksComponent implements OnInit {
   time: any;
   taskList: Task[] = [];
+  rawTaskList: Task[] = [];
   doneTasks: TaskReport[] = [];
   userId = localStorage.getItem('user_id');
   weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  elder_name = '';
+
   constructor(
     public router: Router,
     private userService: UsersService,
@@ -56,6 +59,9 @@ export class TasksComponent implements OnInit {
       }
       return false;
     });
+    // this.taskService.getAllTasks(0).subscribe((tasks: Task[]) => {
+    //   this.rawTaskList = tasks;
+    // });
   }
 
   setTime() {
@@ -69,6 +75,26 @@ export class TasksComponent implements OnInit {
       return this.doneTasks.find(task => task.task_id == id).status;
     }
     return 'Pending';
+  }
+
+  filter(value) {
+    let tasks = this.rawTaskList;
+
+    if (this.elder_name != '') {
+      console.log('elder_name');
+      tasks = tasks.filter(task => {
+        const elder_name = `${task.elder_name}`;
+        if (elder_name.includes(this.elder_name)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    console.log(tasks);
+
+    this.taskList = tasks;
+
   }
 
 }
