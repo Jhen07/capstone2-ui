@@ -65,12 +65,12 @@
       <div class="card mb-3">
         <div class="card-header bg-primary-color text-light pt-3">
           ANNOUNCEMENT
-          <button
+          <!-- <button
             class="btn btn-danger float-right"
             (click)="deleteAnnouncement()"
           >
             <i class="fa fa-trash M-4" aria-hidden="true"></i>
-          </button>
+          </button> -->
           <button class="btn btn-light float-right" (click)="open(content)">
             <i class="fa fa-plus M-4 " aria-hidden="true"></i>
           </button>
@@ -79,9 +79,9 @@
           <table class="table table-striped">
             <thead class="bg-primary-color text-light">
               <tr>
-                <th><input type="checkbox" (click)="CheckAllOptions()" /></th>
                 <th>Event</th>
                 <th>Date of Event</th>
+                <th>Time</th>
               </tr>
             </thead>
             <tbody class="border">
@@ -89,13 +89,11 @@
                 <td colspan="13" class="text-center">No Record</td>
               </tr>
               <tr *ngFor="let item of announcementList; let i = index">
-                <th>
-                  <input type="checkbox" [(ngModel)]="item.isChecked" />
-                </th>
                 <td>
                   <span>{{ item.title }}</span>
                 </td>
                 <td>{{ convertDate(item.start) | date: 'MM dd yyyy' }}</td>
+                <td></td>
               </tr>
             </tbody>
           </table>
@@ -175,7 +173,7 @@
     <div class="modal-body">
       <fieldset class="form-group">
         <label>Event</label>
-        <input class="form-control" placeholder="" [(ngModel)]="event" />
+        <input class="form-control" placeholder="" [(ngModel)]="event" (ngModelChange)="event = $event.toUpperCase()"/>
       </fieldset>
       <fieldset class="form-group">
         <label>Date</label>

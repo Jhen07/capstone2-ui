@@ -348,24 +348,74 @@ export class GuestMonitoringComponent implements OnInit {
 
     // playground requires you to assign document definition to a variable called dd
       var docDefinition = {
+        pageOrientation: 'landscape',
+        pageSize: 'LETTER',
         content: [
+          // {
+          //   image: await
+          //   this.getBase64ImageFromURL(
+          //     "https://images.pexels.com/photos/209640/pexels-photo-209640.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300"
+          //   )
+          // },      
+          {
+            text: 'ADD-CHE',
+            bold: true,
+            fontSize: 20,
+            alignment: 'center',
+          },
+          {
+            text: 'K-40 Bagong Pag asa Subd. Brgy San Vicente Apalit Pampanga', alignment: 'center'
+          },
+          {
+            text: '+639232715825', style: 'sub_header'
+          },
           {
             table: {
               widths: ['*', '*', '*', '*','*', '*', '*', '*'],
               body: [ ... this.printList
               ]
             }
+          }],
+          styles: {
+            sub_header: {
+              fontSize: 12,
+              alignment: 'center',
+              margin: [0, 0, 0, 10]
+            },
+            font_8:{
+                fontSize: 8,
+                color: '#1B4E75'
+            }
           }
-        ],
-        styles: {
-          font_8:{
-              fontSize: 8,
-              color: '#1B4E75'
-          }
-    }
-      }
+        }
 
       pdfMake.createPdf(docDefinition).open();
+  }
+
+  getBase64ImageFromURL(url) {
+    return new Promise((resolve, reject) => {
+      var img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+
+      img.onload = () => {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        var dataURL = canvas.toDataURL("image/png");
+
+        resolve(dataURL);
+      };
+
+      img.onerror = error => {
+        reject(error);
+      };
+
+      img.src = url;
+    });
   }
 
 }

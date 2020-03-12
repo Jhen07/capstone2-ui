@@ -2,12 +2,6 @@
   <hr />
   <h2 class="text-center">
     ELDERS
-    <button
-      class="btn btn-light float-right"
-      (click)="router.navigate(['/elders/add'])"
-    >
-      <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
-    </button>
   </h2>
   <hr />
 </div>
@@ -20,9 +14,15 @@
         <th class="text-center">Bed No.</th>
         <th class="text-center">Date Affiliated</th>
         <th class="text-center">
-          <button class="btn bg-transparent" (click)="open(setting)">
+          <button class="btn bg-transparent float-right" (click)="open(setting)">
             <i class="fa fa-cog ml-3" aria-hidden="true"></i>
           </button>
+          <button
+            class="btn btn-light"
+            (click)="router.navigate(['/elders/add'])"
+          >
+            <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
+        </button>
         </th>
       </tr>
     </thead>
@@ -119,6 +119,9 @@
             (click)="router.navigate(['/elders/details', { id: elder.id }])"
           >
             <i class="fa fa-user " aria-hidden="true"></i>
+          </button>
+          <button class="btn bg-transparent">
+            <i class="fa fa-archive " aria-hidden="true"></i>
           </button>
         </td>
       </tr>

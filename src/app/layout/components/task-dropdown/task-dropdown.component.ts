@@ -51,7 +51,7 @@ export class TaskDropdownComponent implements OnInit {
 
     this.med.dispense += this.task.qty;
 
-    if (this.med.qty < 10) {
+    if (this.med.qty <= 10) {
       this.sendHelp(this.med);
     }
 

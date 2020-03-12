@@ -181,6 +181,18 @@ export class StaffComponent implements OnInit {
       var docDefinition = {
         content: [
           {
+            text: 'ADD-CHE',
+            bold: true,
+            fontSize: 20,
+            alignment: 'center',
+          },
+          {
+            text: 'K-40 Bagong Pag asa Subd. Brgy San Vicente Apalit Pampanga', alignment: 'center'
+          },
+          {
+            text: '+639232715825', style: 'sub_header'
+          },
+          {
             table: {
               widths: ['*', '*', '*', '*', '*'],
               body: [ ... this.printList
@@ -189,6 +201,11 @@ export class StaffComponent implements OnInit {
           }
         ],
         styles: {
+          sub_header: {
+            fontSize: 12,
+            alignment: 'center',
+            margin: [0, 0, 0, 10]
+          },
           font_8:{
               fontSize: 8,
               color: '#1B4E75'

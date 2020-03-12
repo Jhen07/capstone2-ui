@@ -2,12 +2,6 @@
   <hr />
   <h2 class="text-center">
     STAFF
-    <button
-      class="btn btn-light float-right"
-      (click)="router.navigate(['/staff/add'])"
-    >
-      <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
-    </button>
   </h2>
   <hr />
 </div>
@@ -21,9 +15,15 @@
         <th class="text-center">Date Hired</th>
         <th class="text-center">Status</th>
         <th class="text-center" class="text-center">
-          <button class="btn bg-transparent" (click)="open(setting)">
+          <button class="btn bg-transparent float-right" (click)="open(setting)">
             <i class="fa fa-cog ml-3" aria-hidden="true"></i>
           </button>
+          <button
+            class="btn btn-light"
+            (click)="router.navigate(['/staff/add'])"
+          >
+            <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
+    </button>
         </th>
       </tr>
     </thead>
@@ -69,7 +69,7 @@
             <div class="flex-1">
               <input
                 type="search"
-                class="border-0 w-100 rounded px-2 py-1"
+                class="border-0 w-100 rounded px-2"
                 (keyup)="filter()"
                 [(ngModel)]="email"
                 placeholder="Search for Staff Email"
@@ -102,8 +102,8 @@
                 (change)="filter()"
               >
                 <option value="">Select Status</option>
-                <option value="0">Inactive</option>
-                <option value="1">Active</option>
+                <option value="0">Offline</option>
+                <option value="1">Online</option>
               </select>
             </div>
           </div>
@@ -132,6 +132,9 @@
             (click)="router.navigate(['/staff/details', { id: staff.id }])"
           >
             <i class="fa fa-user ml-3" aria-hidden="true"></i>
+          </button>
+          <button class="btn bg-transparent">
+            <i class="fa fa-archive " aria-hidden="true"></i>
           </button>
         </td>
       </tr>

@@ -45,8 +45,10 @@
         <th class="text-center" scope="row">{{ i + 1 }}</th>
         <td>{{ med.medicine_name }}</td>
         <td>{{ med.type_of_medicine_description }}</td>
-        <td class="text-center">{{ med.buffer }}</td>
-        <td class="text-center">{{ med.qty }}</td>
+        <td class="text-center"
+          [ngClass]="{ 'text-danger': 10 >= med.buffer }">{{ med.buffer }}</td>
+        <td class="text-center"
+          [ngClass]="{ 'text-danger': 10 >= med.qty}">{{ med.qty }}</td>
         <td class="text-center">{{ med.dispense }}</td>
         <td class="text-center">{{ med.updated_at }}</td>
         <td class="text-center">

@@ -3,7 +3,7 @@
   <h2 class="text-center">
     DOCTOR LIST
     <button
-      class="btn btn-light float-right"
+      class="btn btn-primary float-right"
       (click)="open(content)"
       *ngIf="userRole == 0"
     >
@@ -46,7 +46,7 @@
             <div class="flex-1">
               <input
                 type="text"
-                class="border-0 px-2 py-1 w-100"
+                class="border-0 px-2 w-100"
                 [(ngModel)]="contact_no"
                 (keyup)="filter($event.target.value)"
               />
@@ -58,7 +58,7 @@
             <div class="flex-1">
               <input
                 type="text"
-                class="border-0 px-2 py-1 w-100"
+                class="border-0 px-2 w-100"
                 [(ngModel)]="schedules"
                 (keyup)="filter($event.target.value)"
               />
@@ -70,7 +70,7 @@
             <div class="flex-1">
               <input
                 type="text"
-                class="border-0 px-2 py-1 w-100"
+                class="border-0 px-2 w-100"
                 [(ngModel)]="specialization"
                 (keyup)="filter($event.target.value)"
               />

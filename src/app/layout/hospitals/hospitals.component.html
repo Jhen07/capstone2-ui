@@ -15,13 +15,13 @@
         <th class="text-center">Contact Number</th>
         <th class="text-center">
           <button
-            class="btn bg-transparent"
+            class="btn bg-light"
             (click)="open(content)"
-            *ngIf="userRole == 0"
-          >
-          <i class="fa fa-plus mr-2" aria-hidden="true" *ngIf="userRole == 0"></i>
-            Add
-    </button>
+              *ngIf="userRole == 0"
+            >
+            <i class="fa fa-plus mr-2" aria-hidden="true" *ngIf="userRole == 0"></i>
+              Add
+          </button>
         </th>
       </tr>
     </thead>
@@ -48,7 +48,7 @@
             <div class="flex-1">
               <input
                 type="text"
-                class="border-0 px-2 py-1 w-100"
+                class="border-0 px-2 w-100"
                 [(ngModel)]="address"
                 (keyup)="filter($event.target.value)"
                 placeholder="Search for Hospital Address"
@@ -61,7 +61,7 @@
             <div class="flex-1">
               <input
                 type="text"
-                class="border-0 px-2 py-1 w-100"
+                class="border-0 px-2 w-100"
                 [(ngModel)]="hospital_contact_no"
                 (keyup)="filter($event.target.value)"
                 placeholder="Search for Hospital Contact No."

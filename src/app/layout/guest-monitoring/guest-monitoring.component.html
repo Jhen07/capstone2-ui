@@ -19,7 +19,7 @@
       <th class="text-center">Time-out</th>
       <th class="text-center">Date</th>
       <th class="text-center">
-        <button class="btn bg-transparent mx-2" (click)="open(content)">
+        <button class="btn btn-light mx-2" (click)="open(content)">
           <i class="fa fa-plus mx-2" aria-hidden="true"></i> Add
         </button>
       </th>
@@ -47,7 +47,7 @@
           <div class="flex-1">
             <input
               type="search"
-              class="border-0 w-100 rounded px-2 py-1"
+              class="border-0 w-100 rounded px-2"
               [(ngModel)]="contact"
               (keyup)="filter()"
             />
@@ -59,7 +59,7 @@
           <div class="flex-1">
             <input
               type="search"
-              class="border-0 w-100 rounded px-2 py-1"
+              class="border-0 w-100 rounded px-2"
               [(ngModel)]="address"
               (keyup)="filter()"
             />
@@ -86,7 +86,7 @@
           <div class="flex-1">
             <input
               type="search"
-              class="border-0 w-100 rounded px-2 py-1"
+              class="border-0 w-100 rounded px-2"
               (keyup)="filter()"
               [(ngModel)]="relationship"
             />
@@ -301,7 +301,7 @@
 <div>
   <ng-template #content2 let-c="close" let-d="dismiss">
     <div class="modal-header">
-      <h5 class="modal-title text-center">Add Guest</h5>
+      <h5 class="modal-title text-center">Edit Guest Information</h5>
       <button
         type="button"
         class="close"
