@@ -55,7 +55,7 @@ export class ReportsComponent implements OnInit {
   qty = '';
   created_at = '';
   status = '';
-  
+
 
   constructor(
     private accompService: AccomplishmentsService,
@@ -110,7 +110,7 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.taskService.getAllTasks(0).subscribe((report: TaskReport[]) => {
+    this.taskService.getAllTasks().subscribe((report: TaskReport[]) => {
       this.rawTaskReportsList = report;
     });
   }
@@ -224,7 +224,7 @@ export class ReportsComponent implements OnInit {
         return false;
       });
     }
-    
+
     // if (this.time_in != '') {
     //   console.log('time_in');
     //   accomp = accomp.filter(acc => {
@@ -246,7 +246,7 @@ export class ReportsComponent implements OnInit {
     //     return false;
     //   });
     // }
-    
+
     if (this.date != '') {
       console.log('date');
       reports = reports.filter(report => {
@@ -379,9 +379,9 @@ export class ReportsComponent implements OnInit {
 
   }
 
-  async exportPdf(){
+  async exportPdf() {
     this.printList = [];
-    this.printList.push(['Date','Created by', 'Problem Encountered', 'Remarks',  'Time_in', 'Time_out']);
+    this.printList.push(['Date', 'Created by', 'Problem Encountered', 'Remarks', 'Time_in', 'Time_out']);
     this.accList.forEach(acc => {
       const accPrintList = [];
       accPrintList.push(acc['updated_at']);
@@ -390,36 +390,36 @@ export class ReportsComponent implements OnInit {
       accPrintList.push(acc['remarks']);
       accPrintList.push(acc['time_in']);
       accPrintList.push(acc['time_out']);
-      
+
       this.printList.push(accPrintList);
     });
 
     console.log(this.printList);
 
     // playground requires you to assign document definition to a variable called dd
-      var docDefinition = {
-        content: [
-          {
-            table: {
-              widths: ['*', '*', '*','*', '*', '*'],
-              body: [ ... this.printList]
-            }
+    var docDefinition = {
+      content: [
+        {
+          table: {
+            widths: ['*', '*', '*', '*', '*', '*'],
+            body: [... this.printList]
           }
-        ],
-        styles: {
-          font_8:{
-              fontSize: 8,
-              color: '#1B4E75'
-          }
-    }
+        }
+      ],
+      styles: {
+        font_8: {
+          fontSize: 8,
+          color: '#1B4E75'
+        }
       }
+    }
 
-      pdfMake.createPdf(docDefinition).open();
+    pdfMake.createPdf(docDefinition).open();
   }
 
-  async exportTaskPdf(){
+  async exportTaskPdf() {
     this.printTaskList = [];
-    this.printTaskList.push(['Date','Assigned Staff', 'Elders Name', 'Medicine Description',  'Quantity', 'Time', 'Status']);
+    this.printTaskList.push(['Date', 'Assigned Staff', 'Elders Name', 'Medicine Description', 'Quantity', 'Time', 'Status']);
     this.taskReportsList.forEach(report => {
       const taskReportsPrintList = [];
       taskReportsPrintList.push(report['date']);
@@ -429,31 +429,31 @@ export class ReportsComponent implements OnInit {
       taskReportsPrintList.push(report['qty']);
       taskReportsPrintList.push(report['created_at']);
       taskReportsPrintList.push(report['status']);
-      
+
       this.printList.push(taskReportsPrintList);
     });
 
     console.log(this.printTaskList);
 
     // playground requires you to assign document definition to a variable called dd
-      var docTaskDefinition = {
-        content: [
-          {
-            table: {
-              widths: ['*', '*', '*','*', '*', '*', '* '],
-              body: [ ... this.printTaskList]
-            }
+    var docTaskDefinition = {
+      content: [
+        {
+          table: {
+            widths: ['*', '*', '*', '*', '*', '*', '* '],
+            body: [... this.printTaskList]
           }
-        ],
-        styles: {
-          font_8:{
-              fontSize: 8,
-              color: '#1B4E75'
-          }
-    }
+        }
+      ],
+      styles: {
+        font_8: {
+          fontSize: 8,
+          color: '#1B4E75'
+        }
       }
+    }
 
-      pdfMake.createPdf(docTaskDefinition).open();
+    pdfMake.createPdf(docTaskDefinition).open();
   }
 
 }

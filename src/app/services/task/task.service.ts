@@ -18,8 +18,8 @@ export class TaskService {
     console.log('====================================');
   }
 
-  getAllTasks(isArchived) {
-    return this.http.get(`${this.api}?table=tasks&archived_value=${isArchived}`, { headers: this.reqHeader });
+  getAllTasks() {
+    return this.http.get(this.url, { headers: this.reqHeader });
   }
 
   getTaskByStaff(id) {

@@ -58,7 +58,7 @@ export class ArchivesComponent implements OnInit {
     this.staffService.getAllUsers(1).subscribe((users: any) => {
       this.staffList = users;
     });
-    this.taskService.getAllTasks(1).subscribe((task: any) => {
+    this.taskService.getAllTasks().subscribe((task: any) => {
       this.taskList = task;
     });
     this.medicineService.getAllMedicine(1).subscribe((list: Medicine[]) => {

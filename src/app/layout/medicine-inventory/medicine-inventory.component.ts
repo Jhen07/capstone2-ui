@@ -20,6 +20,7 @@ export class MedicineInventoryComponent implements OnInit {
   userId = +localStorage.getItem('user_id');
   userData: User = JSON.parse(localStorage.getItem('user_data'));
   medicineList: Medicine[] = [];
+  printList = [];
   rawMedicineList: Medicine[] = [];
   medName = '';
   quantity = 1;
@@ -35,14 +36,13 @@ export class MedicineInventoryComponent implements OnInit {
   operation = '+';
   restockType = 'qty';
   order = 'asc';
-  printList = [];
 
- medicine_name = '';
- type_of_medicine_description = '';
- qty = '';
- dispense = '';
- updated_at = '';
- buff = '';
+  medicine_name = '';
+  type_of_medicine_description = '';
+  qty = '';
+  dispense = '';
+  updated_at = '';
+  buff = '';
 
   constructor(
     private modalService: NgbModal,
@@ -216,6 +216,45 @@ export class MedicineInventoryComponent implements OnInit {
     }, (err) => this.toastr.error(err.message));
   }
 
+
+  async exportPdf() {
+    this.printList = [];
+    this.printList.push(['Medicine Name', 'Medicine Type', 'Buffer', 'Stock', 'Dispense', 'Date Modified']);
+    this.medicineList.forEach(medicine => {
+      const medicinePrintList = [];
+      medicinePrintList.push(medicine['medicine_name']);
+      medicinePrintList.push(medicine['type_of_medicine_description']);
+      medicinePrintList.push(medicine['buffer']);
+      medicinePrintList.push(medicine['qty']);
+      medicinePrintList.push(medicine['dispense']);
+      medicinePrintList.push(medicine['updated_at']);
+
+      this.printList.push(medicinePrintList);
+    });
+
+    // playground requires you to assign document definition to a variable called dd
+    var docDefinition = {
+      content: [
+        {
+          table: {
+            widths: ['*', '*', '*', '*', '*', '*'],
+            body: [... this.printList
+            ]
+          }
+        }
+      ],
+      styles: {
+        font_8: {
+          fontSize: 8,
+          color: '#1B4E75'
+        }
+      }
+    }
+
+    pdfMake.createPdf(docDefinition).open();
+  }
+
+
   filter(value) {
     let medicine = this.rawMedicineList;
 
@@ -287,43 +326,4 @@ export class MedicineInventoryComponent implements OnInit {
     }
 
   }
-
-  async exportPdf(){
-    this.printList = [];
-    this.printList.push(['Medicine Name', 'Medicine Type', 'Buffer', 'Stock', 'Dispense', 'Date Modified']);
-    this.medicineList.forEach(med => {
-      const medicinePrintList = [];
-      medicinePrintList.push(med['medicine_name']);
-      medicinePrintList.push(med['buffer']);
-      medicinePrintList.push(med['bed_no']);
-      medicinePrintList.push(med['qty']);
-      medicinePrintList.push(med['dispense']);
-      medicinePrintList.push(med['updated_at']);
-      
-      this.printList.push(medicinePrintList);
-    });
-    console.log(this.printList);
-
-    // playground requires you to assign document definition to a variable called dd
-      var docDefinition = {
-        content: [
-          {
-            table: {
-              widths: ['*', '*', '*', '*', '*', '*'],
-              body: [ ... this.printList
-              ]
-            }
-          }
-        ],
-        styles: {
-          font_8:{
-              fontSize: 8,
-              color: '#1B4E75'
-          }
-    }
-      }
-
-      pdfMake.createPdf(docDefinition).open();
-  }
-
 }
