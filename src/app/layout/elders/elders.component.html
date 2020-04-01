@@ -5,106 +5,106 @@
   </h2>
   <hr />
 </div>
+<div class="card-header pt-3">
+  <i class="fa fa-filter" aria-hidden="true"></i> Filter
+  <select holder="Category" class="ml-3 rounded px-2 py-1" [(ngModel)]="category">
+    <option value="" label="-- Select Category --" disabled selected="selected"></option>
+    <option value="0">Name</option>
+    <option value="1">Age</option>
+    <option value="2">Bed No.</option>
+    <option value="3">Date of Admission</option>
+    <option value="4">Status</option>
+  </select>
+  <input
+    *ngIf="category == 0"
+    class="ml-3 rounded px-2 py-1"
+    type="text"
+    [(ngModel)]="name"
+    (keyup)="filter($event.target.value)"
+  />
+  <input
+    *ngIf="category == 1"
+    class="ml-3 rounded px-2 py-1"
+    type="text"
+    [(ngModel)]="age"
+    (keyup)="filter($event.target.value)"
+  />
+  <input
+    *ngIf="category == 2"
+    class="ml-3 rounded px-2 py-1"
+    type="text"
+    [(ngModel)]="bed_no"
+    (keyup)="filter($event.target.value)"
+  />
+  <input
+    *ngIf="category == 3"
+    class="ml-3 rounded px-2 py-1"
+    type="text"
+    [(ngModel)]="date_aff"
+    (keyup)="filter($event.target.value)"
+  />
+  <select
+    *ngIf="category == 4"
+    class="ml-3 rounded px-2 py-1"
+    [(ngModel)]="status"
+    (change)="filter()"
+  >
+    <option value="">Select Status</option>
+    <option value="0">Active</option>
+    <option value="1">Discharge</option>
+    <option value="2">Desease</option>
+  </select>
+  <button class="btn btn-info mr-1 float-right" (click)="exportPdf()">
+    Export as PDF
+  </button>
+  <button
+    class="btn btn-light float-right"
+    (click)="router.navigate(['/elders/add'])"
+  >
+    <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
+  </button>
+</div>
 <div class="card mb-3">
   <table class="table table-striped">
     <thead class="bg-primary-color text-light">
       <tr>
-        <th class="text-center">Full Name</th>
-        <th class="text-center">Age</th>
-        <th class="text-center">Bed No.</th>
-        <th class="text-center">Date Affiliated</th>
+        <th class="flex-1">
+          Full Name
+          <a class="bg-transparent float-right" (click)="sort('first_name')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </a>
+        </th>
         <th class="text-center">
-          <button class="btn bg-transparent float-right" (click)="open(setting)">
+          Age
+          <a class="bg-transparent float-right" (click)="sort('age')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th class="text-center">
+          Bed No.
+          <a class="bg-transparent float-right" (click)="sort('bed_no')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th class="text-center">
+          Date Admission
+          <a class="bg-transparent float-right" (click)="sort('date_stay_in_orphanage')">
+              <i class="fa fa-sort" aria-hidden="true"></i>
+            </a>
+        </th>
+        <th class="text-center">
+          Status
+          <!-- <button class="btn bg-transparent float-right" (click)="open(setting)">
             <i class="fa fa-cog ml-3" aria-hidden="true"></i>
-          </button>
-          <button
-            class="btn btn-light"
-            (click)="router.navigate(['/elders/add'])"
-          >
-            <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
-        </button>
+          </button> -->
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 py-1 w-100"
-                [(ngModel)]="name"
-                (keyup)="filter($event.target.value)"
-                placeholder="Search for Elders Name"
-              />
-            </div>
-            <button class="btn btn-light" (click)="sort('first_name')">
-              <i class="fa fa-sort" aria-hidden="true"></i>
-            </button>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 py-1 w-100"
-                [(ngModel)]="age"
-                (keyup)="filter($event.target.value)"
-                placeholder="Search for Elders Age"
-              />
-            </div>
-            <button class="btn btn-light" (click)="sort('age')">
-              <i class="fa fa-sort" aria-hidden="true"></i>
-            </button>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 py-1 w-100"
-                [(ngModel)]="bed_no"
-                (keyup)="filter($event.target.value)"
-                placeholder="Search for Elders Bed No."
-              />
-            </div>
-            <button class="btn btn-light" (click)="sort('bed_no')">
-              <i class="fa fa-sort" aria-hidden="true"></i>
-            </button>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 py-1 w-100"
-                [(ngModel)]="date_aff"
-                (keyup)="filter($event.target.value)"
-                placeholder="Search for Elders Admission Date"
-              />
-            </div>
-            <button
-              class="btn btn-light"
-              (click)="sort('date_stay_in_orphanage')"
-            >
-              <i class="fa fa-sort" aria-hidden="true"></i>
-            </button>
-          </div>
-        </td>
-        <td class="text-center">
-          <button class="btn btn-info mr-1" (click)="exportPdf()">
-            Export as PDF
-          </button>
-        </td>
-      </tr>
       <tr *ngIf="elderList.length == 0">
         <td colspan="13" class="text-center">No Record</td>
       </tr>
-      <tr *ngFor="let elder of elderList">
+      <tr *ngFor="let elder of elderList" (click)="router.navigate(['/elders/details', { id: elder.id }])">
         <td>
           {{ elder.first_name }} {{ elder.last_name }}
         </td>
@@ -113,17 +113,12 @@
         <td class="text-center">
           {{ elder.date_stay_in_orphanage }}
         </td>
-        <td class="text-center">
-          <button
-            class="btn bg-transparent"
-            (click)="router.navigate(['/elders/details', { id: elder.id }])"
-          >
-            <i class="fa fa-user " aria-hidden="true"></i>
-          </button>
-          <button class="btn bg-transparent">
-            <i class="fa fa-archive " aria-hidden="true"></i>
-          </button>
-        </td>
+        <td class="text-center"
+          [ngClass]="{
+            'text-yellow': elder.status != 0,
+            'text-info': elder.status == 0
+          }"
+        > {{ elder.status == 0 ? 'Active' : elder.status == 1 ? 'Discharge' : 'Desease' }}</td>
       </tr>
     </tbody>
   </table>
@@ -186,7 +181,7 @@
               </li>
               <li>
                 <input type="checkbox" class="mr-2" />
-                <span>Date Affiliated</span>
+                <span>Date of Admission</span>
               </li>
               <li>
                 <input type="checkbox" class="mr-2" />

@@ -29,7 +29,7 @@ export class HospitalService {
   }
 
 
-  udpateHospital(data: Hospital) {
+  updateHospital(data: Hospital) {
     data.updated_by = Number(this.userId);
     return this.http.patch(`${this.url}/${data.id}`, data, { headers: this.reqHeader });
   }

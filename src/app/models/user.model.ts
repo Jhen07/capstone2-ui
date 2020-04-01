@@ -17,6 +17,7 @@ export interface User {
     civil_status: string;
     nationality: string;
     address: string;
+    contact_no: string;
     date_hired: string;
     oi_phil_health: string;
     oi_sss: string;
@@ -24,6 +25,8 @@ export interface User {
     oi_pagibig: string;
     is_admin: number;
     role: number;
+    archived: number,
+    remarks: number,
     status: number;
     created_by: number;
     updated_by: number;
@@ -31,7 +34,7 @@ export interface User {
     updated_at?: any;
 }
 
-export interface EmpoymentHistory {
+export interface EmploymentHistory {
     id?: string;
     staff_id: number;
     company: string;
@@ -64,19 +67,22 @@ export const initialUser: User = {
     civil_status: '',
     nationality: '',
     address: '',
+    contact_no: '',
     date_hired: '',
     oi_phil_health: '',
     oi_sss: '',
     oi_umid: '',
     oi_pagibig: '',
     is_admin: 0,
+    archived: 0,
+    remarks: 0,
     status: 0,
     created_by: 0,
     updated_by: 0,
     role: 0
 };
 
-export const initialEHistory: EmpoymentHistory = {
+export const initialEHistory: EmploymentHistory = {
     staff_id: 0,
     company: '',
     position: '',

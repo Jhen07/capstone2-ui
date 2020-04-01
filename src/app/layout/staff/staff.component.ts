@@ -25,6 +25,7 @@ export class StaffComponent implements OnInit {
   name = '';
   email = '';
   role = '';
+  category = '';
   date_hired = '';
   status = '';
 
@@ -63,6 +64,14 @@ export class StaffComponent implements OnInit {
 
   close() {
     this.modalService.dismissAll();
+  }
+
+  getCategory(category) {
+    const text = category == 0 ? 'Name' : 
+    category == 1 ? 'Role' :
+    category == 2 ? 'Email' :
+    category == 3 ? 'Date Hired' : 'Status';
+    return text;
   }
 
   getRole(role) {
@@ -169,7 +178,7 @@ export class StaffComponent implements OnInit {
       staffPrintList.push(this.getRole(staff.role));
       staffPrintList.push(staff['email']);
       staffPrintList.push(staff['date_hired']);
-      const statusValue = staff.status == 0 ? 'Inactive' : 'Active';
+      const statusValue = staff.status == 0 ? 'Full-time' : staff.status == 1 ? 'Part-time' : 'Resigned';
       staffPrintList.push(statusValue);
       
       this.printList.push(staffPrintList);

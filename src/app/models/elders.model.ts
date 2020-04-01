@@ -27,6 +27,8 @@ export interface Elders {
     oi_sss_id: string;
     oi_senior_citizen_id: string;
     oi_pagibig: string;
+    archived: number,
+    status: number,
     created_by: number;
     updated_by: number;
     created_at?: any;
@@ -76,6 +78,8 @@ export const initialElder: Elders = {
     oi_sss_id: '',
     oi_senior_citizen_id: '',
     oi_pagibig: '',
+    archived: 0,
+    status: 0,
     created_by: 0,
     updated_by: 0
 };

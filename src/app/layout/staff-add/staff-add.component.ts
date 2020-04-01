@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User, initialUser, EmpoymentHistory, initialEHistory } from 'src/app/models/user.model';
+import { User, initialUser, EmploymentHistory, initialEHistory } from 'src/app/models/user.model';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UsersService } from 'src/app/services/users/users.service';
@@ -13,13 +13,12 @@ import { resolve } from 'url';
 })
 export class StaffAddComponent implements OnInit {
   staff: User = JSON.parse(JSON.stringify(initialUser));
-  ehistory: EmpoymentHistory = JSON.parse(JSON.stringify(initialEHistory));
-
-
+  ehistory: EmploymentHistory = JSON.parse(JSON.stringify(initialEHistory));
   fileData: File = null;
   previewUrl: any = null;
   fileUploadProgress: string = null;
   uploadedFilePath: string = null;
+  minLength: number;
 
   constructor(public router: Router, private toastr: ToastrService, private userService: UsersService) {
     this.staff.role = 2;
@@ -29,6 +28,7 @@ export class StaffAddComponent implements OnInit {
   sabbathDate: any;
   confirm = '';
   file: any;
+  contact_no = '';
 
   ngOnInit() { }
 
@@ -51,13 +51,28 @@ export class StaffAddComponent implements OnInit {
       this.staff.sabbath = newDate;
     }
 
-    if (this.staff.first_name.trim() == '' || this.staff.last_name.trim() == '' || this.staff.email.trim() == '') {
-      return this.toastr.error('Please fillup required fields');
+    if (this.staff.first_name.trim() == '') {
+      return this.toastr.error('Please fillup the Firstname field');
     }
 
-    if (this.staff.email.trim() == '' || this.staff.password.trim() == '') {
-      return this.toastr.error('Please complete username and password');
+    if (this.staff.last_name.trim() == '') {
+      return this.toastr.error('Please fillup the Surname field');
+    }
+
+    if (this.staff.email.trim() == '') {
+      return this.toastr.error('Please fillup the Email Address field');
+    }
+
+    if (this.staff.password.length < this.minLength){
+      return this.toastr.error('Password must be minimum of 8 character!');
+    }
+
+    if (this.staff.password.trim() == '') {
+      return this.toastr.error('Please complete Password');
     } else {
+      if (this.confirm.trim() == '') {
+        return this.toastr.error('Please confirm Password');
+      }
       if (this.staff.password != this.confirm) {
         return this.toastr.error('Password did not match!');
       }

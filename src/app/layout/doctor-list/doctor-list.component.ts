@@ -27,6 +27,8 @@ export class DoctorListComponent implements OnInit {
   updated_at = '';
   order = 'asc';
 
+  category = '';
+
   constructor(
     private doctorService: DoctorService,
     private modalService: NgbModal,
@@ -41,6 +43,13 @@ export class DoctorListComponent implements OnInit {
       this.doctorList = users;
       this.rawDoctorList = users;
     });
+  }
+
+  getCategory(category) {
+    const text = category == 0 ? 'Name' : 
+    category == 1 ? 'Conatct Number' :
+    category == 2 ? 'Schedules' : 'Specialization';
+    return text;
   }
 
   close() {

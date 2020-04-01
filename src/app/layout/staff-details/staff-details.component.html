@@ -34,6 +34,7 @@
               class="elder-img"
             />
           </div>
+
           <div class="elder-name">
             <p class="text-center color-dark-primary m-0 text-capitalize">
               {{ staff.first_name }} {{ staff?.middle_name?.substring(0, 1) }}.
@@ -49,6 +50,20 @@
               }}
             </p>
           </div>
+          <div class="form-group row">
+              <label for="" class="col-sm-5 col-form-label"></label>
+              <div class="col-sm-7">
+                <label
+                  for=""
+                  class="col-form-label"
+                  [ngClass]="{
+                    'text-danger': staff.remarks == 0,
+                    'text-success': staff.remarks != 0
+                  }"
+                  >{{ staff.remarks == 0 ? 'Offline' : 'Online' }}</label
+                >
+              </div>
+            </div>
         </div>
         <hr />
         <div class="form-group row">
@@ -58,11 +73,31 @@
               for=""
               class="col-form-label"
               [ngClass]="{
-                'text-danger': staff.status == 0,
-                'text-success': staff.status == 1
+                'text-success': staff.status != 2,
+                'text-danger': staff.status == 2
               }"
-              >{{ staff.status == 0 ? 'Offline' : 'Active' }}</label
+              >{{ staff.status == 0 ? 'Full-time' : staff.status == 1 ? 'Part-time' : 'Resigned' }}
+            </label>
+            <p  *ngIf="userRole == 0">
+            <button
+              for=""
+              class="btn btn-transparent float-right large border"
+              (click)="archive()"
+              *ngIf="staff.archived == 0"
+              [(ngModel)]="staff.archived"
             >
+              <i class="fa fa-archive" aria-hidden="true"></i>
+            </button>
+            <button
+              for=""
+              class="btn btn-transparent float-right large border"
+              (click)="unarchive()"
+              *ngIf="staff.archived != 0"
+              [(ngModel)]="staff.archived"
+            >
+              <i class="fa fa-archive" aria-hidden="true"></i>
+            </button>
+            </p>
           </div>
         </div>
         <div class="form-group row">
@@ -92,6 +127,12 @@
             <label for="" class="col-form-label">{{ staff.address }}</label>
           </div>
         </div>
+        <div class="form-group row">
+            <label for="" class="col-sm-5 col-form-label">Contact Number</label>
+            <div class="col-sm-7">
+              <label for="" class="col-form-label">{{ staff.contact_no }}</label>
+            </div>
+          </div>
         <div class="form-group row">
           <label for="" class="col-sm-5 col-form-label">Date Hired</label>
           <div class="col-sm-7">
@@ -124,7 +165,6 @@
           <div class="elder-name">
             <div class="form-group row">
               <div class="col-sm-3"></div>
-
               <input
                 type="file"
                 class="form-control col-sm-6"
@@ -160,6 +200,16 @@
                     : 'Staff'
                 }}
               </p>
+            <div class="col-sm-3"></div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-3 col-form-label"></label>
+              <div class="col-sm-6">
+                <select class="form-control " [(ngModel)]="staff.remarks">
+                  <option class="text-center" value="0">Offline</option>
+                  <option class="text-center" value="1">Online</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -168,8 +218,9 @@
           <label for="" class="col-sm-5 col-form-label">Status</label>
           <div class="col-sm-7">
             <select class="form-control " [(ngModel)]="staff.status">
-              <option class="text-center" value="0">Inactive</option>
-              <option class="text-center" value="1">Active</option>
+              <option class="text-center" value="0">Full-time</option>
+              <option class="text-center" value="1">Part-time</option>
+              <option class="text-center" value="2">Resigned</option>
             </select>
           </div>
         </div>
@@ -208,6 +259,16 @@
             />
           </div>
         </div>
+        <div class="form-group row">
+            <label for="" class="col-sm-5 col-form-label">Contact Number</label>
+            <div class="col-sm-7">
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="staff.contact_no"
+              />
+            </div>
+          </div>
         <div class="form-group row">
           <label for="" class="col-sm-5 col-form-label">Date Hired</label>
           <div class="col-sm-7">
@@ -258,7 +319,7 @@
             <input
               type="text"
               class="form-control"
-              [(ngModel)]="staff.email"
+              [(ngModel)]="staff.email + staff.addmail"
               [disabled]="!editing3"
             />
           </div>
@@ -295,7 +356,7 @@
             />
           </div>
         </div>
-      </div>
+      </div>      
     </div>
 
     <!-- Personal Info tab -->
@@ -330,7 +391,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <label for="" class="col-sm-3 col-form-label">Surname</label>
             <div class="col-sm-9">
               <label for="" class="col-form-label">{{ staff.last_name }}</label>
             </div>
@@ -353,7 +414,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-sm-3 col-form-label">Sabath</label>
+            <label for="" class="col-sm-3 col-form-label">Sabbath</label>
             <div class="col-sm-9">
               <label for="" class="col-form-label">{{ staff.sabbath }}</label>
             </div>
@@ -505,7 +566,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <label for="" class="col-sm-3 col-form-label">Surname</label>
             <div class="col-sm-9">
               <input
                 type="text"

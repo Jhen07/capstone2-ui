@@ -5,138 +5,133 @@
   </h2>
   <hr />
 </div>
+  <div class="card-header pt-3">
+    <i class="fa fa-filter" aria-hidden="true"></i> Filter
+    <select holder="Category" class="ml-3 rounded px-2 py-1" [(ngModel)]="category">
+        <option value="" label="-- Select Category --" disabled selected="selected"></option>
+        <option value="0">Name</option>
+        <option value="1">User Role</option>
+        <option value="2">Email</option>
+        <option value="3">Date Hired</option>
+        <option value="4">Status</option>
+        <option value="5">Remarks</option>
+    </select>
+      <input
+        *ngIf="category == 0"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="name"
+        (keyup)="filter()"
+      />
+      <select
+        *ngIf="category == 1"
+        class="ml-3 rounded px-2 py-1"
+        [(ngModel)]="role"
+        (change)="filter()"
+      >
+        <option value="">Select User Role</option>
+        <option value="0">Admin</option>
+        <option value="1">Medical Staff</option>
+        <option value="2">Staff</option>
+      </select>
+      <input
+        *ngIf="category == 2"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="email"
+        (keyup)="filter($event.target.value)"
+      />
+      <input
+        *ngIf="category == 3"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="date_hired"
+        (keyup)="filter($event.target.value)"
+      />
+      <select
+        *ngIf="category == 4"
+        class="ml-3 rounded px-2 py-1"
+        [(ngModel)]="status"
+        (change)="filter()"
+      >
+        <option value="">Select Status</option>
+        <option value="0">Full-time</option>
+        <option value="1">Part-time</option>
+      </select>
+      <select
+        *ngIf="category == 5"
+        class="ml-3 rounded px-2 py-1"
+        [(ngModel)]="remarks"
+        (change)="filter()"
+      >
+        <option value="">Select Remarks</option>
+        <option value="0">Offline</option>
+        <option value="1">Online</option>
+      </select>
+    <button class="btn btn-info mr-1 float-right" (click)="exportPdf()">
+      Export as PDF
+    </button>
+    <button
+      class="btn btn-light float-right"
+      (click)="router.navigate(['/staff/add'])"
+    >
+      <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
+    </button>
+  </div>
 <div class="card mb-3">
   <table class="table table-striped">
     <thead class="bg-primary-color text-light">
       <tr>
-        <th class="text-center">Name</th>
-        <th class="text-center">User Role</th>
-        <th class="text-center">Email</th>
-        <th class="text-center">Date Hired</th>
-        <th class="text-center">Status</th>
+        <th>
+          Name
+          <a class="bg-transparent float-right" (click)="sort('first_name')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th class="text-center">
+          User Role
+          <a class="bg-transparent float-right" (click)="sort('role')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th class="text-center">
+          Email
+        </th>
+        <th class="text-center">
+          Date Hired
+          <a class="bg-transparent float-right" (click)="sort('date_hired')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th class="text-center">
+          Status
+        </th>
         <th class="text-center" class="text-center">
-          <button class="btn bg-transparent float-right" (click)="open(setting)">
+          Remarks
+          <!-- <button class="btn bg-transparent float-right" (click)="open(setting)">
             <i class="fa fa-cog ml-3" aria-hidden="true"></i>
-          </button>
-          <button
-            class="btn btn-light"
-            (click)="router.navigate(['/staff/add'])"
-          >
-            <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
-    </button>
+          </button> -->
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="search"
-                class="border-0 w-100 rounded px-2 py-1"
-                (keyup)="filter()"
-                [(ngModel)]="name"
-                placeholder="Search for Staff Name"
-              />
-            </div>
-            <button class="btn btn-light " (click)="sort('first_name')">
-              <i class="fa fa-sort" aria-hidden="true"></i>
-            </button>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <select
-                class="w-100 border-0 h-100"
-                [(ngModel)]="role"
-                (change)="filter()"
-              >
-                <option value="">Select User Role</option>
-                <option value="0">Admin</option>
-                <option value="1">Medical Staff</option>
-                <option value="2">Staff</option>
-              </select>
-            </div>
-            <button class="btn btn-light " (click)="sort('role')">
-              <i class="fa fa-sort" aria-hidden="true"></i>
-            </button>
-          </div>
-        </td>
-        <td>
-          <div class="btn d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="search"
-                class="border-0 w-100 rounded px-2"
-                (keyup)="filter()"
-                [(ngModel)]="email"
-                placeholder="Search for Staff Email"
-              />
-            </div>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="search"
-                class="border-0 w-100 rounded px-2 py-1"
-                (keyup)="filter()"
-                [(ngModel)]="date_hired"
-                placeholder="Search for Staff Hired Date"
-              />
-            </div>
-            <button class="btn btn-light " (click)="sort('date_hired')">
-              <i class="fa fa-sort" aria-hidden="true"></i>
-            </button>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <select
-                class="btn w-100 border-0 h-100"
-                [(ngModel)]="status"
-                (change)="filter()"
-              >
-                <option value="">Select Status</option>
-                <option value="0">Offline</option>
-                <option value="1">Online</option>
-              </select>
-            </div>
-          </div>
-        </td>
-        <td class="text-center">
-          <button class="btn btn-info  mr-1 text-center" (click)="exportPdf()">
-            Export as PDF
-          </button>
-        </td>
-      </tr>
-      <tr *ngFor="let staff of staffList" ng-repeat="post in posts | Filter">
+      <tr *ngFor="let staff of staffList" ng-repeat="post in posts | Filter" (click)="router.navigate(['/staff/details', { id: staff.id }])">
         <td>{{ staff.first_name }} {{ staff.last_name }}</td>
-        <td>{{ getRole(staff.role) }}</td>
+        <td class="text-center">{{ getRole(staff.role) }}</td>
         <td class="text-center">{{ staff.email }}</td>
         <td class="text-center">{{ staff.date_hired }}</td>
-        <td
-          class="text-center"
+        <td class="text-center"
           [ngClass]="{
-            'text-danger': staff.status == 0,
-            'text-success': staff.status == 1
+            'text-yellow': staff.status == 2,
+            'text-info': staff.status != 2
           }"
-        > {{ staff.status == 0 ? 'Inactive' : 'Active' }}</td>
-        <td class="text-center">
-          <button
-            class="btn bg-transparent"
-            (click)="router.navigate(['/staff/details', { id: staff.id }])"
-          >
-            <i class="fa fa-user ml-3" aria-hidden="true"></i>
-          </button>
-          <button class="btn bg-transparent">
-            <i class="fa fa-archive " aria-hidden="true"></i>
-          </button>
-        </td>
+        > {{ staff.status == 0 ? 'Full-time' : staff.status == 1 ? 'Part-time' : 'Resigned' }}</td>
+        <td class="text-center"
+          [ngClass]="{
+            'text-danger': staff.remarks == 0,
+            'text-success': staff.remarks == 1
+          }"
+        > {{ staff.remarks == 0 ? 'Offline' : 'Online' }}</td>
       </tr>
       <tr *ngIf="staffList.length == 0">
         <td colspan="13" class="text-center">No Record</td>
@@ -211,6 +206,10 @@
               <li>
                 <input type="checkbox" class="mr-2" />
                 <span>Address</span>
+              </li>
+              <li>
+                <input type="checkbox" class="mr-2" />
+                <span>Contact Number</span>
               </li>
               <li>
                 <input type="checkbox" class="mr-2" />

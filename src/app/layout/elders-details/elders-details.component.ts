@@ -22,7 +22,6 @@ export class EldersDetailsComponent implements OnInit {
   updating1 = false;
   updating2 = false;
   updating3 = false;
-  updating4 = false;
   dateIn: any;
   bDate: any;
   sabbathDate: any;
@@ -35,6 +34,7 @@ export class EldersDetailsComponent implements OnInit {
 
   takenMeds = [];
   doctorList: Doctor[] = [];
+  archived = '';
 
   loading = true;
 
@@ -42,6 +42,7 @@ export class EldersDetailsComponent implements OnInit {
   previewUrl: any = null;
   fileUploadProgress: string = null;
   uploadedFilePath: string = null;
+  category = '';
 
   constructor(
     public router: Router,
@@ -86,7 +87,7 @@ export class EldersDetailsComponent implements OnInit {
       this.loading = false;
     });
   }
-
+  
   ngOnInit() {
   }
 
@@ -118,10 +119,10 @@ export class EldersDetailsComponent implements OnInit {
     }
   }
 
-
   async save() {
     this.updating1 = false;
     this.updating2 = false;
+  
     if (this.bDate) {
       const newDate = `${this.bDate.year}-${this.bDate.month}-${this.bDate.day}`;
       this.elder.birth_date = newDate;
@@ -147,7 +148,7 @@ export class EldersDetailsComponent implements OnInit {
       this.elder.image = await this.onSubmit() as string;
     }
 
-    this.elderService.udpateElder(this.elder).subscribe(() => {
+    this.elderService.updateElder(this.elder).subscribe(() => {
       this.toastr.success('Saved!');
     }, err => {
       this.toastr.error(err.message);
@@ -162,6 +163,24 @@ export class EldersDetailsComponent implements OnInit {
   fileProgress(fileInput: any) {
     this.fileData = <File>fileInput.target.files[0];
     this.preview();
+  }
+
+  async unarchive() {
+    this.elder.archived = 0;
+    this.elderService.updateElder(this.elder).subscribe(() => {
+      this.toastr.success('Successfully sent to Elder List!');
+    }, err => {
+      this.toastr.error(err.message);
+    });
+  }
+
+  async archive() {
+    this.elder.archived = 1;
+    this.elderService.updateElder(this.elder).subscribe(() => {
+      this.toastr.success('Successfully sent to Archive');
+    }, err => {
+      this.toastr.error(err.message);
+    });
   }
 
   preview() {
@@ -192,8 +211,6 @@ export class EldersDetailsComponent implements OnInit {
   close() {
     this.modalService.dismissAll();
   }
-
-
 
   open(content) {
     this.modalService.open(content).result.then((result) => {
@@ -252,4 +269,5 @@ export class EldersDetailsComponent implements OnInit {
   convertDate(date) {
     return new Date(date);
   }
+  
 }

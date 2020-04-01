@@ -26,12 +26,15 @@ export class HospitalsComponent implements OnInit {
   doctorList: Doctor[] = [];
   docIndex = [];
   serviceIndex = [];
-  serviceList = ['hermatology', '2D echo', 'X-ray', 'lood Chemistry', 'EKG', 'Dental X-ray', 'Ultrasound'];
+  serviceList = ['hermatology', '2D echo', 'X-ray', 'Blood Chemistry', 'EKG', 'Dental X-ray', 'Ultrasound'];
   order = 'asc';
 
   hospital_name = '';
   address = '';
   hospital_contact_no = '';
+  service_offer = '';
+
+  category = '';
 
   constructor(
     private hospitalService: HospitalService,
@@ -73,6 +76,13 @@ export class HospitalsComponent implements OnInit {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  getCategory(category) {
+    const text = category == 0 ? 'Name' : 
+    category == 1 ? 'Address' :
+    category == 2 ? 'Contact Number' : 'Service Offer';
+    return text;
   }
 
   close() {
@@ -146,6 +156,18 @@ export class HospitalsComponent implements OnInit {
       });
     }
 
+    if (this.service_offer != '') {
+      console.log('service_offer');
+
+      hospitals = hospitals.filter(hospital => {
+        const service_offer = `${hospital.service_offer}`;
+        if (service_offer.includes(this.service_offer)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
     console.log(hospitals);
 
     this.hospitalList = hospitals;
@@ -183,12 +205,13 @@ export class HospitalsComponent implements OnInit {
   }
   async exportPdf() {
     this.printList = [];
-    this.printList.push(['Name', 'Address', 'Contact Number']);
+    this.printList.push(['Name', 'Address', 'Contact Number', 'Service Offer']);
     this.hospitalList.forEach(hospital => {
       const hospitalPrintList = [];
       hospitalPrintList.push(hospital['hospital_name']);
       hospitalPrintList.push(hospital['address']);
       hospitalPrintList.push(hospital['hospital_contact_no']);
+      hospitalPrintList.push(hospital['service_offer']);
 
       this.printList.push(hospitalPrintList);
     });
@@ -200,7 +223,7 @@ export class HospitalsComponent implements OnInit {
       content: [
         {
           table: {
-            widths: ['*', '*', '*'],
+            widths: ['*', '*', '*', '*'],
             body: [... this.printList]
           }
         }

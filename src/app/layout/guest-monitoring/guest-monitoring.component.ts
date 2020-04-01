@@ -39,7 +39,7 @@ export class GuestMonitoringComponent implements OnInit {
   order = 'asc';
   in = '';
   out = '';
-  date = '';
+  created_at = '';
 
   guest: Guest = JSON.parse(JSON.stringify(initialGuests));
 
@@ -232,43 +232,11 @@ export class GuestMonitoringComponent implements OnInit {
       });
     }
 
-    if (this.in != '') {
+    if (this.created_at != '') {
+      console.log('created_at');
       guest = guest.filter(gs => {
-        const dateAff = new Date(this.in).getTime();
-        const gsAff = new Date(gs.time_in).getTime();
-
-        if (dateAff == gsAff) {
-          return true;
-        }
-        return false;
-      });
-    }
-
-    if (this.out != '') {
-      guest = guest.filter(gs => {
-        const dateAff = new Date(this.out).getTime();
-        const gsAff = new Date(gs.time_out).getTime();
-
-        if (dateAff == gsAff) {
-          return true;
-        }
-        return false;
-      });
-    }
-
-    if (this.date != '') {
-      console.log('asd');
-
-      guest = guest.filter(gs => {
-        const date = new Date(this.date);
-        const dateCreate = new Date(gs.created_at);
-        const newDate1 = `${dateCreate.getFullYear()}-${(dateCreate.getMonth() + 1)}-${dateCreate.getDate()}`;
-        const newDate2 = `${date.getFullYear()}-${(date.getMonth() + 1)}-${date.getDate()}`;
-
-
-        console.log(newDate1, newDate2);
-
-        if (newDate1 == newDate2) {
+        const created_at = `${gs.created_at}`;
+        if (created_at.includes(this.created_at)) {
           return true;
         }
         return false;

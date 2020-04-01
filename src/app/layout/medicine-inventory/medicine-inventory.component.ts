@@ -9,6 +9,7 @@ import { User } from 'src/app/models/user.model';
 import { log } from 'util';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { MedicineInventoryService } from 'src/app/services/medicineInventory/medicine-inventory.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -25,7 +26,8 @@ export class MedicineInventoryComponent implements OnInit {
   medName = '';
   quantity = 1;
   buffer = 1;
-  dateExpire: any;
+  dateBufExpire: any;
+  dateStkExpire: any;
   alerts: Array<any> = [];
   closeResult: string;
   medicines = medicines;
@@ -36,6 +38,7 @@ export class MedicineInventoryComponent implements OnInit {
   operation = '+';
   restockType = 'qty';
   order = 'asc';
+  update = 'false';
 
   medicine_name = '';
   type_of_medicine_description = '';
@@ -95,7 +98,6 @@ export class MedicineInventoryComponent implements OnInit {
   }
 
   addMedicine() {
-
     if (this.medName.trim() == '') {
       return this.addAlert('Please enter medicine name!');
     }
@@ -103,20 +105,21 @@ export class MedicineInventoryComponent implements OnInit {
     if (this.quantity < 1 || this.quantity == null) {
       return this.addAlert('Please enter valid quantity!');
     }
-
-
-    // if (this.dateExpire) {
-    //   const newDate = `${this.dateExpire.year}-${this.dateExpire.month}-${this.dateExpire.day}`;
-    //   this.dateExpire = newDate;
-    // } else {
-    //   return this.addAlert('Please enter valid Expiration Date!');
-    // }
+  
+    if (this.dateBufExpire) {
+      const newDate = `${this.dateBufExpire.year}-${this.dateBufExpire.month}-${this.dateBufExpire.day}`;
+      this.dateBufExpire = newDate;
+      this.dateStkExpire = this.dateBufExpire;
+    } else {
+      return this.addAlert('Please enter valid Expiration Date!');
+    }
 
 
     const newMed: Medicine = {
       created_by: this.userId,
       updated_by: this.userId,
-      expiration_date: this.dateExpire,
+      expdate_buffer: this.dateBufExpire,
+      expdate_stock: this.dateStkExpire,
       medicine_name: this.medName,
       qty: this.quantity,
       dispense: 0,
@@ -162,7 +165,8 @@ export class MedicineInventoryComponent implements OnInit {
 
   clearModalFields() {
     this.medName = medicines[0].list[0].name;
-    this.dateExpire = '';
+    this.dateBufExpire = '';
+    this.dateStkExpire = '';
     this.quantity = 1;
   }
 
@@ -175,6 +179,16 @@ export class MedicineInventoryComponent implements OnInit {
   restockMedicine() {
     if (this.restock <= 0) {
       return this.toastr.warning('Please input valid quantity!');
+    }
+      
+    if (this.dateBufExpire) {
+      const newbDate = `${this.dateBufExpire.year}-${this.dateBufExpire.month}-${this.dateBufExpire.day}`;
+      this.med.expdate_buffer = newbDate;
+    }
+
+    if (this.dateStkExpire) {
+      const newsDate = `${this.dateStkExpire.year}-${this.dateStkExpire.month}-${this.dateStkExpire.day}`;
+      this.med.expdate_stock = newsDate;
     }
 
     // if (this.operation == '+') {
@@ -236,6 +250,18 @@ export class MedicineInventoryComponent implements OnInit {
     var docDefinition = {
       content: [
         {
+          text: 'ADD-CHE',
+          bold: true,
+          fontSize: 20,
+          alignment: 'center',
+        },
+        {
+          text: 'K-40 Bagong Pag asa Subd. Brgy San Vicente Apalit Pampanga', alignment: 'center'
+        },
+        {
+          text: '+639232715825', style: 'sub_header'
+        },
+        {
           table: {
             widths: ['*', '*', '*', '*', '*', '*'],
             body: [... this.printList
@@ -244,6 +270,11 @@ export class MedicineInventoryComponent implements OnInit {
         }
       ],
       styles: {
+        sub_header: {
+          fontSize: 12,
+          alignment: 'center',
+          margin: [0, 0, 0, 10]
+        },
         font_8: {
           fontSize: 8,
           color: '#1B4E75'

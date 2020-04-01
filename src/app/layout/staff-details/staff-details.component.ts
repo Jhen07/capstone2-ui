@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from 'src/app/services/users/users.service';
-import { User, initialUser, EmpoymentHistory, initialEHistory } from 'src/app/models/user.model';
+import { User, initialUser, EmploymentHistory, initialEHistory } from 'src/app/models/user.model';
 import { ToastrService } from 'ngx-toastr';
 import { Task, TaskReport } from 'src/app/models/task.model';
 import { TaskService } from 'src/app/services/task/task.service';
@@ -34,19 +34,21 @@ export class StaffDetailsComponent implements OnInit {
   elderIndex = 0;
   medIndex = 0;
   quantity = 0;
-  ehistory: EmpoymentHistory[];
+  ehistory: EmploymentHistory[];
   closeResult: string;
   time: any;
   addDate: any;
   alerts: Array<any> = [];
   confirmPassword = '';
+  date = '';
+  archived = '';
   newPassword = '';
   fileData: File = null;
   previewUrl: any = null;
   fileUploadProgress: string = null;
   uploadedFilePath: string = null;
   doneTasks: TaskReport[] = [];
-  addEHistory: EmpoymentHistory = JSON.parse(JSON.stringify(initialEHistory));
+  addEHistory: EmploymentHistory = JSON.parse(JSON.stringify(initialEHistory));
   dateRepeats = [
     {
       day: 'Mon',
@@ -94,7 +96,7 @@ export class StaffDetailsComponent implements OnInit {
         this.router.navigate(['/staff']);
       }
       this.staff = await this.userService.getStaff(params.id).toPromise() as User;
-      this.ehistory = await this.userService.getEhistoryByStaffId(this.staff.id).toPromise() as EmpoymentHistory[];
+      this.ehistory = await this.userService.getEhistoryByStaffId(this.staff.id).toPromise() as EmploymentHistory[];
       this.elderList = await this.elderService.getAllElders('elders', 0).toPromise() as Elders[];
       this.medList = await this.medService.getAllMedicine(0).toPromise() as Medicine[];
       this.getAllTasks();
@@ -138,9 +140,34 @@ export class StaffDetailsComponent implements OnInit {
     }
   }
 
+  async unarchive() {
+    this.staff.archived = 0;
+    this.userService.updateUser(this.staff, this.ehistory).then(() => {
+      if (+localStorage.getItem('user_id') == this.staff.id) {
+        localStorage.setItem('user_data', JSON.stringify(this.staff));
+      }
+      this.toastr.success('Successfully sent to Staff List');
+    }).catch(err => {
+      this.toastr.error(err.message);
+    });
+  }
+
+  async archive() {
+    this.staff.archived = 1;
+    this.userService.updateUser(this.staff, this.ehistory).then(() => {
+      if (+localStorage.getItem('user_id') == this.staff.id) {
+        localStorage.setItem('user_data', JSON.stringify(this.staff));
+      }
+      this.toastr.success('Successfully sent to Archive');
+    }).catch(err => {
+      this.toastr.error(err.message);
+    });
+  }
+
   async save() {
     this.editing1 = false;
     this.editing2 = false;
+    
     if (this.bDate) {
       const newDate = `${this.bDate.year}-${this.bDate.month}-${this.bDate.day}`;
       this.staff.birth_date = newDate;
@@ -167,7 +194,7 @@ export class StaffDetailsComponent implements OnInit {
       this.staff.image = await this.onSubmit() as string;
     }
 
-    this.userService.udpateUser(this.staff, this.ehistory).then(() => {
+    this.userService.updateUser(this.staff, this.ehistory).then(() => {
       if (+localStorage.getItem('user_id') == this.staff.id) {
         localStorage.setItem('user_data', JSON.stringify(this.staff));
       }
@@ -264,6 +291,10 @@ export class StaffDetailsComponent implements OnInit {
     setTimeout(() => {
       this.alerts = this.alerts.filter(filter => filter.id != alert.id);
     }, 3000);
+  }
+
+  convertDate(date) {
+    return new Date(date);
   }
 
   formatTime(timeString: string) {

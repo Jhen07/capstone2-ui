@@ -88,12 +88,14 @@
               <tr *ngIf="!announcementList.length">
                 <td colspan="13" class="text-center">No Record</td>
               </tr>
-              <tr *ngFor="let item of announcementList; let i = index">
+              <tr *ngFor="let item of announcementList; let i = index" >
                 <td>
                   <span>{{ item.title }}</span>
                 </td>
                 <td>{{ convertDate(item.start) | date: 'MM dd yyyy' }}</td>
-                <td></td>
+                <td>
+                  <span>{{ item.time }}</span>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -195,6 +197,19 @@
             >
               <span class="fa fa-calendar"></span>
             </button>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="form-group ">
+        <div
+          class="d-flex justify-content-center flex-column align-items-center"
+        >
+          <label>Time</label>
+          <div>
+            <ngb-timepicker
+              [(ngModel)]="time"
+              [meridian]="true"
+            ></ngb-timepicker>
           </div>
         </div>
       </fieldset>

@@ -19,12 +19,12 @@ export class EldersComponent implements OnInit {
   printList = [];
   userId = 0;
   order = 'asc';
-
   name = '';
   age = '';
   bed_no = '';
   date_aff = '';
   status = '';
+  category = '';
 
   constructor(
     public router: Router,
@@ -38,6 +38,13 @@ export class EldersComponent implements OnInit {
     });
   }
 
+  getCategory(category) {
+    const text = category == 0 ? 'Name' : 
+    category == 1 ? 'Age' :
+    category == 2 ? 'Bed No.' : 'Date of Admission';
+    return text;
+  }
+  
   ngOnInit() {
   }
 
@@ -76,7 +83,6 @@ export class EldersComponent implements OnInit {
 
     if (this.age != '') {
       console.log('age');
-
       elders = elders.filter(elder => {
         const age = `${elder.age}`;
         if (age.includes(this.age)) {
@@ -88,7 +94,6 @@ export class EldersComponent implements OnInit {
 
     if (this.bed_no != '') {
       console.log('bed');
-
       elders = elders.filter(elder => {
         const bed = `${elder.bed_no}`;
         if (bed.includes(this.bed_no)) {
@@ -100,7 +105,6 @@ export class EldersComponent implements OnInit {
 
     if (this.date_aff != '') {
       console.log('date');
-
       elders = elders.filter(elder => {
         const dateAff = new Date(this.date_aff).getTime();
         const elderAff = new Date(elder.date_stay_in_orphanage).getTime();
@@ -112,6 +116,15 @@ export class EldersComponent implements OnInit {
       });
     }
 
+    if (this.status != '') {
+      elders = elders.filter(elder => {
+        if (+this.status == elder.status) {
+          return true;
+        }
+        return false;
+      });
+    }
+    
     console.log(elders);
 
     this.elderList = elders;
@@ -150,13 +163,15 @@ export class EldersComponent implements OnInit {
 
   async exportPdf(){
     this.printList = [];
-    this.printList.push(['Fullname', 'Age', 'Bed No.', 'Date Affiliated']);
+    this.printList.push(['Fullname', 'Age', 'Bed No.', 'Date of Admission', 'Status']);
     this.elderList.forEach(elder => {
       const elderPrintList = [];
       elderPrintList.push(elder['first_name'] + ' ' + elder['last_name']);
       elderPrintList.push(elder['age']);
       elderPrintList.push(elder['bed_no']);
       elderPrintList.push(elder['date_stay_in_orphanage']);
+      const statusValue = elder.status == 0 ? 'Active' : elder.status == 1 ? 'Discharge' : 'Desease';
+      elderPrintList.push(statusValue);
       
       this.printList.push(elderPrintList);
     });
@@ -179,7 +194,7 @@ export class EldersComponent implements OnInit {
           },
           {
             table: {
-              widths: ['*', '*', '*', '*'],
+              widths: ['*', '*', '*', '*', '*'],
               body: [ ... this.printList
               ]
             }

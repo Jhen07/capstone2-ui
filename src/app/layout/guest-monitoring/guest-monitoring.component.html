@@ -5,147 +5,107 @@
   </h2>
   <hr />
 </div>
-
+<div class="card-header pt-3">
+    <i class="fa fa-filter" aria-hidden="true"></i> Filter
+    <select class="ml-3 rounded px-2 py-1" [(ngModel)]="category">
+        <option value="" label="-- Select Category --" disabled selected="selected"></option>
+        <option value="0">Guest Name</option>
+        <option value="1">Contact Number</option>
+        <option value="2">Address</option>
+        <option value="3">Elders Visited</option>
+        <option value="4">Relationship</option>
+        <option value="5">Date</option>
+    </select>
+    <input
+      *ngIf="category == 0"
+      class="ml-3 rounded px-2 py-1"
+      type="text"
+      [(ngModel)]="name"
+      (keyup)="filter()"
+    />
+    <input
+      *ngIf="category == 1"
+      class="ml-3 rounded px-2 py-1"
+      type="number"
+      [(ngModel)]="contact"
+      (keyup)="filter($event.target.value)"
+    />
+    <input
+      *ngIf="category == 2"
+      class="ml-3 rounded px-2 py-1"
+      type="text"
+      [(ngModel)]="address"
+      (keyup)="filter($event.target.value)"
+    />
+    <input
+      *ngIf="category == 3"
+      class="ml-3 rounded px-2 py-1"
+      type="text"
+      [(ngModel)]="visited"
+      (keyup)="filter($event.target.value)"
+    />
+    <input
+      *ngIf="category == 4"
+      class="ml-3 rounded px-2 py-1"
+      type="text"
+      [(ngModel)]="relationship"
+      (keyup)="filter($event.target.value)"
+    />
+    <input
+      *ngIf="category == 5"
+      class="ml-3 rounded px-2 py-1"
+      type="text"
+      [(ngModel)]="created_at"
+      (keyup)="filter()"
+    />
+    <button class="btn btn-info mr-1 float-right" (click)="exportPdf()">
+      Export as PDF
+    </button>
+    <button class="btn btn-light mx-2 float-right" (click)="open(content)">
+        <i class="fa fa-plus mx-2" aria-hidden="true"></i> Add
+      </button>
+  </div>
 <div class="card mb-3">
 <table class="table table-striped">
   <thead class="bg-primary-color text-light">
     <tr>
-      <th class="text-center">Guest Name</th>
-      <th class="text-center">Contact #</th>
-      <th class="text-center">Address</th>
-      <th class="text-center">Elders Visited</th>
-      <th class="text-center">Relationship</th>
-      <th class="text-center">Time-in</th>
-      <th class="text-center">Time-out</th>
-      <th class="text-center">Date</th>
+      <th>
+        Guest Name
+        <a class="bg-transparent float-right" (click)="sort('guest_name')">
+          <i class="fa fa-sort" aria-hidden="true"></i>
+        </a>
+      </th>
+      <th>Contact Number</th>
+      <th>Address</th>
+      <th>
+        Elders Visited
+        <a class="bg-transparent float-right" (click)="sort('elder_name')">
+          <i class="fa fa-sort" aria-hidden="true"></i>
+        </a>
+      </th>
+      <th>Relationship</th>
       <th class="text-center">
-        <button class="btn btn-light mx-2" (click)="open(content)">
-          <i class="fa fa-plus mx-2" aria-hidden="true"></i> Add
-        </button>
+        Time-in
+        <a class="bg-transparent float-right" (click)="sort('time_in')">
+          <i class="fa fa-sort" aria-hidden="true"></i>
+        </a>
+      </th>
+      <th class="text-center">
+        Time-out
+        <a class="bg-transparent float-right" (click)="sort('time_out')">
+          <i class="fa fa-sort" aria-hidden="true"></i>
+        </a>
+      </th>
+      <th class="text-center">
+        Date
+        <a class="bg-transparent float-right" (click)="sort('created_at')">
+          <i class="fa fa-sort" aria-hidden="true"></i>
+        </a>
       </th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>
-        <div class="d-flex border border-secondary rounded bg-white">
-          <div class="flex-1">
-            <input
-              type="search"
-              class="border-0 w-100 rounded px-2 py-1"
-              [(ngModel)]="name"
-              (keyup)="filter()"
-            />
-          </div>
-          <button class="btn btn-light" (click)="sort('guest_name')">
-            <i class="fa fa-sort" aria-hidden="true"></i>
-          </button>
-        </div>
-      </td>
-      <td>
-        <div class="btn d-flex border border-secondary rounded bg-white">
-          <div class="flex-1">
-            <input
-              type="search"
-              class="border-0 w-100 rounded px-2"
-              [(ngModel)]="contact"
-              (keyup)="filter()"
-            />
-          </div>
-        </div>
-      </td>
-      <td>
-        <div class="btn d-flex border border-secondary rounded bg-white">
-          <div class="flex-1">
-            <input
-              type="search"
-              class="border-0 w-100 rounded px-2"
-              [(ngModel)]="address"
-              (keyup)="filter()"
-            />
-          </div>
-        </div>
-      </td>
-      <td>
-        <div class="d-flex border border-secondary rounded bg-white">
-          <div class="flex-1">
-            <input
-              type="search"
-              class="border-0 w-100 rounded px-2 py-1"
-              (keyup)="filter()"
-              [(ngModel)]="visited"
-            />
-          </div>
-          <button class="btn btn-light" (click)="sort('elder_name')">
-            <i class="fa fa-sort" aria-hidden="true"></i>
-          </button>
-        </div>
-      </td>
-      <td>
-        <div class="btn d-flex border border-secondary rounded bg-white">
-          <div class="flex-1">
-            <input
-              type="search"
-              class="border-0 w-100 rounded px-2"
-              (keyup)="filter()"
-              [(ngModel)]="relationship"
-            />
-          </div>
-        </div>
-      </td>
-      <td>
-        <div class="d-flex border border-secondary rounded bg-white">
-          <div class="flex-1">
-            <input
-              type="search"
-              class="border-0 w-100 rounded px-2 py-1"
-              (keyup)="filter()"
-              [(ngModel)]="in"
-              disabled
-            />
-          </div>
-          <button class="btn btn-light" (click)="sort('time_in')">
-            <i class="fa fa-sort" aria-hidden="true"></i>
-          </button>
-        </div>
-      </td>
-      <td>
-        <div class="d-flex border border-secondary rounded bg-white">
-          <div class="flex-1">
-            <input
-              type="search"
-              class="border-0 w-100 rounded px-2 py-1"
-              (keyup)="filter()"
-              [(ngModel)]="out"
-              disabled
-            />
-          </div>
-          <button class="btn btn-light" (click)="sort('time_out')">
-            <i class="fa fa-sort" aria-hidden="true"></i>
-          </button>
-        </div>
-      </td>
-      <td>
-        <div class="d-flex border border-secondary rounded bg-white">
-          <div class="flex-1">
-            <input
-              type="search"
-              class="border-0 w-100 rounded px-2 py-1"
-              (keyup)="filter()"
-              [(ngModel)]="date"
-            />
-          </div>
-          <button class="btn btn-light" (click)="sort('created_at')">
-            <i class="fa fa-sort" aria-hidden="true"></i>
-          </button>
-        </div>
-      </td>
-      <td>
-        <button class="btn btn-info float-right" (click)="exportPdf()">
-          Export as PDF
-        </button>
-      </td>
-    </tr>
+      <!--to update guest info -> (click)="setSelectedGuest(guest, content2)" -->
     <tr *ngFor="let guest of guestList; let i = index">
       <td>{{ guest.guest_name }}</td>
       <td>{{ guest.contact_no }}</td>
@@ -162,16 +122,7 @@
       </td>
       <!-- button na lng yung time-out, di sya required sa form na m -->
       <td class="text-center">{{ formatTime(guest.created_at) | date: 'yyyy-MM-dd' }}</td>
-      <td class="text-center">
-        <button
-          class="btn bg-transparent"
-          (click)="setSelectedGuest(guest, content2)"
-        >
-          <i class="fa fa-pencil" aria-hidden="true"></i>
-        </button>
-      </td>
     </tr>
-
     <tr *ngIf="guestList.length == 0">
       <td class="text-center p-3" colspan="13">No Record</td>
     </tr>
@@ -227,7 +178,7 @@
         <input
           class="form-control"
           placeholder=""
-          type="text"
+          type="number"
           [(ngModel)]="guest.contact_no"
         />
       </fieldset>
@@ -344,7 +295,7 @@
         <input
           class="form-control"
           placeholder=""
-          type="text"
+          type="number"
           [(ngModel)]="selectedGuest.contact_no"
         />
       </fieldset>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { User, EmpoymentHistory } from 'src/app/models/user.model';
+import { User, EmploymentHistory } from 'src/app/models/user.model';
 import { Userlogs } from 'src/app/models/use-logs.model';
 import { Notification } from 'src/app/models/notification.model';
 
@@ -52,12 +52,12 @@ export class UsersService {
     return this.http.post(api, data, { headers: this.reqHeader });
   }
 
-  addEmpolymentHistory(data: EmpoymentHistory) {
+  addEmpolymentHistory(data: EmploymentHistory) {
     const api = environment.api + '/users-employment-history';
     data.created_by = Number(this.userId);
     data.updated_by = Number(this.userId);
     data.updated_at = new Date().toLocaleString();
-    return this.http.post<EmpoymentHistory>(api, data, { headers: this.reqHeader });
+    return this.http.post<EmploymentHistory>(api, data, { headers: this.reqHeader });
   }
 
   getEhistoryByStaffId(staff_if) {
@@ -65,7 +65,7 @@ export class UsersService {
     return this.http.get(api, { headers: this.reqHeader });
   }
 
-  udpateUser(data: User, ehistory: EmpoymentHistory[]) {
+  updateUser(data: User, ehistory: EmploymentHistory[]) {
     return new Promise((resolve, reject) => {
       data.updated_by = Number(this.userId);
       this.http.patch(`${this.url}/${data.id}`, data, { headers: this.reqHeader }).subscribe(

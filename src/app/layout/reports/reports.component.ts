@@ -3,7 +3,7 @@ import { AccomplishmentsService } from 'src/app/services/accomplishments/accompl
 import { Accomplishments, initAccomp } from 'src/app/models/accomplishments.model';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { Task, TaskReport } from 'src/app/models/task.model';
+import { TaskReport } from 'src/app/models/task.model';
 import { User } from 'src/app/models/user.model';
 import { GuestService } from 'src/app/services/guest/guest.service';
 import { Guest } from 'src/app/models/guest.model';
@@ -32,30 +32,25 @@ export class ReportsComponent implements OnInit {
   rawTaskReportsList: TaskReport[] = [];
   taskReportsList: TaskReport[] = [];
   printList = [];
-  printTaskList = [];
   time_in: any;
   time_out: any;
   closeResult: string;
   accomp: Accomplishments = JSON.parse(JSON.stringify(initAccomp));
   userLogs: Userlogs[] = [];
-
   guestList: Guest[] = [];
-
   order = 'asc';
-
   updated_at = '';
   submitted_by = '';
   problems_encountered = '';
   remarks = '';
-
   date = '';
   staff_name = '';
   elder_name = '';
   medicine_description = '';
-  qty = '';
   created_at = '';
   status = '';
-
+  category2 = '';
+  doneTasks: TaskReport[] = [];
 
   constructor(
     private accompService: AccomplishmentsService,
@@ -78,7 +73,7 @@ export class ReportsComponent implements OnInit {
     this.userService.getUserLogsById(this.userData.id).subscribe(logs => {
       this.userLogs = logs;
     });
-
+   
     const today = new Date().toDateString();
     console.log(today);
 
@@ -145,6 +140,22 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+  getCategory2(category2) {
+    const text = category2 == 0 ? 'Date' : 
+    category2 == 1 ? 'Assigned Staff' :
+    category2 == 2 ? 'Elders Name':
+    category2 == 3 ? 'Medicine Description' : 'Status';
+    return text;
+  }
+
+  getCategory(category) {
+    const text = category == 0 ? 'Name' : 
+    category == 1 ? 'Role' :
+    category == 2 ? 'Email' :
+    category == 3 ? 'Date Hired' : 'Status';
+    return text;
+  }
+
   close() {
     this.modalService.dismissAll();
   }
@@ -179,7 +190,6 @@ export class ReportsComponent implements OnInit {
 
   filter(value) {
     let accomp = this.rawAccList;
-    let reports = this.rawTaskReportsList;
 
     if (this.updated_at != '') {
       console.log('updated_at');
@@ -225,27 +235,13 @@ export class ReportsComponent implements OnInit {
       });
     }
 
-    // if (this.time_in != '') {
-    //   console.log('time_in');
-    //   accomp = accomp.filter(acc => {
-    //     const time_in = `${acc.time_in}`;
-    //     if (time_in.includes(this.time_in)) {
-    //       return true;
-    //     }
-    //     return false;
-    //   });
-    // }
+    console.log(accomp);
 
-    // if (this.time_out != '') {
-    //   console.log('time_out');
-    //   accomp = accomp.filter(acc => {
-    //     const time_out = `${acc.time_out}`;
-    //     if (time_out.includes(this.time_out)) {
-    //       return true;
-    //     }
-    //     return false;
-    //   });
-    // }
+    this.accList = accomp;
+  }
+
+  taskfilter(value) {
+    let reports = this.rawTaskReportsList;
 
     if (this.date != '') {
       console.log('date');
@@ -291,28 +287,6 @@ export class ReportsComponent implements OnInit {
       });
     }
 
-    if (this.qty != '') {
-      console.log('qty');
-      reports = reports.filter(report => {
-        const qty = `${report.qty}`;
-        if (qty.includes(this.qty)) {
-          return true;
-        }
-        return false;
-      });
-    }
-
-    if (this.created_at != '') {
-      console.log('created_at');
-      reports = reports.filter(report => {
-        const created_at = `${report.created_at}`;
-        if (created_at.includes(this.created_at)) {
-          return true;
-        }
-        return false;
-      });
-    }
-
     if (this.status != '') {
       console.log('status');
       reports = reports.filter(report => {
@@ -323,11 +297,7 @@ export class ReportsComponent implements OnInit {
         return false;
       });
     }
-
-    console.log(accomp);
     console.log(reports);
-
-    this.accList = accomp;
     this.taskReportsList = reports;
   }
 
@@ -389,7 +359,7 @@ export class ReportsComponent implements OnInit {
       accPrintList.push(acc['problems_encountered']);
       accPrintList.push(acc['remarks']);
       accPrintList.push(acc['time_in']);
-      accPrintList.push(acc['time_out']);
+      accPrintList.push(acc['updated_at']);
 
       this.printList.push(accPrintList);
     });
@@ -398,7 +368,21 @@ export class ReportsComponent implements OnInit {
 
     // playground requires you to assign document definition to a variable called dd
     var docDefinition = {
+      pageOrientation: 'landscape',
+      pageSize: 'LEGAL',
       content: [
+        {
+          text: 'ADD-CHE',
+          bold: true,
+          fontSize: 20,
+          alignment: 'center',
+        },
+        {
+          text: 'K-40 Bagong Pag asa Subd. Brgy San Vicente Apalit Pampanga', alignment: 'center'
+        },
+        {
+          text: '+639232715825', style: 'sub_header'
+        },
         {
           table: {
             widths: ['*', '*', '*', '*', '*', '*'],
@@ -407,20 +391,24 @@ export class ReportsComponent implements OnInit {
         }
       ],
       styles: {
+        sub_header: {
+          fontSize: 12,
+          alignment: 'center',
+          margin: [0, 0, 0, 10]
+        },
         font_8: {
           fontSize: 8,
           color: '#1B4E75'
         }
       }
     }
-
     pdfMake.createPdf(docDefinition).open();
   }
 
-  async exportTaskPdf() {
-    this.printTaskList = [];
-    this.printTaskList.push(['Date', 'Assigned Staff', 'Elders Name', 'Medicine Description', 'Quantity', 'Time', 'Status']);
-    this.taskReportsList.forEach(report => {
+  async exportTaskPdf(){
+    this.printList = [];
+    this.printList.push(['Date', 'Assigned Staff', 'Elders Name', 'Medicine Description', 'Quantity', 'Time', 'Status']);
+    this.doneTasks.forEach(report => {
       const taskReportsPrintList = [];
       taskReportsPrintList.push(report['date']);
       taskReportsPrintList.push(report['staff_name']);
@@ -432,28 +420,45 @@ export class ReportsComponent implements OnInit {
 
       this.printList.push(taskReportsPrintList);
     });
-
-    console.log(this.printTaskList);
+      
+    console.log(this.printList);
 
     // playground requires you to assign document definition to a variable called dd
-    var docTaskDefinition = {
-      content: [
-        {
-          table: {
-            widths: ['*', '*', '*', '*', '*', '*', '* '],
-            body: [... this.printTaskList]
+      var docDefinition = {
+        content: [
+          {
+            text: 'ADD-CHE',
+            bold: true,
+            fontSize: 20,
+            alignment: 'center',
+          },
+          {
+            text: 'K-40 Bagong Pag asa Subd. Brgy San Vicente Apalit Pampanga', alignment: 'center'
+          },
+          {
+            text: '+639232715825', style: 'sub_header'
+          },
+          {
+            table: {
+              widths: ['*', '*', '*', '*', '*', '*', '* '],
+              body: [ ... this.printList
+              ]
+            }
+          }
+        ],
+        styles: {
+          sub_header: {
+            fontSize: 12,
+            alignment: 'center',
+            margin: [0, 0, 0, 10]
+          },
+          font_8:{
+              fontSize: 8,
+              color: '#1B4E75'
           }
         }
-      ],
-      styles: {
-        font_8: {
-          fontSize: 8,
-          color: '#1B4E75'
-        }
       }
+      pdfMake.createPdf(docDefinition).open();
     }
-
-    pdfMake.createPdf(docTaskDefinition).open();
-  }
 
 }

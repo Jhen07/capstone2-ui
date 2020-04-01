@@ -6,88 +6,75 @@
   <hr />
 </div>
 
+<div class="card-header pt-3">
+    <i class="fa fa-filter" aria-hidden="true"></i> Filter
+    <select holder="Category" class="ml-3 rounded px-2 py-1" [(ngModel)]="category">
+        <option value="" label="-- Select Category --" disabled selected="selected"></option>
+        <option value="0">Hospital Name</option>
+        <option value="1">Address</option>
+        <option value="2">Contact Number</option>
+        <option value="3">Service Offer</option>
+    </select>
+      <input
+        *ngIf="category == 0"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="hospital_name"
+        (keyup)="filter()"
+      />
+      <input
+        *ngIf="category == 1"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="address"
+        (keyup)="filter()"
+      />
+      <input
+        *ngIf="category == 2"
+        class="ml-3 rounded px-2 py-1"
+        type="number"
+        [(ngModel)]="hospital_contact_no"
+        (keyup)="filter($event.target.value)"
+      />
+      <input
+        *ngIf="category == 3"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="service_offer"
+        (keyup)="filter($event.target.value)"
+      />
+    <button
+      class="btn btn-info float-right"
+      (click)="open(content)"
+    >
+      <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
+    </button>
+  </div>
+
 <div class="card mb-3">
   <table class="table table-striped">
     <thead class="bg-primary-color text-light">
       <tr>
-        <th class="text-center">Name</th>
-        <th class="text-center">Addess</th>
-        <th class="text-center">Contact Number</th>
-        <th class="text-center">
-          <button
-            class="btn bg-light"
-            (click)="open(content)"
-              *ngIf="userRole == 0"
-            >
-            <i class="fa fa-plus mr-2" aria-hidden="true" *ngIf="userRole == 0"></i>
-              Add
-          </button>
+        <th>
+          Name
+          <a class="bg-transparent float-right" (click)="sort('hospital_name')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </a>
         </th>
+        <th>Addess</th>
+        <th class="text-center">Contact Number</th>
+        <th class="text-center">Service Offer</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 py-1 w-100"
-                [(ngModel)]="hospital_name"
-                (keyup)="filter($event.target.value)"
-                placeholder="Search for Hospital Name"
-              />
-            </div>
-            <button class="btn btn-light" (click)="sort('hospital_name')">
-              <i class="fa fa-sort" aria-hidden="true"></i>
-            </button>
-          </div>
-        </td>
-        <td>
-          <div class="btn d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 w-100"
-                [(ngModel)]="address"
-                (keyup)="filter($event.target.value)"
-                placeholder="Search for Hospital Address"
-              />
-            </div>
-          </div>
-        </td>
-        <td>
-          <div class="btn d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 w-100"
-                [(ngModel)]="hospital_contact_no"
-                (keyup)="filter($event.target.value)"
-                placeholder="Search for Hospital Contact No."
-              />
-            </div>
-          </div>
-        </td>
-        <td></td>
-      </tr>
-      <tr *ngFor="let hospital of hospitalList">
+      <tr *ngFor="let hospital of hospitalList" 
+          (click)="router.navigate(['/hospitals/details', { id: hospital.id }])">
         <th scope="row">{{ hospital.hospital_name }}</th>
         <td>
           {{ hospital.address }}
         </td>
         <td class="text-center">{{ hospital.hospital_contact_no }}</td>
-        <td class="text-center">
-          <button
-            class="btn bg-transparent"
-            (click)="
-              router.navigate(['/hospitals/details', { id: hospital.id }])
-            "
-          >
-            <i class="fa fa-cog ml-3" aria-hidden="true" *ngIf="userRole == 0"></i>
-            <i class="fa fa-eye ml-3" aria-hidden="true" *ngIf="userRole != 0"></i>
-          </button>
-        </td>
+        <td class="text-center">{{ hospital.service_offer }}</td>
       </tr>
       <tr *ngIf="hospitalList.length == 0">
         <td class="text-center p-3" colspan="13">No Record</td>
@@ -123,7 +110,7 @@
         <input
           class="form-control"
           placeholder=""
-          type="text"
+          type="number"
           [(ngModel)]="hospital.hospital_contact_no"
         />
       </fieldset>

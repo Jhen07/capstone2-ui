@@ -1,7 +1,8 @@
 export interface Medicine {
     id?: number;
     medicine_name: string;
-    expiration_date: string;
+    expdate_buffer: string;
+    expdate_stock: string;
     type_of_medicine_id: number;
     type_of_medicine_description: string;
     qty: number;

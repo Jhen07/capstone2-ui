@@ -2,6 +2,47 @@
   <hr />
   <h2 class="text-center">
     DOCTOR LIST
+  </h2>
+  <hr />
+</div>
+
+<div class="card-header pt-3">
+    <i class="fa fa-filter" aria-hidden="true"></i> Filter
+    <select holder="Category" class="ml-3 rounded px-2 py-1" [(ngModel)]="category">
+        <option value="" label="-- Select Category --" disabled selected="selected"></option>
+        <option value="0">Name</option>
+        <option value="1">Contact Number</option>
+        <option value="2">Schedules</option>
+        <option value="3">Specialization</option>
+    </select>
+      <input
+        *ngIf="category == 0"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="doc_name"
+        (keyup)="filter()"
+      />
+      <input
+        *ngIf="category == 1"
+        class="ml-3 rounded px-2 py-1"
+        type="number"
+        [(ngModel)]="contact_no"
+        (keyup)="filter()"
+      />
+      <input
+        *ngIf="category == 2"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="schedules"
+        (keyup)="filter($event.target.value)"
+      />
+      <input
+        *ngIf="category == 3"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="specialization"
+        (keyup)="filter($event.target.value)"
+      />
     <button
       class="btn btn-primary float-right"
       (click)="open(content)"
@@ -10,93 +51,31 @@
       <i class="fa fa-plus mr-2" aria-hidden="true" *ngIf="userRole == 0"></i>
       Add
     </button>
-  </h2>
-  <hr />
-</div>
+  </div>
+
 <div class="card mb-3">
   <table class="table table-striped">
     <thead class="bg-primary-color text-light">
       <tr>
-        <th class="text-center">Name</th>
+        <th>
+          Name
+          <a class="bg-transparent float-right" (click)="sort('doc_name')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </a>
+        </th>
         <th class="text-center">Contact Number</th>
         <th class="text-center">Schedules</th>
         <th class="text-center">Specialization</th>
-        <th class="text-center">Date Updated</th>
+        <th class="text-center">
+          Date Updated
+          <a class="bg-transparent float-right" (click)="sort('updated_at')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </a>
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 py-1 w-100"
-                [(ngModel)]="doc_name"
-                (keyup)="filter($event.target.value)"
-              />
-            </div>
-            <button class="btn btn-light" (click)="sort('doc_name')">
-              <i class="fa fa-sort" aria-hidden="true"></i>
-            </button>
-          </div>
-        </td>
-        <td class="text-center">
-          <div class="btn d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 w-100"
-                [(ngModel)]="contact_no"
-                (keyup)="filter($event.target.value)"
-              />
-            </div>
-          </div>
-        </td>
-        <td>
-          <div class="btn d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 w-100"
-                [(ngModel)]="schedules"
-                (keyup)="filter($event.target.value)"
-              />
-            </div>
-          </div>
-        </td>
-        <td>
-          <div class="btn d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 w-100"
-                [(ngModel)]="specialization"
-                (keyup)="filter($event.target.value)"
-              />
-            </div>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex border border-secondary rounded bg-white">
-            <div class="flex-1">
-              <input
-                type="text"
-                class="border-0 px-2 py-1 w-100"
-                [(ngModel)]="updated_at"
-                (keyup)="filter($event.target.value)"
-              />
-            </div>
-            <button
-              class="btn btn-light"
-              (click)="sort('updated_at')"
-            >
-              <i class="fa fa-sort" aria-hidden="true"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-      <tr *ngIf="doctorList.length == 0">
+      <tr *ngIf="doctorList.length == 0" (click)="open(content)">
         <td class="text-center p-3" colspan="13">No Record</td>
       </tr>
       <tr *ngFor="let doctor of doctorList">
@@ -139,7 +118,7 @@
         <input
           class="form-control"
           placeholder=""
-          type="text"
+          type="number"
           [(ngModel)]="doctor.contact_no"
         />
       </fieldset>
@@ -184,3 +163,78 @@
     </div>
   </ng-template>
 </div>
+
+<!-- Update Doctors Information -->
+<div>
+    <ng-template #update let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">Add Doctor</h5>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="c('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <fieldset class="form-group">
+          <label>Doctor Name</label>
+          <input
+            class="form-control"
+            placeholder=""
+            type="text"
+            [(ngModel)]="doctor.doc_name"
+          />
+        </fieldset>
+        <fieldset class="form-group">
+          <label>Number</label>
+          <input
+            class="form-control"
+            placeholder=""
+            type="number"
+            [(ngModel)]="doctor.contact_no"
+          />
+        </fieldset>
+  
+        <fieldset class="form-group">
+          <label>Schedule</label>
+          <input
+            class="form-control"
+            placeholder=""
+            type="text"
+            [(ngModel)]="doctor.schedules"
+          />
+        </fieldset>
+  
+        <fieldset class="form-group">
+          <label>Specialization</label>
+          <input
+            class="form-control"
+            placeholder=""
+            type="text"
+            [(ngModel)]="doctor.specialization"
+          />
+        </fieldset>
+  
+        <p *ngFor="let alert of alerts">
+          <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
+            alert.message
+          }}</ngb-alert>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="addDoctor()">
+          Add
+        </button>
+      </div>
+    </ng-template>
+  </div>

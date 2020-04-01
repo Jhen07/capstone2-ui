@@ -28,10 +28,12 @@
     <thead class="bg-primary-color text-light">
       <tr>
         <th class="text-center">#</th>
-        <th class="text-center">Medicine Name</th>
-        <th class="text-center">Medicine Type</th>
+        <th>Medicine Name</th>
+        <th>Medicine Type</th>
         <th class="text-center">Buffer</th>
+        <th class="text-center">Expiration</th>
         <th class="text-center">Stock</th>
+        <th class="text-center">Expiration</th>
         <th class="text-center">Dispense</th>
         <th class="text-center">Date Modified</th>
         <th></th>
@@ -47,27 +49,16 @@
         <td>{{ med.type_of_medicine_description }}</td>
         <td class="text-center"
           [ngClass]="{ 'text-danger': 10 >= med.buffer }">{{ med.buffer }}</td>
+        <td class="text-center">{{ med.expdate_buffer }}</td>
         <td class="text-center"
           [ngClass]="{ 'text-danger': 10 >= med.qty}">{{ med.qty }}</td>
+        <td class="text-center">{{ med.expdate_stock }}</td>
         <td class="text-center">{{ med.dispense }}</td>
         <td class="text-center">{{ med.updated_at }}</td>
         <td class="text-center">
-          <button
-            class="btn btn-primary mr-2"
-            (click)="openRestock(content2, med, '+')"
-          >
+          <button class="btn btn-primary mr-2" (click)="openRestock(content2, med, '+')">
             Restock
           </button>
-          <!-- <button
-            class="btn btn-danger mr-2"
-            (click)="openRestock(content2, med, '-')"
-          >
-            Dispense
-          </button> 
-            *Mababawasn lang po sya pag nagdone/napainum na ng staff yung gamot-->
-          <!-- <button class="btn" (click)="setUpdateMed(content3, med)">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-          </button> -->
         </td>
       </tr>
     </tbody>
@@ -128,30 +119,29 @@
             [(ngModel)]="buffer"
           />
         </fieldset>
-        <!-- <fieldset class="form-group">
-          <label>Expiration Date</label>
-          <div class="form-group">
-            <div class="input-group datepicker-input">
-              <input
-                class="form-control"
-                placeholder="Select Date"
-                name="dp"
-                [(ngModel)]="dateExpire"
-                ngbDatepicker
-                #d="ngbDatepicker"
-                readonly
-              />
-              <button
-                class="input-group-addon"
-                (click)="d.toggle()"
-                type="button"
-              >
-                
-                <span class="fa fa-calendar"></span>
-              </button>
+        <fieldset class="form-group">
+            <label>Expiration Date</label>
+            <div class="form-group">
+              <div class="input-group datepicker-input">
+                <input
+                  class="form-control"
+                  placeholder="Select Date"
+                  name="expbuff"
+                  [(ngModel)]="dateBufExpire"
+                  ngbDatepicker
+                  #d="ngbDatepicker"
+                  readonly
+                />
+                <button
+                  class="input-group-addon"
+                  (click)="d.toggle()"
+                  type="button"
+                >
+                  <span class="fa fa-calendar"></span>
+                </button>
+              </div>
             </div>
-          </div>
-        </fieldset> -->
+          </fieldset>
         <p *ngFor="let alert of alerts">
           <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
             alert.message
@@ -204,6 +194,52 @@
             [(ngModel)]="restock"
           />
         </fieldset>
+        <fieldset class="form-group" *ngIf="restockType == 'buffer'">
+            <label>Expiration Date</label>
+            <div class="form-group">
+              <div class="input-group datepicker-input">
+                <input
+                  class="form-control"
+                  placeholder="Select Date"
+                  name="d.expbuff"
+                  [(ngModel)]="dateBufExpire"
+                  ngbDatepicker
+                  #d="ngbDatepicker"
+                  readonly
+                />
+                <button
+                  class="input-group-addon"
+                  (click)="d.toggle()"
+                  type="button"
+                >
+                  <span class="fa fa-calendar"></span>
+                </button>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="form-group" *ngIf="restockType == 'qty'">
+              <label>Expiration Date</label>
+              <div class="form-group">
+                <div class="input-group datepicker-input">
+                  <input
+                    class="form-control"
+                    placeholder="Select Date"
+                    name="b.expstock"
+                    [(ngModel)]="dateStkExpire"
+                    ngbDatepicker
+                    #b="ngbDatepicker"
+                    readonly
+                  />
+                  <button
+                    class="input-group-addon"
+                    (click)="b.toggle()"
+                    type="button"
+                  >
+                    <span class="fa fa-calendar"></span>
+                  </button>
+                </div>
+              </div>
+            </fieldset>
         <p *ngFor="let alert of alerts">
           <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
             alert.message
@@ -228,104 +264,3 @@
       </div>
     </ng-template>
   </div>
-
-  <!-- Update Medicine modal -->
-
-  <div>
-    <ng-template #content3 let-c="close" let-d="dismiss">
-      <div class="modal-header">
-        <h5 class="modal-title">Update Medicine</h5>
-        <button
-          type="button"
-          class="close"
-          aria-label="Close"
-          (click)="c('Cross click')"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <fieldset class="form-group">
-          <label>Medicine Type</label>
-          <select class="form-control" [(ngModel)]="selectedType">
-            <option *ngFor="let type of medicines; let i = index" [value]="i">{{
-              type.category
-            }}</option>
-          </select>
-        </fieldset>
-        <fieldset class="form-group" *ngIf="selectedType == 7">
-          <label>Medicine Name</label>
-          <input
-            class="form-control"
-            placeholder=""
-            [(ngModel)]="medToUpdate.medicine_name"
-          />
-        </fieldset>
-        <fieldset class="form-group" *ngIf="selectedType != 7">
-          <label>Medicine Name</label>
-          <select class="form-control" [(ngModel)]="medToUpdate.medicine_name">
-            <option
-              *ngFor="let med of medicines[selectedType].list; let i = index"
-              [value]="med.name"
-              >{{ med.name }}</option
-            >
-          </select>
-        </fieldset>
-        <fieldset class="form-group">
-          <label>Quantity</label>
-          <input
-            class="form-control"
-            placeholder=""
-            type="number"
-            [(ngModel)]="medToUpdate.qty"
-          />
-        </fieldset>
-        <!-- <fieldset class="form-group">
-          <label>Expiration Date</label>
-          <div class="form-group">
-            <div class="input-group datepicker-input">
-              <input
-                class="form-control"
-                placeholder="Select Date"
-                name="dp"
-                [(ngModel)]="dateExpire"
-                ngbDatepicker
-                #d="ngbDatepicker"
-                readonly
-              />
-              <button
-                class="input-group-addon"
-                (click)="d.toggle()"
-                type="button"
-              >
-                
-                <span class="fa fa-calendar"></span>
-              </button>
-            </div>
-          </div>
-        </fieldset> -->
-        <p *ngFor="let alert of alerts">
-          <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{
-            alert.message
-          }}</ngb-alert>
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          (click)="c('Close click')"
-        >
-          Close
-        </button>
-        <button
-          type="button"
-          class="btn btn-primary"
-          (click)="updateMedicine(medToUpdate)"
-        >
-          Update
-        </button>
-      </div>
-    </ng-template>
-  </div>
-</div>

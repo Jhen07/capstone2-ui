@@ -6,7 +6,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGrigPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { MedicineService } from 'src/app/services/medicine/medicine.service';
 import { Medicine } from 'src/app/models/medicine.model';
 import { Router } from '@angular/router';
 import { NotesService } from 'src/app/services/notes/notes.service';
@@ -16,6 +15,7 @@ import { EventsService } from 'src/app/services/events/events.service';
 import { EldersService } from 'src/app/services/elders/elders.service';
 import { GuestService } from 'src/app/services/guest/guest.service';
 import { UsersService } from 'src/app/services/users/users.service';
+import { AnnouncementService, initAnnounce } from 'src/app/models/announcement.model';
 
 @Component({
   selector: 'app-main-dashboard',
@@ -34,8 +34,10 @@ export class MainDashboardComponent implements OnInit {
   quantity = 1;
   dateCreated: any;
   event = '';
+  time: any;
   dateEvent: any;
   noteChecbox = false;
+  date = '';
 
   staffCount: number;
   elderCount: number;
@@ -133,6 +135,7 @@ export class MainDashboardComponent implements OnInit {
     }
     const event: EventInput = {
       title: this.dateSelected.title,
+      time: this.dateSelected.time,
       start: this.dateSelected.date,
       allDay: this.dateSelected.allDay,
     };
@@ -149,6 +152,10 @@ export class MainDashboardComponent implements OnInit {
       return;
     }
 
+    if (!this.time) {
+      return this.toastr.error('Please enter valid time!');
+    }
+
     if (this.dateEvent) {
       newDate = new Date(`${this.dateEvent.year}-${this.dateEvent.month}-${this.dateEvent.day}`).toISOString();
     } else {
@@ -157,6 +164,7 @@ export class MainDashboardComponent implements OnInit {
 
     const event: EventInput = {
       title: this.event,
+      time: `${this.time.hour}:${this.time.minute}`,
       start: newDate,
       allDay: true,
       type: 'announcement',
@@ -211,6 +219,7 @@ export class MainDashboardComponent implements OnInit {
     this.medName = '';
     this.dateCreated = '';
     this.quantity = 1;
+    this.time = null;
   }
 
   addNotes() {

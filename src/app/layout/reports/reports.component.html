@@ -18,142 +18,97 @@
 
 <div [ngSwitch]="selectedType">
   <!-- Daily Accomplishments -->
-  <div class="card mb-3" *ngSwitchCase="'daily'">
-    <table class="table table-striped">
-      <thead class="bg-primary-color text-light">
-        <tr>
-          <th class="text-center">Date</th>
-          <th class="text-center" *ngIf="userRole == 0">Created By</th>
-          <th class="text-center">Problems Encountered</th>
-          <th class="text-center">Remarks</th>
-          <th class="text-center">Time-in</th>
-          <th class="text-center">Time-out</th>
-          <th class="text-center">
-            <button
-              class="btn btn-light float-right"
-              *ngIf="userRole != 0"
-              (click)="open(content)"
-            >
-              <i class="fa fa-plus" aria-hidden="true"></i>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <div class="d-flex border border-secondary rounded bg-white">
-              <div class="flex-1">
-                <input
-                  type="search"
-                  class="border-0 w-100 rounded px-2 py-1"
-                  (keyup)="filter()"
-                  [(ngModel)]="updated_at"
-                  placeholder="Search for Date"
-                />
-              </div>
-              <button class="btn btn-light " (click)="sort('updated_at')">
+  <div class="mb-3 py-3" *ngSwitchCase="'daily'">
+    <div class="card-header pt-3">
+      <i class="fa fa-filter" aria-hidden="true"></i> Filter
+      <select class="ml-3 rounded px-2 py-1" [(ngModel)]="category2">
+        <option value="" label="-- Select Category --" disabled selected="selected"></option>
+        <option value="0">Date</option>
+        <option value="1" *ngIf="userRole == 0">Created by</option>
+        <option value="2">Problem Encountered</option>
+        <option value="3">Remarks</option>
+      </select>
+      <input
+        *ngIf="category2 == 0"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="date"
+        (keyup)="filter()"
+      />
+      <input
+        *ngIf="category2 == 1"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="submitted_by"
+        (keyup)="filter()"
+      />
+      <input
+        *ngIf="category2 == 2"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="problems_encountered"
+        (keyup)="filter($event.target.value)"
+      />
+      <input
+        *ngIf="category2 == 3"
+        class="ml-3 rounded px-2 py-1"
+        type="text"
+        [(ngModel)]="remarks"
+        (keyup)="filter($event.target.value)"
+      />
+      <button class="btn btn-info float-right mr-1" (click)="exportPdf()">
+        Export as PDF
+       </button>
+       <button class="btn btn-light float-right" *ngIf="userRole != 0" (click)="open(content)">
+          <i class="fa fa-plus mr-2" aria-hidden="true"></i> Add
+        </button>
+    </div>
+    <div class="card mb-3">
+      <table class="table table-striped">
+        <thead class="bg-primary-color text-light">
+          <tr>
+            <th class="w-10">
+              Date
+              <a class="bg-transparent float-right" (click)="sort('updated_at')">
                 <i class="fa fa-sort" aria-hidden="true"></i>
-              </button>
-            </div>
-          </td>
-          <td *ngIf="userRole == 0">
-            <div class="d-flex border border-secondary rounded bg-white">
-              <div class="flex-1">
-                <input
-                  type="search"
-                  class="border-0 w-100 rounded px-2 py-1"
-                  (keyup)="filter()"
-                  [(ngModel)]="submitted_by"
-                  placeholder="Search for Staff"
-                />
-              </div>
-              <button class="btn btn-light " (click)="sort('submitted_by')">
+              </a>
+            </th>
+            <th class="w-20" *ngIf="userRole == 0">
+              Created By
+              <a class="bg-transparent float-right" (click)="sort('submitted_by')">
                 <i class="fa fa-sort" aria-hidden="true"></i>
-              </button>
-            </div>
-          </td>
-          <td>
-            <div class="btn d-flex border border-secondary rounded bg-white">
-              <div class="flex-1">
-                <input
-                  type="search"
-                  class="border-0 w-100 rounded px-2"
-                  (keyup)="filter()"
-                  [(ngModel)]="problems_encountered"
-                  placeholder="Search"
-                />
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="btn d-flex border border-secondary rounded bg-white">
-              <div class="flex-1">
-                <input
-                  type="search"
-                  class="border-0 w-100 rounded px-2"
-                  (keyup)="filter()"
-                  [(ngModel)]="remarks"
-                  placeholder="Search"
-                />
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="d-flex border border-secondary rounded bg-white">
-              <div class="flex-1">
-                <input
-                  type="search"
-                  class="border-0 w-100 rounded px-2 py-1"
-                  (keyup)="filter()"
-                  [(ngModel)]="time_in"
-                />
-              </div>
-              <button class="btn btn-light " (click)="sort('time_in')">
-                <i class="fa fa-sort" aria-hidden="true"></i>
-              </button>
-            </div>
-          </td>
-          <td>
-            <div class="d-flex border border-secondary rounded bg-white">
-              <div class="flex-1">
-                <input
-                  type="search"
-                  class="border-0 w-100 rounded px-2 py-1"
-                  (keyup)="filter()"
-                  [(ngModel)]="time_out"
-                />
-              </div>
-              <button class="btn btn-light " (click)="sort('time_out')">
-                <i class="fa fa-sort" aria-hidden="true"></i>
-              </button>
-            </div>
-          </td>
-          <td>
-            <button class="btn btn-info float-right mr-1" (click)="exportPdf()">
-              Export as PDF
-            </button>
-          </td>
-        </tr>
-        <tr *ngFor="let acc of accList; let i = index">
-          <td class="text-center">{{ acc.updated_at }}</td>
-          <td *ngIf="userRole == 0">{{ acc.submitted_by[1] }}</td>
-          <td>{{ acc.problems_encountered }}</td>
-          <td>{{ acc.remarks }}</td>
-          <td class="text-center">{{ convertDate(acc.time_in) | date: 'hh:mm a' }}</td>
-          <td class="text-center">{{ convertDate(acc.time_out) | date: 'hh:mm a' }}</td>
-          <!-- button for view of the full report -->
-          <td class="text-center">
-            <button class="btn bg-transparent" (click)="open(view)">
-              <i class="fa fa-eye ml-3" aria-hidden="true"></i>
-            </button>
-          </td>
-        </tr>
-        <tr *ngIf="accList.length == 0">
-          <td class="text-center p-3" colspan="13">No Record</td>
-        </tr>
-      </tbody>
-    </table>
+              </a>
+            </th>
+            <th class="w-25">
+              Problems Encountered
+            </th>
+            <th class="w-25">
+              Remarks
+            </th>
+            <th class="text-center w-10">Time-in</th>
+            <th class="text-center w-10">Time-out</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let acc of accList; let i = index">
+            <td>
+              {{ convertDate(acc.updated_at) | date: 'yyyy-MM-dd' }}  
+            </td>
+            <td *ngIf="userRole == 0">{{ acc.submitted_by[1] }}</td>
+            <td>{{ acc.problems_encountered }}</td>
+            <td>{{ acc.remarks }}</td>
+            <td class="text-center">{{ formatTime(acc.time_in) | date: 'hh:mm a' }}</td>
+            <td class="text-center">
+              {{ convertDate(acc.updated_at) | date: 'hh:mm a' }}
+            </td>
+            <!-- button for view of the full report -->
+          </tr>
+          <tr *ngIf="accList.length == 0">
+            <td class="text-center p-3" colspan="13">No Record</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Add Accomplishments -->
@@ -170,7 +125,6 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <!-- Huwag na irequire yung login and out ng staff, automatic na pagkalogin ni staff at logout pagkasubmit ni staff ng report  -->
       <div class="modal-body">
         <!-- <fieldset class="form-group">
           <div class="d-flex justify-content-between ">
@@ -237,216 +191,92 @@
       </div>
     </ng-template>
   </div>
-
-  <!-- view modal for Accomplishment Report Summary -->
-  <div>
-    <ng-template #view let-c="close" let-d="dismiss">
-      <div class="modal-header">
-        <h5 class="modal-title text-center">Accomplishment Report</h5>
-        <button
-          type="button"
-          class="close"
-          aria-label="Close"
-          (click)="c('Cross click')"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <fieldset class="form-group">
-          <div class="d-flex justify-content-between ">
-            <div class="text-center px-3 border-right">
-              Date
-            </div>
-            <div class="text-center px-3">
-              Time (In - Out)
-            </div>
-          </div>
-        </fieldset>
-        <hr />
-        <fieldset class="form-group">
-          <label>Problems Encountered</label>
-          <!-- change to textarea -->
-          <input
-            class="form-control"
-            placeholder=""
-            [(ngModel)]="accomp.problems_encountered"
-          />
-        </fieldset>
-        <fieldset class="form-group">
-          <!-- change to textarea -->
-          <label>Remarks</label>
-          <input
-            class="form-control"
-            placeholder=""
-            type="text"
-            [(ngModel)]="accomp.remarks"
-          />
-        </fieldset>
-        <!-- Auto generate all the task within the day -->
-        <fieldset class="form-group">
-          <label>Task</label>
-          <table class="table table-striped">
-            <thead class="bg-primary-color text-light">
-              <tr>
-                <th>Elders Name</th>
-                <th>Medicine</th>
-                <th>Qty</th>
-                <th>Time</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row"></th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
-        <fieldset class="form-group">
-          <!-- change to textarea -->
-          <label>Created By (Admin View Only)</label>
-        </fieldset>
-        <button class="btn btn-info float-right mr-1">
-          Export as PDF
-        </button>
-      </div>
-    </ng-template>
-  </div>
-
+ 
   <!-- Tasks -->
   <div class="mb-3 py-3" *ngSwitchCase="'task'">
-    <button class="btn btn-info float-center mr-1" (click)="exportTaskPdf()">
-      Export as PDF
-    </button>
+    <div class="card-header pt-3">
+        <i class="fa fa-filter" aria-hidden="true"></i> Filter
+        <select class="ml-3 rounded px-2 py-1" [(ngModel)]="category">
+          <option value="" label="-- Select Category --" disabled selected="selected"></option>
+          <option value="0">Date</option>
+          <option value="1" *ngIf="userRole == 0">Assigned Staff</option>
+          <option value="2">Elders Name</option>
+          <option value="3">Medicine Description</option>
+          <option value="4">Status</option>
+        </select>
+        <input
+          *ngIf="category == 0"
+          class="ml-3 rounded px-2 py-1"
+          type="text"
+          [(ngModel)]="date"
+          (keyup)="taskfilter()"
+        />
+        <input
+          *ngIf="category == 1"
+          class="ml-3 rounded px-2 py-1"
+          type="text"
+          [(ngModel)]="staff_name"
+          (keyup)="taskfilter()"
+        />
+        <input
+          *ngIf="category == 2"
+          class="ml-3 rounded px-2 py-1"
+          type="text"
+          [(ngModel)]="elder_name"
+          (keyup)="taskfilter()"
+        />
+        <input
+          *ngIf="category == 3"
+          class="ml-3 rounded px-2 py-1"
+          type="text"
+          [(ngModel)]="medicine_description"
+          (keyup)="taskfilter()"
+        />
+        <input
+          *ngIf="category == 4"
+          class="ml-3 rounded px-2 py-1"
+          type="text"
+          [(ngModel)]="status"
+          (keyup)="taskfilter()"
+        />
+        <button class="btn btn-info float-right mr-1" (click)="exportTaskPdf()">
+          Export as PDF
+         </button>
+      </div>
     <div class="card mb-3">
       <table class="table table-striped">
         <thead class="bg-primary-color text-light">
           <tr>
-            <th class="text-center">Date</th>
-            <th *ngIf="userRole == 0" class="text-center">Assigned Staff</th>
-            <th class="text-center">Elders Name</th>
-            <th class="text-center">Medicine Description</th>
+            <th class="text-center">
+              Date
+              <a class="bg-transparent float-right" (click)="sort('date')">
+                <i class="fa fa-sort" aria-hidden="true"></i>
+              </a>
+            </th>
+            <th *ngIf="userRole == 0" class="text-center">
+              Assigned Staff
+              <a class="bg-transparent float-right" (click)="sort('staff_name')">
+                <i class="fa fa-sort" aria-hidden="true"></i>
+              </a>
+            </th>
+            <th class="text-center">
+              Elders Name
+              <a class="bg-transparent float-right" (click)="sort('elder_name')">
+                <i class="fa fa-sort" aria-hidden="true"></i>
+              </a>
+            </th>
+            <th class="text-center">
+              Medicine Description
+              <a class="bg-transparent float-right" (click)="sort('medicine_description')">
+                <i class="fa fa-sort" aria-hidden="true"></i>
+              </a>
+            </th>
             <th class="text-center">Quantity</th>
             <th class="text-center">Time</th>
             <th class="text-center">Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <div class="d-flex border border-secondary rounded bg-white">
-                <div class="flex-1">
-                  <input
-                    type="search"
-                    class="border-0 w-100 rounded px-2 py-1"
-                    (keyup)="filter()"
-                    [(ngModel)]="date"
-                    placeholder="Search for Date"
-                  />
-                </div>
-                <button class="btn btn-light " (click)="sort('date')">
-                  <i class="fa fa-sort" aria-hidden="true"></i>
-                </button>
-              </div>
-            </td>
-            <td *ngIf="userRole == 0">
-              <div class="d-flex border border-secondary rounded bg-white">
-                <div class="flex-1">
-                  <input
-                    type="search"
-                    class="border-0 w-100 rounded px-2 py-1"
-                    (keyup)="filter()"
-                    [(ngModel)]="staff_name"
-                    placeholder="Search for Staff"
-                  />
-                </div>
-                <button class="btn btn-light " (click)="sort('staff_name')">
-                  <i class="fa fa-sort" aria-hidden="true"></i>
-                </button>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex border border-secondary rounded bg-white">
-                <div class="flex-1">
-                  <input
-                    type="search"
-                    class="border-0 w-100 rounded px-2 py-1"
-                    (keyup)="filter()"
-                    [(ngModel)]="elder_name"
-                    placeholder="Search for Elders"
-                  />
-                </div>
-                <button class="btn btn-light " (click)="sort('elder_name')">
-                  <i class="fa fa-sort" aria-hidden="true"></i>
-                </button>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex border border-secondary rounded bg-white">
-                <div class="flex-1">
-                  <input
-                    type="search"
-                    class="border-0 w-100 rounded px-2 py-1"
-                    (keyup)="filter()"
-                    [(ngModel)]="medicine_description"
-                    placeholder="Search for Elders"
-                  />
-                </div>
-                <button class="btn btn-light " (click)="sort('medicine_description')">
-                  <i class="fa fa-sort" aria-hidden="true"></i>
-                </button>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex border border-secondary rounded bg-white">
-                <div class="flex-1">
-                  <input
-                    type="search"
-                    class="border-0 w-100 rounded px-2 py-1"
-                    (keyup)="filter()"
-                    [(ngModel)]="qty"
-                  />
-                </div>
-                <button class="btn btn-light " (click)="sort('qty')">
-                  <i class="fa fa-sort" aria-hidden="true"></i>
-                </button>
-              </div>
-            </td>
-            <td>
-              <div class="btn d-flex border border-secondary rounded bg-white">
-                <div class="flex-1">
-                  <input
-                    type="search"
-                    class="border-0 w-100 rounded px-2 py-1"
-                    (keyup)="filter()"
-                    [(ngModel)]="created_at"
-                  />
-                </div>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex border border-secondary rounded bg-white">
-                <div class="flex-1">
-                  <input
-                    type="search"
-                    class="border-0 w-100 rounded px-2 py-1"
-                    (keyup)="filter()"
-                    [(ngModel)]="status"
-                  />
-                </div>
-                <button class="btn btn-light " (click)="sort('status')">
-                  <i class="fa fa-sort" aria-hidden="true"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
           <tr *ngFor="let report of taskReports; let i = index">
             <td class="text-center">
               {{ convertDate(report.date) | date: 'yyyy-MM-dd' }}

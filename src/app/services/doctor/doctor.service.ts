@@ -33,7 +33,7 @@ export class DoctorService {
   }
 
 
-  udpateDoctor(data: Doctor) {
+  updateDoctor(data: Doctor) {
     data.updated_by = Number(this.userId);
     return this.http.patch(`${this.url}/${data.id}`, data, { headers: this.reqHeader });
   }

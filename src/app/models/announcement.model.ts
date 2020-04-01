@@ -3,6 +3,7 @@ export interface AnnouncementService {
     id?: number;
     event: string;
     date: string;
+    time: string;
     created_by: number;
     updated_by: number;
     created_at?: string;
@@ -12,6 +13,7 @@ export interface AnnouncementService {
 export const initAnnounce = {
     event: '',
     date: '',
+    time: '',
     created_by: 0,
     updated_by: 0,
 };

@@ -17,7 +17,7 @@ export class HospitalDetailsComponent implements OnInit {
   doctorList: Doctor[] = [];
   docIndex = [];
   serviceIndex = [];
-  serviceList = ['hermatology', '2D echo', 'X-ray', 'lood Chemistry', 'EKG', 'Dental X-ray', 'Ultrasound'];
+  serviceList = ['hermatology', '2D echo', 'X-ray', 'Blood Chemistry', 'EKG', 'Dental X-ray', 'Ultrasound'];
   constructor(
     private route: ActivatedRoute,
     private hospitalService: HospitalService,
@@ -58,7 +58,7 @@ export class HospitalDetailsComponent implements OnInit {
     this.serviceIndex.forEach(i => {
       this.hospital.service_offer.push(this.serviceList[i]);
     });
-    this.hospitalService.udpateHospital(this.hospital).subscribe();
+    this.hospitalService.updateHospital(this.hospital).subscribe();
     this.editing = false;
   }
 

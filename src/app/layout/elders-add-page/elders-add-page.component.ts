@@ -88,7 +88,7 @@ export class EldersAddPageComponent implements OnInit {
       this.previewUrl = reader.result;
     };
   }
-
+  
   onSubmit() {
     return new Promise(resolve => {
       const formData = new FormData();

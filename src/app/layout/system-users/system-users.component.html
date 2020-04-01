@@ -19,8 +19,8 @@
       <th>Name</th>
       <th>Role</th>
       <th>Action</th>
-      <th>Time</th>
-      <th>Date</th>
+      <th class="text-center">Time</th>
+      <th class="text-center">Date</th>
     </tr>
   </thead>
   <tbody>
@@ -32,8 +32,8 @@
         }}
       </td>
       <td>{{ logs.action }}</td>
-      <td>{{ toDate(logs.created_at) | date: 'hh:mm a' }}</td>
-      <td>{{ toDate(logs.created_at) | date: 'MMM dd yyyy' }}</td>
+      <td class="text-center">{{ toDate(logs.created_at) | date: 'hh:mm a' }}</td>
+      <td class="text-center">{{ toDate(logs.created_at) | date: 'MMM dd yyyy' }}</td>
     </tr>
     <tr *ngIf="userLogs.length == 0">
       <td class="text-center" colspan="13">No Record</td>

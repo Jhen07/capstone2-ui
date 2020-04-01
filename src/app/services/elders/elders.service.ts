@@ -11,6 +11,7 @@ export class EldersService {
   api = environment.api + '/archives-get-all-by-archive';
   userId = +localStorage.getItem('user_id');
   reqHeader = new HttpHeaders({ 'Content-Type': 'application/json' });
+  
   constructor(private http: HttpClient) { }
 
   getElders() {
@@ -18,7 +19,7 @@ export class EldersService {
   }
 
   getAllElders(table, isArchived) {
-    return this.http.get(`${this.api}?table=${table}&archived_value=${isArchived}`, { headers: this.reqHeader });
+    return this.http.get(`${this.api}?table=elders&archived_value=${isArchived}`, { headers: this.reqHeader });
   }
 
   getElderById(id) {
@@ -46,7 +47,7 @@ export class EldersService {
     return this.http.post(`${environment.api}/elders-medical-history`, data, { headers: this.reqHeader });
   }
 
-  udpateElder(data: Elders) {
+  updateElder(data: Elders) {
     data.updated_by = Number(this.userId);
     return this.http.patch(`${this.url}/${data.id}`, data, { headers: this.reqHeader });
   }

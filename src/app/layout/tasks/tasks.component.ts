@@ -29,6 +29,10 @@ export class TasksComponent implements OnInit {
   ) {
     this.getAllTasks(this.userId);
     this.getReports();
+
+    this.taskService.getAllTasks().subscribe((task: any) => {
+      this.rawTaskList = task;
+    });
   }
 
   ngOnInit() {
@@ -77,11 +81,11 @@ export class TasksComponent implements OnInit {
     return 'Pending';
   }
 
-  filter(value) {
+  filter() {
     let tasks = this.rawTaskList;
 
     if (this.elder_name != '') {
-      console.log('elder_name');
+      console.log('name');
       tasks = tasks.filter(task => {
         const elder_name = `${task.elder_name}`;
         if (elder_name.includes(this.elder_name)) {
@@ -94,7 +98,25 @@ export class TasksComponent implements OnInit {
     console.log(tasks);
 
     this.taskList = tasks;
-
   }
+
+  // filter() {
+  //   let staff = this.rawStaffList;
+
+  //   if (this.name != '') {
+  //     staff = staff.filter(stff => {
+  //       const name = `${stff.first_name} ${stff.last_name}`;
+  //       if (name.includes(this.name)) {
+  //         return true;
+  //       }
+  //       return false;
+  //     });
+  //   }
+
+  //   console.log(staff);
+
+  //   this.staffList = staff;
+
+  // }
 
 }

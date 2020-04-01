@@ -65,6 +65,30 @@
         </div>
         <hr />
         <div class="form-group row">
+            <label for="" class="col-sm-5 col-form-label">Status</label>
+            <div class="col-sm-7">
+              <label
+                for=""
+                class="col-form-label"
+                [ngClass]="{
+                  'text-success': elder.status == 0,
+                  'text-danger': elder.status != 0
+                }"
+                >{{ staff.status == 0 ? 'Offline' : 'Active' }}</label
+              >
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-5 col-form-label">Status</label>
+            <div class="col-sm-7">
+              <select class="form-control " [(ngModel)]="elder.status">
+                <option class="text-center" value="0">Active</option>
+                <option class="text-center" value="1">Discharge</option>
+                <option class="text-center" value="2">Desease</option>
+              </select>
+            </div>
+          </div>
+        <div class="form-group row">
           <label for="" class="col-sm-5 col-form-label">Nickname</label>
           <div class="col-sm-7">
             <!-- <label for="" class="col-sm-3 col-form-label">First Name</label> -->
@@ -92,7 +116,7 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="" class="col-sm-5 col-form-label">Date Affiliated</label>
+          <label for="" class="col-sm-5 col-form-label">Date of Admission</label>
           <div class="col-sm-7">
             <div class="input-group datepicker-input">
               <input
@@ -140,10 +164,40 @@
         </div>
         <hr />
         <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Status</label>
+          <div class="col-sm-7">
+            <label class="text-center"
+              [ngClass]="{
+              'text-yellow': elder.status != 0,
+              'text-info': elder.status == 0
+            }"
+            > {{ elder.status == 0 ? 'Active' : elder.status == 1 ? 'Discharge' : 'Desease' }}
+            </label>
+            <button
+                for=""
+                class="btn btn-transparent float-right large border"
+                (click)="archive()"
+                *ngIf="elder.archived == 0"
+                [(ngModel)]="elder.archived"
+              >
+                <i class="fa fa-archive" aria-hidden="true"></i>
+            </button>
+            <button
+                for=""
+                class="btn btn-transparent float-right large border"
+                (click)="unarchive()"
+                *ngIf="elder.archived != 0"
+                [(ngModel)]="elder.archived"
+              >
+                <i class="fa fa-archive" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="form-group row">
           <label for="" class="col-sm-5 col-form-label">Nickname</label>
           <div class="col-sm-7">
-            <label for="" class="">{{ elder.nickname }}</label>
-          </div>
+              <label for="" class="">{{ elder.nickname }}</label>
+            </div>
         </div>
         <div class="form-group row">
           <label for="" class="col-sm-5 col-form-label">Gender</label>
@@ -159,7 +213,7 @@
         </div>
 
         <div class="form-group row">
-          <label for="" class="col-sm-5 col-form-label">Date Affiliated</label>
+          <label for="" class="col-sm-5 col-form-label">Date of Admission</label>
           <div class="col-sm-7">
             <label for="" class="">{{ elder.date_stay_in_orphanage }}</label>
           </div>
@@ -200,7 +254,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <label for="" class="col-sm-3 col-form-label">Surname</label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -324,7 +378,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <label for="" class="col-sm-3 col-form-label">Surname</label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -347,7 +401,7 @@
             <label for="" class="col-sm-3 col-form-label">Contact Number</label>
             <div class="col-sm-9">
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 [(ngModel)]="elder.cp_contact_no"
               />
@@ -452,7 +506,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <label for="" class="col-sm-3 col-form-label">Surname</label>
             <div class="col-sm-9">
               <label for="" class=" col-form-label">{{
                 elder.last_name
@@ -530,7 +584,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-sm-3 col-form-label">Surmame</label>
+            <label for="" class="col-sm-3 col-form-label">Surname</label>
             <div class="col-sm-9">
               <label for="" class="col-form-label">{{
                 elder.cp_surname
@@ -661,7 +715,7 @@
       </div>
     </div>
 
-    <!-- Additional, Add button to add Present Illness and Past Illness -->
+    <!-- button to add Present Illness and Past Illness -->
     <div class="col-md-8 right-div" *ngSwitchCase="3">
       <div class="card p-4 mb-3">
         <h5 class="pb-2 color-dark-primary">
@@ -791,12 +845,12 @@
                 </div>
 
                 <div class="form-group row">
-                  <label for="" class="col-sm-3 col-form-label"
-                    >Assigned Doctor</label
-                  >
+                  <label for="" class="col-sm-3 col-form-label">Assigned Doctor</label>
                   <div class="col-sm-9">
                     <label for="" class="col-form-label">
-                      <b>{{ past.assigned_doctor_name }}</b>
+                      <a [routerLink]="['/doctor-list']">{{
+                        past.assigned_doctor_name 
+                      }}</a>
                     </label>
                   </div>
                 </div>
