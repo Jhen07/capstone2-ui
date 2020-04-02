@@ -154,7 +154,7 @@ export class ReportsComponent implements OnInit {
   getCategory(category) {
     const text = category == 0 ? 'Name' : 
     category == 1 ? 'Role' :
-    category == 2 ? 'Email' :
+    category == 2 ? 'Username' :
     category == 3 ? 'Date Hired' : 'Status';
     return text;
   }

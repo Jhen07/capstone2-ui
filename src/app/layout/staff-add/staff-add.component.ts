@@ -19,7 +19,6 @@ export class StaffAddComponent implements OnInit {
   fileUploadProgress: string = null;
   uploadedFilePath: string = null;
   minLength: number;
-  addemail = '@gmail.com';
 
   constructor(public router: Router, private toastr: ToastrService, private userService: UsersService) {
     this.staff.role = 2;
@@ -60,9 +59,9 @@ export class StaffAddComponent implements OnInit {
       return this.toastr.error('Please fillup the Surname field');
     }
     
-    this.staff.email = this.staff.email + this.addemail;
+    this.staff.email = this.staff.email;
     if (this.staff.email.trim() == '') {
-      return this.toastr.error('Please fillup the Email Address field');
+      return this.toastr.error('Please fillup the Username');
     }
 
     if (this.staff.password.trim() == '') {

@@ -90,7 +90,7 @@ export class ArchivesComponent implements OnInit {
 
   async exportPdf(){
     this.printList = [];
-    this.printList.push(['Name', 'User Role', 'Email', 'Date Hired', 'Status']);
+    this.printList.push(['Name', 'User Role', 'Username', 'Date Hired', 'Status']);
     this.staffList.forEach(staff => {
       const staffPrintList = [];
       staffPrintList.push(staff['first_name'] + ' ' + staff['last_name']);
