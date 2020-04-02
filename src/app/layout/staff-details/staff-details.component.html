@@ -120,19 +120,18 @@
             <label for="" class="col-form-label">{{ staff.age }}</label>
           </div>
         </div>
-
-        <div class="form-group row">
-          <label for="" class="col-sm-5 col-form-label">Address</label>
-          <div class="col-sm-7">
-            <label for="" class="col-form-label">{{ staff.address }}</label>
-          </div>
-        </div>
         <div class="form-group row">
             <label for="" class="col-sm-5 col-form-label">Contact Number</label>
             <div class="col-sm-7">
               <label for="" class="col-form-label">{{ staff.contact_no }}</label>
             </div>
           </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Address</label>
+          <div class="col-sm-7">
+            <label for="" class="col-form-label">{{ staff.address }}</label>
+          </div>
+        </div>
         <div class="form-group row">
           <label for="" class="col-sm-5 col-form-label">Date Hired</label>
           <div class="col-sm-7">
@@ -250,6 +249,16 @@
           </div>
         </div>
         <div class="form-group row">
+          <label for="" class="col-sm-5 col-form-label">Contact Number</label>
+          <div class="col-sm-7">
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="staff.contact_no"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
           <label for="" class="col-sm-5 col-form-label">Address</label>
           <div class="col-sm-7">
             <input
@@ -259,16 +268,6 @@
             />
           </div>
         </div>
-        <div class="form-group row">
-            <label for="" class="col-sm-5 col-form-label">Contact Number</label>
-            <div class="col-sm-7">
-              <input
-                type="number"
-                class="form-control"
-                [(ngModel)]="staff.contact_no"
-              />
-            </div>
-          </div>
         <div class="form-group row">
           <label for="" class="col-sm-5 col-form-label">Date Hired</label>
           <div class="col-sm-7">
@@ -319,7 +318,7 @@
             <input
               type="text"
               class="form-control"
-              [(ngModel)]="staff.email + staff.addmail"
+              [(ngModel)]="staff.email"
               [disabled]="!editing3"
             />
           </div>

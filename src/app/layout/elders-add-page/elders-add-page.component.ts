@@ -28,6 +28,11 @@ export class EldersAddPageComponent implements OnInit {
   }
 
   async addElder() {
+    
+    function titleCaseWord(word: string) {
+      if (!word) return word;
+      return word[0].toUpperCase() + word.substr(1).toLowerCase();
+    }
 
     if (this.bDate) {
       const newDate = `${this.bDate.year}-${this.bDate.month}-${this.bDate.day}`;

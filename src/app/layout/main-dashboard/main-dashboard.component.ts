@@ -139,6 +139,9 @@ export class MainDashboardComponent implements OnInit {
       start: this.dateSelected.date,
       allDay: this.dateSelected.allDay,
     };
+
+    // this.event = ourString.substring(0, 1).toUpperCase() + ourString.substring(1);
+
     this.eventService.addEvent(event).subscribe();
     // this.calendarEvents = this.calendarEvents.concat(event);
     this.getAllEvents();

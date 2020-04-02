@@ -13,6 +13,15 @@ $topnav-background-color: #2D7DAC;
     background: $topnav-background-color;
 }
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .elder-img {
     width: 100px;
     height: 100px;

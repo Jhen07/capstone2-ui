@@ -175,7 +175,7 @@
     <div class="modal-body">
       <fieldset class="form-group">
         <label>Event</label>
-        <input class="form-control" placeholder="" [(ngModel)]="event" (ngModelChange)="event = $event.toUpperCase()"/>
+        <input class="form-control" placeholder="" [(ngModel)]="event" (ngModelChange)="event = event.substring(0, 1).toUpperCase() + event.substring(1);"/>
       </fieldset>
       <fieldset class="form-group">
         <label>Date</label>

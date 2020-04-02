@@ -252,7 +252,7 @@
               <!-- <label for="" class="col-sm-3 col-form-label">First Name</label> -->
               <input
                 type="text"
-                class="form-control"
+                class="form-control text-uppercase"
                 [(ngModel)]="elder.cp_first_name"
               />
             </div>
@@ -280,11 +280,19 @@
           <div class="form-group row">
             <label for="" class="col-sm-3 col-form-label">Relationship</label>
             <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
+              <select
+                class="custom-select"
+                name=""
+                id=""
                 [(ngModel)]="elder.cp_relationship"
-              />
+              >
+                <option value="Daughter">Daughter</option>
+                <option value="Son">Son</option>
+                <option value="Siblings">Siblings</option>
+                <option value="Relatives">Relatives</option>
+                <option value="Friends">Friends</option>
+                <option value="Others">Others</option>
+              </select>
             </div>
           </div>
           <div class="form-group row">

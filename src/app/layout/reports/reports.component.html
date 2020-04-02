@@ -99,7 +99,7 @@
             <td>{{ acc.remarks }}</td>
             <td class="text-center">{{ formatTime(acc.time_in) | date: 'hh:mm a' }}</td>
             <td class="text-center">
-              {{ convertDate(acc.updated_at) | date: 'hh:mm a' }}
+              {{ convertDate(acc.created_at) | date: 'hh:mm a' }}
             </td>
             <!-- button for view of the full report -->
           </tr>

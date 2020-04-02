@@ -19,6 +19,7 @@ export class StaffAddComponent implements OnInit {
   fileUploadProgress: string = null;
   uploadedFilePath: string = null;
   minLength: number;
+  addemail = '@gmail.com';
 
   constructor(public router: Router, private toastr: ToastrService, private userService: UsersService) {
     this.staff.role = 2;
@@ -58,13 +59,10 @@ export class StaffAddComponent implements OnInit {
     if (this.staff.last_name.trim() == '') {
       return this.toastr.error('Please fillup the Surname field');
     }
-
+    
+    this.staff.email = this.staff.email + this.addemail;
     if (this.staff.email.trim() == '') {
       return this.toastr.error('Please fillup the Email Address field');
-    }
-
-    if (this.staff.password.length < this.minLength){
-      return this.toastr.error('Password must be minimum of 8 character!');
     }
 
     if (this.staff.password.trim() == '') {
@@ -75,6 +73,10 @@ export class StaffAddComponent implements OnInit {
       }
       if (this.staff.password != this.confirm) {
         return this.toastr.error('Password did not match!');
+      }
+      this.minLength = 8;
+      if (this.staff.password.length < this.minLength){
+        return this.toastr.error('Password must be minimum of 8 character!');
       }
     }
     if (this.fileData) {

@@ -73,7 +73,10 @@ export class ReportsComponent implements OnInit {
     this.userService.getUserLogsById(this.userData.id).subscribe(logs => {
       this.userLogs = logs;
     });
-   
+    this.userService.getUserLogs().subscribe(logs => {
+      this.userLogs = logs;
+    });
+    
     const today = new Date().toDateString();
     console.log(today);
 
@@ -170,12 +173,8 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-  formatTime(timeString: string) {
-    const today = new Date();
-
-    today.setHours(+timeString.substring(0, 1));
-    today.setMinutes(+timeString.substring(3, 4));
-    return today;
+  formatTime(date) {
+    return new Date(date);
   }
 
   clearModalFields() {
