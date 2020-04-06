@@ -260,6 +260,7 @@
         cols="30"
         rows="5"
         [(ngModel)]="notes"
+        (ngModelChange)="notes = notes.substring(0, 1).toUpperCase() + notes.substring(1);"
       ></textarea>
     </div>
     <div class="modal-body">

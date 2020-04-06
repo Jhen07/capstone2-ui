@@ -52,7 +52,7 @@
     <option value="">Select Status</option>
     <option value="0">Active</option>
     <option value="1">Discharge</option>
-    <option value="2">Desease</option>
+    <option value="2">Decease</option>
   </select>
   <button class="btn btn-info mr-1 float-right" (click)="exportPdf()">
     Export as PDF
@@ -118,7 +118,7 @@
             'text-yellow': elder.status != 0,
             'text-info': elder.status == 0
           }"
-        > {{ elder.status == 0 ? 'Active' : elder.status == 1 ? 'Discharge' : 'Desease' }}</td>
+        > {{ elder.status == 0 ? 'Active' : elder.status == 1 ? 'Discharge' : 'Decease' }}</td>
       </tr>
     </tbody>
   </table>

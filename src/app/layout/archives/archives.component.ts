@@ -153,7 +153,7 @@ export class ArchivesComponent implements OnInit {
       elderPrintList.push(elder['age']);
       elderPrintList.push(elder['bed_no']);
       elderPrintList.push(elder['date_stay_in_orphanage']);
-      const statusValue = elder.status == 0 ? 'Active' : elder.status == 1 ? 'Discharge' : 'Desease';
+      const statusValue = elder.status == 0 ? 'Active' : elder.status == 1 ? 'Discharge' : 'Decease';
       elderPrintList.push(statusValue);
       
       this.printList.push(elderPrintList);

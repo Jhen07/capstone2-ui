@@ -44,6 +44,8 @@ export class EldersDetailsComponent implements OnInit {
   uploadedFilePath: string = null;
   category = '';
 
+  docIndex = [];
+
   constructor(
     public router: Router,
     private route: ActivatedRoute,

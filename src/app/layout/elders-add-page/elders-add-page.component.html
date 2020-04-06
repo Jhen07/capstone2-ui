@@ -62,6 +62,7 @@
               type="text"
               class="form-control"
               [(ngModel)]="elder.nickname"
+              (ngModelChange)="elder.nickname = elder.nickname.substring(0, 1).toUpperCase() + elder.nickname.substring(1);"
             />
           </div>
         </div>
@@ -69,8 +70,8 @@
           <label for="" class="col-sm-5 col-form-label">Gender</label>
           <div class="col-sm-7">
             <select class="form-control" [(ngModel)]="elder.gender">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
             </select>
           </div>
         </div>
@@ -120,6 +121,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="elder.first_name"
+                (ngModelChange)="elder.first_name = elder.first_name.substring(0, 1).toUpperCase() + elder.first_name.substring(1);"
               />
             </div>
           </div>
@@ -130,6 +132,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="elder.middle_name"
+                (ngModelChange)="elder.middle_name = elder.middle_name.substring(0, 1).toUpperCase() + elder.middle_name.substring(1);"
               />
             </div>
           </div>
@@ -140,6 +143,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="elder.last_name"
+                (ngModelChange)="elder.last_name = elder.last_name.substring(0, 1).toUpperCase() + elder.last_name.substring(1);"
               />
             </div>
           </div>
@@ -216,6 +220,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="elder.provincial_address"
+                (ngModelChange)="elder.provincial_address = elder.provincial_address.substring(0, 1).toUpperCase() + elder.provincial_address.substring(1);"
               />
             </div>
           </div>
@@ -223,11 +228,11 @@
             <label for="" class="col-sm-3 col-form-label">Civil Status</label>
             <div class="col-sm-9">
               <select class="form-control" [(ngModel)]="elder.civil_status">
-                <option value="married">Married</option>
-                <option value="widowed">Widowed</option>
-                <option value="separated">Separated</option>
-                <option value="divorced">Divorced</option>
-                <option value="single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Separated">Separated</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Single">Single</option>
               </select>
             </div>
           </div>
@@ -238,6 +243,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="elder.nationality"
+                (ngModelChange)="elder.nationality = elder.nationality.substring(0, 1).toUpperCase() + elder.nationality.substring(1);"
               />
             </div>
           </div>
@@ -252,8 +258,9 @@
               <!-- <label for="" class="col-sm-3 col-form-label">First Name</label> -->
               <input
                 type="text"
-                class="form-control text-uppercase"
+                class="form-control"
                 [(ngModel)]="elder.cp_first_name"
+                (ngModelChange)="elder.cp_first_name = elder.cp_first_name.substring(0, 1).toUpperCase() + elder.cp_first_name.substring(1);"
               />
             </div>
           </div>
@@ -264,6 +271,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="elder.cp_middle_name"
+                (ngModelChange)="elder.cp_middle_name = elder.cp_middle_name.substring(0, 1).toUpperCase() + elder.cp_middle_name.substring(1);"
               />
             </div>
           </div>
@@ -274,6 +282,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="elder.cp_surname"
+                (ngModelChange)="elder.cp_surname = elder.cp_surname.substring(0, 1).toUpperCase() + elder.cp_surname.substring(1);"
               />
             </div>
           </div>
@@ -314,6 +323,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="elder.cp_provincial_add"
+                (ngModelChange)="elder.cp_provincial_add = elder.cp_provincial_add.substring(0, 1).toUpperCase() + elder.cp_provincial_add.substring(1);"
               />
             </div>
           </div>
@@ -324,6 +334,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="elder.cp_work"
+                (ngModelChange)="elder.cp_work = elder.cp_work.substring(0, 1).toUpperCase() + elder.cp_work.substring(1);"
               />
             </div>
           </div>
@@ -349,7 +360,7 @@
             >
             <div class="col-sm-9">
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 [(ngModel)]="elder.oi_senior_citizen_id"
               />
