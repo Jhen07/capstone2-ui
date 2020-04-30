@@ -11,6 +11,7 @@
     <span class="navbar-toggler-icon"></span>
     <i class="fa fa-bars text-light" aria-hidden="true"></i>
   </button>
+
   <div class="collapse navbar-collapse">
     <button
       class="btn bg-transparent ml-3"
@@ -19,6 +20,16 @@
     >
       <i class="fa fa-bars text-light" aria-hidden="true"></i>
     </button>
+
+    <div class="ml-auto">
+      <div class="date text-center">
+        {{ time | date: 'MMM dd yyyy' }}
+      </div>
+      <div class="time text-center">
+        {{ time | date: 'hh:mm:ss a' }}
+      </div>
+    </div>
+    
     <ul class="navbar-nav ml-auto">
       &nbsp;
       <li class="nav-item dropdown " ngbDropdown>
@@ -43,6 +54,9 @@
             *ngFor="let notif of notifications"
           >
             <div class="w-100">{{ notif.description }}</div>
+            <div class="w-100" *ngIf="notif.length == 0">
+              No Notification
+            </div>
           </div>
         </div>
       </li>

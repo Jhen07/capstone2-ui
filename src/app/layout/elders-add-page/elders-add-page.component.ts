@@ -43,7 +43,7 @@ export class EldersAddPageComponent implements OnInit {
       const newDate = `${this.dateIn.year}-${this.dateIn.month}-${this.dateIn.day}`;
       this.elder.date_stay_in_orphanage = newDate;
     } else {
-      return this.toastr.error('Please enter valid stay in date!');
+      return this.toastr.error('Please enter valid date of admission!');
     }
 
     if (this.sabbath) {
@@ -62,9 +62,8 @@ export class EldersAddPageComponent implements OnInit {
     }, reject => {
       console.log(reject);
 
-      this.toastr.warning(reject.error.message);
+      this.toastr.warning('Save Failed!');
     });
-
 
   }
 

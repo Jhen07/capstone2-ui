@@ -181,6 +181,9 @@ export class EldersComponent implements OnInit {
       var docDefinition = {
         content: [
           {
+            image: await this.getBase64ImageFromURL("../../assets/images/logoADDCHE.png")
+          },
+          {
             text: 'ADD-CHE',
             bold: true,
             fontSize: 20,
@@ -214,6 +217,26 @@ export class EldersComponent implements OnInit {
       }
 
       pdfMake.createPdf(docDefinition).open();
+  }
+
+  getBase64ImageFromURL(url) {
+    return new Promise((resolve, reject) => {
+      var img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+      img.onload = () => {
+        var canvas = document.createElement("canvas");
+        canvas.width = 5;
+        canvas.height = 5;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        resolve(dataURL);
+      };
+      img.onerror = error => {
+        reject(error);
+      };
+      img.src = url;
+    });
   }
 
 }

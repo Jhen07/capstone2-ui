@@ -26,9 +26,8 @@ export class DoctorListComponent implements OnInit {
   specialization = '';
   updated_at = '';
   order = 'asc';
-
   category = '';
-
+  
   constructor(
     private doctorService: DoctorService,
     private modalService: NgbModal,
@@ -84,6 +83,14 @@ export class DoctorListComponent implements OnInit {
   async addDoctor() {
     if (this.doctor.doc_name.trim() == '') {
       return this.toastr.error('Please enter doctor name!')
+    }
+
+    if (this.doctor.schedules.trim() == '') {
+      return this.toastr.error('Please enter schedules!')
+    }
+
+    if (this.doctor.specialization.trim() == '') {
+      return this.toastr.error('Please enter specialization!')
     }
 
     await this.doctorService.addDoctor(this.doctor).toPromise();

@@ -75,10 +75,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngIf="doctorList.length == 0" (click)="open(content)">
+      <tr *ngIf="doctorList.length == 0">
         <td class="text-center p-3" colspan="13">No Record</td>
       </tr>
-      <tr *ngFor="let doctor of doctorList">
+      <tr *ngFor="let doctor of doctorList" (click)="open(update)">
         <th scope="row">{{ doctor.doc_name }}</th>
         <td class="text-center">{{ doctor.contact_no }}</td>
         <td class="text-center">{{ doctor.schedules }}</td>
@@ -105,7 +105,9 @@
     </div>
     <div class="modal-body">
       <fieldset class="form-group">
-        <label>Doctor Name</label>
+        <label>Doctor Name
+          <label class="red">*</label>
+        </label>
         <input
           class="form-control"
           placeholder=""
@@ -114,7 +116,7 @@
         />
       </fieldset>
       <fieldset class="form-group">
-        <label>Number</label>
+        <label>Contact Number</label>
         <input
           class="form-control"
           placeholder=""
@@ -124,7 +126,9 @@
       </fieldset>
 
       <fieldset class="form-group">
-        <label>Schedule</label>
+        <label>Schedule
+          <label class="red">*</label>
+        </label>
         <input
           class="form-control"
           placeholder=""
@@ -134,7 +138,9 @@
       </fieldset>
 
       <fieldset class="form-group">
-        <label>Specialization</label>
+        <label>Specialization
+          <label class="red">*</label>
+        </label>
         <input
           class="form-control"
           placeholder=""
@@ -232,7 +238,7 @@
         >
           Close
         </button>
-        <button type="button" class="btn btn-primary" (click)="addDoctor()">
+        <button type="button" class="btn btn-primary" (click)="setDoctors()">
           Add
         </button>
       </div>

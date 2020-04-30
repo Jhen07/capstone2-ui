@@ -49,7 +49,7 @@ export class ReportsComponent implements OnInit {
   medicine_description = '';
   created_at = '';
   status = '';
-  category2 = '';
+  category = '';
   doneTasks: TaskReport[] = [];
 
   constructor(
@@ -75,6 +75,10 @@ export class ReportsComponent implements OnInit {
     });
     this.userService.getUserLogs().subscribe(logs => {
       this.userLogs = logs;
+    });
+    this.taskService.getAllTasks().subscribe((reports: TaskReport[]) => {
+      this.taskReportsList = reports;
+      this.rawTaskReportsList = reports;
     });
     
     const today = new Date().toDateString();
@@ -108,9 +112,6 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.taskService.getAllTasks().subscribe((report: TaskReport[]) => {
-      this.rawTaskReportsList = report;
-    });
   }
 
   addAccomplishment() {
@@ -141,14 +142,6 @@ export class ReportsComponent implements OnInit {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
-  }
-
-  getCategory2(category2) {
-    const text = category2 == 0 ? 'Date' : 
-    category2 == 1 ? 'Assigned Staff' :
-    category2 == 2 ? 'Elders Name':
-    category2 == 3 ? 'Medicine Description' : 'Status';
-    return text;
   }
 
   getCategory(category) {
@@ -296,6 +289,7 @@ export class ReportsComponent implements OnInit {
         return false;
       });
     }
+    
     console.log(reports);
     this.taskReportsList = reports;
   }

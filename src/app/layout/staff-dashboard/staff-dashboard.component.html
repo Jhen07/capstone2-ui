@@ -1,19 +1,19 @@
 <div [@routerTransition] class="bg-light">
-  <div class="top p-3 d-flex justify-content-between">
+  <div class="top p-3 d-flex text-center">
     <div>
-      <h2 class="text-custom-pink ">
-        <small>Hello {{ userData?.nick_name }}!</small>
-      </h2>
+      <h1 class="text-custom-pink">
+       Hello {{ userData?.nick_name }}!
+      </h1>
       <p><small>Have a nice day!</small></p>
     </div>
-    <div class="text-center">
+    <!-- <div class="text-center">
       <h2 class="color-dark-primary ">
         <small>{{ time | date: 'hh:mm:ss a' }}</small>
       </h2>
       <p>
         <small>{{ time | date: 'MMM dd yyyy' }}</small>
       </p>
-    </div>
+    </div> -->
   </div>
   <div class="bg-primary-color text-light p-3">
     Upcoming Events

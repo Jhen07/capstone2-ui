@@ -21,7 +21,7 @@
   <div class="mb-3 py-3" *ngSwitchCase="'daily'">
     <div class="card-header pt-3">
       <i class="fa fa-filter" aria-hidden="true"></i> Filter
-      <select class="ml-3 rounded px-2 py-1" [(ngModel)]="category2">
+      <select holder="Category" class="ml-3 rounded px-2 py-1" [(ngModel)]="category">
         <option value="" label="-- Select Category --" disabled selected="selected"></option>
         <option value="0">Date</option>
         <option value="1" *ngIf="userRole == 0">Created by</option>
@@ -29,28 +29,28 @@
         <option value="3">Remarks</option>
       </select>
       <input
-        *ngIf="category2 == 0"
+        *ngIf="category == 0"
         class="ml-3 rounded px-2 py-1"
         type="text"
-        [(ngModel)]="date"
+        [(ngModel)]="updated_at"
         (keyup)="filter()"
       />
       <input
-        *ngIf="category2 == 1"
+        *ngIf="category == 1"
         class="ml-3 rounded px-2 py-1"
         type="text"
         [(ngModel)]="submitted_by"
         (keyup)="filter()"
       />
       <input
-        *ngIf="category2 == 2"
+        *ngIf="category == 2"
         class="ml-3 rounded px-2 py-1"
         type="text"
         [(ngModel)]="problems_encountered"
         (keyup)="filter($event.target.value)"
       />
       <input
-        *ngIf="category2 == 3"
+        *ngIf="category == 3"
         class="ml-3 rounded px-2 py-1"
         type="text"
         [(ngModel)]="remarks"
@@ -163,7 +163,6 @@
           ></textarea>
         </fieldset>
         <fieldset class="form-group">
-          <!-- change to textarea -->
           <label>Remarks</label>
           <textarea
             cols="30"
@@ -216,14 +215,14 @@
           class="ml-3 rounded px-2 py-1"
           type="text"
           [(ngModel)]="staff_name"
-          (keyup)="taskfilter()"
+          (keyup)="taskfilter($event.target.value)"
         />
         <input
           *ngIf="category == 2"
           class="ml-3 rounded px-2 py-1"
           type="text"
           [(ngModel)]="elder_name"
-          (keyup)="taskfilter()"
+          (keyup)="taskfilter($event.target.value)"
         />
         <input
           *ngIf="category == 3"

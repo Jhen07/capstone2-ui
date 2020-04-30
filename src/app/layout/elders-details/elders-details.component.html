@@ -147,6 +147,26 @@
           >
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
+          <div>
+            <button
+                for=""
+                class="btn btn-transparent float-left large border"
+                (click)="archive()"
+                *ngIf="elder.archived == 0"
+                [(ngModel)]="elder.archived"
+              >
+                <i class="fa fa-archive" aria-hidden="true"></i>
+            </button>
+            <button
+                for=""
+                class="btn btn-transparent float-left large border"
+                (click)="unarchive()"
+                *ngIf="elder.archived != 0"
+                [(ngModel)]="elder.archived"
+              >
+                <i class="fa fa-archive" aria-hidden="true"></i>
+            </button>
+          </div>
           <div class="position-relative">
             <img
               [src]="sanitizer.bypassSecurityTrustResourceUrl(elder.image)"
@@ -173,24 +193,6 @@
             }"
             > {{ elder.status == 0 ? 'Active' : elder.status == 1 ? 'Discharge' : 'Decease' }}
             </label>
-            <button
-                for=""
-                class="btn btn-transparent float-right large border"
-                (click)="archive()"
-                *ngIf="elder.archived == 0"
-                [(ngModel)]="elder.archived"
-              >
-                <i class="fa fa-archive" aria-hidden="true"></i>
-            </button>
-            <button
-                for=""
-                class="btn btn-transparent float-right large border"
-                (click)="unarchive()"
-                *ngIf="elder.archived != 0"
-                [(ngModel)]="elder.archived"
-              >
-                <i class="fa fa-archive" aria-hidden="true"></i>
-            </button>
           </div>
         </div>
         <div class="form-group row">

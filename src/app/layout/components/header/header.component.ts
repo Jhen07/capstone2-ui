@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
 
     notifications: Notification[] = [];
     newCount = 0;
-
+    time: any;
     constructor(private translate: TranslateService, public router: Router, private userService: UsersService) {
 
         this.router.events.subscribe(val => {
@@ -29,6 +29,15 @@ export class HeaderComponent implements OnInit {
             }
         });
         this.getNotifs();
+
+        {
+
+            if (+localStorage.getItem('user_role') != 0) {
+              this.router.navigate(['staff-dashboard']);
+            }
+        
+            this.setTime();
+          }
     }
 
     getNotifs() {
@@ -83,4 +92,10 @@ export class HeaderComponent implements OnInit {
         });
         this.newCount = 0;
     }
+
+    setTime() {
+        setInterval(() => {
+          this.time = new Date();
+        }, 1000);
+      }
 }
